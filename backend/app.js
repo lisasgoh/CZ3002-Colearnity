@@ -28,6 +28,8 @@ app.post('/account/create', function (request, response) {
 })
 
 
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
