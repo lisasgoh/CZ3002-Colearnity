@@ -1,8 +1,23 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const GradeSchema = new mongoose.Schema({
+  _quiz: {
+    type: Schema.Types.ObjectId,
+    ref: "Quiz",
+  },
+  grades: [
+    {
+      type: Number,
+    },
+  ],
+  marks: {
+    type: Number,
+  },
+});
+
 const UserSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true,
   },
@@ -15,10 +30,34 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
-    type: Date,
-    default: Date.now,
+  is_student: {
+    type: Boolean,
   },
+  university: {
+    type: String,
+  },
+  course_of_study: {
+    type: String,
+  },
+  _forums: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Forum",
+    },
+  ],
+  _grades: [GradeSchema],
+  _posts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Post",
+    },
+  ],
+  _quizzes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Quiz",
+    },
+  ],
 });
 
 module.exports = User = mongoose.model("user", UserSchema);

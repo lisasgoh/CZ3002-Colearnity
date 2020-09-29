@@ -19,6 +19,7 @@ const voteSchema = new Schema({
     type: Number,
   },
 });
+/*
 
 const populateVoter = function (next) {
   this.populate({
@@ -52,7 +53,7 @@ postSchema.pre("find", populatePost);
 postSchema.pre("findOne", populatePost);
 
 postSchema.pre("find", populateComment);
-postSchema.pre("findOne", populateComment);
+postSchema.pre("findOne", populateComment);*/
 
 const Vote = mongoose.model("Vote", voteSchema);
 

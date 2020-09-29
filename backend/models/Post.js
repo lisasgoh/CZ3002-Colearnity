@@ -32,7 +32,7 @@ const postSchema = new Schema(
   },
   timestamps
 );
-
+/*
 const populatePoster = function (next) {
   this.populate({
     path: "poster",
@@ -63,7 +63,7 @@ postSchema.pre("find", populateComments);
 postSchema.pre("findOne", populateComments);
 
 postSchema.pre("find", populateForum);
-postSchema.pre("findOne", populateForum);
+postSchema.pre("findOne", populateForum); */
 
 const Post = mongoose.model("Post", postSchema);
 
