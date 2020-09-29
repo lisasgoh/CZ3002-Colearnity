@@ -30,7 +30,7 @@ const postSchema = new Schema(
       type: Number,
     },
   },
-  timestamps
+  { timestamps: true }
 );
 /*
 const populatePoster = function (next) {
