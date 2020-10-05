@@ -21,13 +21,13 @@ commentRouter.post("/", (req, res) => {
   const comment = new Comment({
     text: req.body.text,
     votes: 0,
-    _commenter: req.params.user_id,
-    _post: req.params.post_id,
+    _commenter: req.query.user_id,
+    _post: req.query.post_id,
   });
   comment
     .save()
     .then((comment) => {
-      return Post.findById(req.params.postId);
+      return Post.findById(req.query.post_id);
     })
     .then((post) => {
       post.comments.unshift(comment);

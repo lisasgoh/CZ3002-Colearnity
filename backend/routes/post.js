@@ -20,13 +20,15 @@ postRouter.get("/:id", (req, res) => {
 // create post
 postRouter.post("/", (req, res) => {
   const body = req.body;
+  console.log(req.query);
+  console.log(req.body);
   const post = new Post({
     title: body.title,
     description: body.description,
     votes: 0,
-    _poster: req.params.user_id,
+    _poster: req.query.user_id,
     _comments: [],
-    _forum: req.params.forum_id,
+    _forum: req.query.forum_id,
   });
   post
     .save()

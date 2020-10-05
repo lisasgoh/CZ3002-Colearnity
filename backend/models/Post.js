@@ -25,6 +25,7 @@ const postSchema = new Schema(
     _forum: {
       type: Schema.Types.ObjectId,
       ref: "Forum",
+      required: true,
     },
     votes: {
       type: Number,
