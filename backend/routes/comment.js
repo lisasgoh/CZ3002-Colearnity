@@ -1,6 +1,5 @@
-var models = require("../models");
-var Comment = models.Comment;
-var Post = models.Post;
+var Comment = require("../models/Comment");
+var Post = require("../models/Post");
 
 var express = require("express");
 var commentRouter = express.Router();
@@ -11,6 +10,10 @@ commentRouter.get("/:id", (req, res) => {
     if (err) res.send(err);
     else res.json(comment);
   });
+});
+
+commentRouter.get("/", (req, res) => {
+  Comment.find({}).then((comments) => res.json(comments));
 });
 
 // create new comment

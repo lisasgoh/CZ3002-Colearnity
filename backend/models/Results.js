@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const questionResultSchema = new Schema({
   correct: Number,
   wrong: Number,
-  qn: Number,
+  qn_number: Number,
 });
 
 const resultSchema = new Schema({

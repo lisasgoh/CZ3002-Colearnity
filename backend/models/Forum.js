@@ -35,3 +35,7 @@ const forumSchema = new Schema({
     type: Boolean,
   },
 });
+
+const Forum = mongoose.model("Forum", forumSchema);
+
+module.exports = Forum;

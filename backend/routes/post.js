@@ -1,7 +1,5 @@
-var models = require("../models");
-
-var Comment = models.Comment;
-var Post = models.Post;
+var Comment = require("../models/Comment");
+var Post = require("../models/Post");
 
 var express = require("express");
 var postRouter = express.Router();
@@ -26,13 +24,16 @@ postRouter.post("/", (req, res) => {
     title: body.title,
     description: body.description,
     votes: 0,
+    _poster: req.params.user_id,
+    _comments: [],
+    _forum: req.params.forum_id,
   });
   post
     .save()
     .then((savedPost) => {
       res.json(savedPost);
     })
-    .catch((error) => next(error));
+    .catch((error) => res.json(error));
 });
 
 //update post title/description
