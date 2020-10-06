@@ -5,13 +5,16 @@ const forumSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   description: {
     type: String,
+    required: true,
   },
   _teacher: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   _subforums: [
     {
@@ -33,6 +36,7 @@ const forumSchema = new Schema({
   ],
   is_sub: {
     type: Boolean,
+    required: true,
   },
 });
 
