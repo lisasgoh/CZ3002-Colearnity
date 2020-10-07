@@ -12,6 +12,7 @@ commentRouter.get("/:id", (req, res) => {
   });
 });
 
+// get all comments (test)
 commentRouter.get("/", (req, res) => {
   Comment.find({}).then((comments) => res.json(comments));
 });
