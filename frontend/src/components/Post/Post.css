@@ -1,0 +1,44 @@
+.post {
+  width: 80%;
+  border-bottom: solid black 1px;
+  padding: 1em;
+}
+
+.postheader {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0.6em;
+}
+
+.postheader h6 {
+  margin-left: 0.5em;
+  font-size: 1.1em;
+}
+
+.actionbar {
+  display: flex;
+  flex-direction: row;
+}
+
+.actionbar button,
+.actionbar > span {
+  margin-left: 1.5em;
+}
+
+.actionbar button:first-child {
+  margin-left: 0;
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1em;
+}
+
+.tags a {
+  color: white;
+}
+
+.tags a:hover {
+  text-decoration: none;
+}
