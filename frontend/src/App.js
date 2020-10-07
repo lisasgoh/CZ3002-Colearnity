@@ -1,23 +1,19 @@
 import React from "react";
 import Navbar from "./components/Navbar/Navbar";
-import { Button } from "./components/Button";
-import "./App.css";
-import Post from "./components/Post/Post";
 
+import "./App.css";
+import StudentHomePage from "./container/StudentHomePage/StudentHomePage";
+import LandingPage from "./container/LandingPage/LandingPage"
+import {BrowserRouter, Route} from 'react-router-dom';
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <div className="landing">
-        <div className="ls-btn">
-          <Button>Login</Button>
-        </div>
-        <div className="ls-btn">
-          <Button>Sign Up</Button>
-        </div>
+    <BrowserRouter>  
+      <div className="App">
+        <Navbar />
+        <Route path="/" exact component = {LandingPage}/>
+        <Route path="/login" exact component = {StudentHomePage}/>
       </div>
-      <Post />
-    </div>
+    </BrowserRouter>
   );
 }
 
