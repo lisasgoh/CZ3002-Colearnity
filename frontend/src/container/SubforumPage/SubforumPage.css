@@ -1,47 +1,41 @@
-.forumpage {
+.subforumpage {
   display: grid;
   text-align: center;
   grid-template-columns: 2fr 4fr;
 }
 
-.forumpage .leftsection {
+.subforumpage .leftsection {
   padding: 50px 10%;
   background-color: #eaeaea;
 }
 
-.forumpage .leftsection Button {
-  margin: 15px 0;
+.subforumpage .leftsection h2 {
+  margin-bottom: 30px;
 }
 
-.forumpage .leftsection p {
-  text-align: left;
-  padding: 20px;
-  background-color: skyblue;
-  border-radius: 6px;
-  margin: 15px 0 90px 0;
-  font-weight: 500;
+.subforumpage .leftsection h3 {
+  margin-top: 30px;
 }
 
-.forumpage .subforums {
+.subforumpage .quizzes {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-
   margin-top: 5%;
 }
 
-.forumpage .rightsection {
+.subforumpage .rightsection {
   padding: 50px 3%;
   align-items: center;
   justify-content: center;
 }
 
-.forumpage .rightsection .topbar {
+.subforumpage .rightsection .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.forumpage .rightsection h2 {
+.subforumpage .rightsection h2 {
   display: inline-block;
 }
