@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button } from '../components/Button';
+import { Button } from '../../components/Button';
+import {Link} from 'react-router-dom';
 import './Login.css';
 
 class SignupPage extends Component {
@@ -8,9 +9,12 @@ class SignupPage extends Component {
             <div className="main">
                 <div className="signup-form">
                     <form>
-                        <a className="sleft" href="">
-                            back
-                        </a>
+                        <Link to="/">
+                            <a className="sleft" href="">
+                                back
+                            </a>
+                        </Link>
+                        
                         <h3>Sign Up</h3><p> </p>
     
                         <div className="form-group">
@@ -39,7 +43,12 @@ class SignupPage extends Component {
                         </div>
     
                         <Button>Sign Up</Button>
-                        <p className="sright">Already registered? <a href="">Login</a></p>
+                        
+                            <p className="sright">Already registered? 
+                                <Link Link to="/login">
+                                    <a href="">Login</a>
+                                </Link>
+                            </p> 
                     </form>
                 </div>
             </div>

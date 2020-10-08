@@ -6,6 +6,7 @@ class StudentHomePage extends Component {
     render(){
         return(
             <div className="homepage_post">
+            <h1 className="header">Recent Post</h1>
                 <Post/>
                 <Post/>
                 <Post/>
