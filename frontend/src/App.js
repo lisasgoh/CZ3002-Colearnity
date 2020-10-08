@@ -6,7 +6,9 @@ import StudentHomePage from "./container/StudentHomePage/StudentHomePage";
 import LandingPage from "./container/LandingPage/LandingPage"
 import SignupPage from "./container/Login/SignupPage";
 import LoginPage from "./container/Login/LoginPage";
-import StudentProfilePage from "./container/StudentProfilePage/StudentProfilePage"
+import StudentProfilePage from "./container/StudentProfilePage/StudentProfilePage";
+import CreatePost from "./container/CreatePost/CreatePost";
+import ForumPage from "./container/ForumPage/ForumPage";
 import {BrowserRouter, Route} from 'react-router-dom';
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/signup" exact component = {SignupPage}/>
         <Route path="/homepage" exact component = {StudentHomePage}/>
         <Route path="/profilepage" exact component = {StudentProfilePage}/>
+        <Route path="/createpost" exact component = {CreatePost}/>
+        <Route path="/forumpage" exact component = {ForumPage}/>
       </div>
     </BrowserRouter>
   );
