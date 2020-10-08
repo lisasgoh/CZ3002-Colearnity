@@ -33,8 +33,8 @@ export default function Post(props) {
   })(Chip);
 
   return (
-    <div class="post">
-      <div class="postheader">
+    <div className="post">
+      <div className="postheader">
         <FaceRoundedIcon />
         <h6>{props.username} username here</h6>
       </div>
@@ -48,9 +48,9 @@ export default function Post(props) {
         eget varius purus.
       </p>
 
-      <div class="actionbar">
+      <div className="actionbar">
         <Button
-          variant="contained"
+          // variant="contained"
           color="primary"
           size="small"
           // className={classes.button}
@@ -59,7 +59,7 @@ export default function Post(props) {
           Reply
         </Button>
         <Button
-          variant="contained"
+          // variant="contained"
           color="primary"
           size="small"
           // className={classes.button}
@@ -73,7 +73,7 @@ export default function Post(props) {
         <span> {props.numLikes} 20 Likes</span>
       </div>
 
-      <div class="tags">
+      <div className="tags">
         <StyledChip
           size="small"
           label="CZ3002 ASE"

@@ -1,12 +1,32 @@
-.homepage_post{
-    align-items: center;
-    justify-content: center;
-    margin-left: 20%;
+.studenthomepage {
+  display: grid;
+  text-align: center;
 }
 
-.header{
-    display: 'flex';
-    align-items: 'center';
-    justify-content: 'center';
-    margin-left: 30%;
+.leftsection {
+  padding: 6% 3%;
+  background-color: #eaeaea;
+  grid-column: 1 / 2;
+}
+
+.forums {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+/* .forums > * {
+  width: 2000px;
+} */
+
+.rightsection {
+  padding: 6% 3%;
+  align-items: center;
+  justify-content: center;
+  grid-column: 3 / 6;
+}
+
+.rightsection h2 {
+  display: inline-block;
 }
