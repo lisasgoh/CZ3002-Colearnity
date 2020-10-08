@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Post from "../../components/Post/Post";
-import ForumBtn from "../../components/ForumBtns/ForumBtn";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import ForumButton from "../../components/ForumButtons/ForumButton";
+import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import "./StudentHomePage.css";
 
 class StudentHomePage extends Component {
@@ -11,17 +11,17 @@ class StudentHomePage extends Component {
         <div className="leftsection">
           <h2>My Forums</h2>
           <div className="forums">
-            <ForumBtn
+            <ForumButton
               color="papayawhip"
               hovercolor="peachpuff"
               forumTitle="CZ3002 ASE"
             />
-            <ForumBtn
+            <ForumButton
               color="lightcyan"
               hovercolor="darkcyan"
               forumTitle="CZ3001 ACOA"
             />
-            <ForumBtn
+            <ForumButton
               color="lavender"
               hovercolor="darkslateblue"
               forumTitle="CZ1007 Data Structures"
@@ -32,7 +32,7 @@ class StudentHomePage extends Component {
         <div className="rightsection">
           <div className="topbar">
             <h2>Recent Posts</h2>
-            <FilterListIcon />
+            <FilterListRoundedIcon />
           </div>
           <Post />
           <Post />
