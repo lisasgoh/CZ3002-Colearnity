@@ -32,7 +32,8 @@ router.post("/", auth.optional, (req, res, next) => {
 
   return finalUser
     .save()
-    .then(() => res.json({ user: finalUser.toAuthJSON() }));
+    .then(() => res.json({ user: finalUser.toAuthJSON() }))
+    .catch((error) => res.json(error));
 });
 
 //POST login route (optional, everyone has access)
@@ -88,7 +89,8 @@ router.get("/current", auth.required, (req, res, next) => {
       return res.sendStatus(400);
     }
 
-    return res.json({ user: user.toAuthJSON() });
+    // return res.json({ user: user.toAuthJSON() });
+    return res.json(user);
   });
 });
 

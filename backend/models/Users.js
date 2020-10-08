@@ -4,10 +4,63 @@ const jwt = require("jsonwebtoken");
 
 const { Schema } = mongoose;
 
+const GradeSchema = new mongoose.Schema({
+  _quiz: {
+    type: Schema.Types.ObjectId,
+    ref: "Quiz",
+  },
+  grades: [
+    {
+      type: Number,
+    },
+  ],
+  marks: {
+    type: Number,
+  },
+});
+
 const UsersSchema = new Schema({
-  email: String,
   hash: String,
   salt: String,
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  is_student: {
+    type: Boolean,
+    required: true,
+  },
+  university: {
+    type: String,
+  },
+  course_of_study: {
+    type: String,
+  },
+  _forums: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Forum",
+    },
+  ],
+  _grades: [GradeSchema],
+  _posts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Post",
+    },
+  ],
+  _quizzes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Quiz",
+    },
+  ],
 });
 
 UsersSchema.methods.setPassword = function (password) {
@@ -47,4 +100,6 @@ UsersSchema.methods.toAuthJSON = function () {
   };
 };
 
-mongoose.model("Users", UsersSchema);
+const User = mongoose.model("Users", UsersSchema);
+
+module.exports = User;
