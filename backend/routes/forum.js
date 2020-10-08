@@ -22,7 +22,7 @@ forumRouter.post("/", (req, res) => {
     });
 });
 
-//get forum details
+//get forum details todo -> populate fields --> consider sorting
 forumRouter.get("/:id", (req, res) => {
   Forum.findById(req.params.forum_id).then((forum) => {
     if (err) res.send(err);
@@ -30,7 +30,7 @@ forumRouter.get("/:id", (req, res) => {
   });
 });
 
-//change forum details
+//change forum details todo
 forumRouter.put("/:id", (req, res) => {
   Forum.findByIdAndUpdate(req.params.forum_id, req.body)
     .then((updatedForum) => {
@@ -46,7 +46,13 @@ forumRouter.delete("/:id", (req, res) => {
   Forum.findByIdAndRemove(req.params.forum_id).then((forum) => {
     if (err) res.send(err);
     else {
-      // delete from posts
+      // delete posts from that forum
+      // delete forum from users list
+      ({ $pull: { _forums: { _id: req.params.forum_id } } },
+        function (err) {
+          if (err) res.send(err);
+          else res.send("Success: Comment Deleted");
+        });
     }
   });
 });

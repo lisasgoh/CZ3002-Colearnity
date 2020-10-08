@@ -35,7 +35,8 @@ commentRouter.post("/", (req, res) => {
       return post.save();
     })
     .then((post) => {
-      res.redirect(`/`); //res.json(post)
+      // res.redirect(`/`);
+      res.json(post);
     })
     .catch((err) => {
       res.send(err);
@@ -47,15 +48,6 @@ commentRouter.put("/:id", (req, res) => {
   Comment.findByIdAndUpdate(req.params.comment_id, {
     text: req.body.text,
   })
-    .then((updatedComment) => {
-      res.json(updatedComment);
-    })
-    .catch((error) => next(error));
-});
-
-// update comment votes
-commentRouter.put("/votes/:id", (req, res) => {
-  Comment.findOneAndUpdate(req.params.comment_id, { $inc: { votes: 1 } })
     .then((updatedComment) => {
       res.json(updatedComment);
     })

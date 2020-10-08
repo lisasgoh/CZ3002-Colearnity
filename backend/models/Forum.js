@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+var Post = require("../models/Post");
+var User = require("../models/User");
+
 const forumSchema = new Schema({
   name: {
     type: String,
@@ -38,6 +41,11 @@ const forumSchema = new Schema({
     type: Boolean,
     required: true,
   },
+});
+
+forumSchema.pre("remove", function (next) {
+  Post.remove({ _forum: this._id }).exec();
+  next();
 });
 
 const Forum = mongoose.model("Forum", forumSchema);
