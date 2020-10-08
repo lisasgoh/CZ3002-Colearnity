@@ -35,3 +35,16 @@
 .studenthomepage .rightsection h2 {
   display: inline-block;
 }
+
+.studenthomepage .rightsection .filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.svg_icons{
+  margin-top: 20px;
+  margin-right: 10px;
+  transform: scale(1.5);
+}
+
