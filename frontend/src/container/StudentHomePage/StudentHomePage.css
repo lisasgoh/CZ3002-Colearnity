@@ -1,12 +1,12 @@
 .studenthomepage {
   display: grid;
   text-align: center;
+  grid-template-columns: 2fr 4fr;
 }
 
 .studenthomepage .leftsection {
   padding: 50px 3%;
   background-color: #eaeaea;
-  grid-column: 1 / 2;
 }
 
 .studenthomepage .forums {
@@ -20,7 +20,6 @@
   padding: 50px 3%;
   align-items: center;
   justify-content: center;
-  grid-column: 3 / 6;
 }
 
 /* .studenthomepage .rightsection .topbar {
@@ -36,3 +35,16 @@
 .studenthomepage .rightsection h2 {
   display: inline-block;
 }
+
+.studenthomepage .rightsection .filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.svg_icons{
+  margin-top: 20px;
+  margin-right: 10px;
+  transform: scale(1.5);
+}
+

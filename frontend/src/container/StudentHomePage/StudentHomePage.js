@@ -15,7 +15,7 @@ import "./StudentHomePage.css";
 const styles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 130,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -24,8 +24,6 @@ const styles = (theme) => ({
 
 class StudentHomePage extends Component {
   
-  //classes = useStyles();
-
   constructor(props) {
     super();
     this.state = { value: '' };
@@ -66,18 +64,20 @@ class StudentHomePage extends Component {
           <div className="topbar">
             <h2>Recent Posts</h2>
 
-            <FilterListRoundedIcon />
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel>Course</InputLabel>
-              <Select value={this.state.value} onChange={this.handleChange}>
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
+            <div className="filter">
+              <FilterListRoundedIcon className="svg_icons"/>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel>Filter Post</InputLabel>
+                <Select value={this.state.value} onChange={this.handleChange}>
+                  <MenuItem value="">
+                    <em>All Courses</em>
+                  </MenuItem>
+                  <MenuItem value={'CZ3002 ASE'}>CZ3002 ASE</MenuItem>
+                  <MenuItem value={'CZ3001 ACOA'}>CZ3001 ACOA</MenuItem>
+                  <MenuItem value={'AZ1007 Data Structures'}>AZ1007 Data Structures</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
 
           </div>
           <Post />
