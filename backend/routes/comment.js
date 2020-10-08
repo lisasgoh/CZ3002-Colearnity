@@ -22,7 +22,7 @@ commentRouter.post("/", (req, res) => {
   const comment = new Comment({
     text: req.body.text,
     votes: 0,
-    _commenter: req.query.user_id,
+    _commenter: req.query.user._id,
     _post: req.query.post_id,
   });
   comment

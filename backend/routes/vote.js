@@ -20,7 +20,7 @@ votesRouter.get("/:id", (req, res) => {
 //check if vote already exists
 // increase vote increment for post/comment
 votesRouter.post("/", (req, res) => {
-  Vote.exists({ _voter: req.query.user_id }),
+  Vote.exists({ _voter: req.query.user._id }),
     function (err, result) {
       if (result === true) {
         const oldVote = Number.vote.dir;
@@ -45,7 +45,7 @@ votesRouter.post("/", (req, res) => {
         }
       } else {
         const vote = new Vote({
-          _voter: req.query.user_id,
+          _voter: req.query.user._id,
           _comment: req.query.comment_id,
           _post: req.query.post_id,
           dir: req.query.dir,

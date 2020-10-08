@@ -9,7 +9,7 @@ forumRouter.post("/", (req, res) => {
   const forum = {
     name: req.body.name,
     description: req.body.description,
-    _teacher: req.query.user_id,
+    _teacher: req.query.user._id,
     is_sub: false,
   };
   forum

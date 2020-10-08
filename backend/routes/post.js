@@ -26,7 +26,7 @@ postRouter.post("/", (req, res) => {
     title: body.title,
     description: body.description,
     votes: 0,
-    _poster: req.query.user_id,
+    _poster: req.query.user._id,
     _comments: [],
     _forum: req.query.forum_id,
   });
