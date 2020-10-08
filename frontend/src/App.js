@@ -6,6 +6,7 @@ import StudentHomePage from "./container/StudentHomePage/StudentHomePage";
 import LandingPage from "./container/LandingPage/LandingPage"
 import SignupPage from "./container/Login/SignupPage";
 import LoginPage from "./container/Login/LoginPage";
+import StudentProfilePage from "./container/StudentProfilePage/StudentProfilePage"
 import {BrowserRouter, Route} from 'react-router-dom';
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" exact component = {LoginPage}/>
         <Route path="/signup" exact component = {SignupPage}/>
         <Route path="/homepage" exact component = {StudentHomePage}/>
+        <Route path="/profilepage" exact component = {StudentProfilePage}/>
       </div>
     </BrowserRouter>
   );

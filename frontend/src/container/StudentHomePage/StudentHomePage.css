@@ -30,3 +30,8 @@
 .rightsection h2 {
   display: inline-block;
 }
+
+.flexbox-container {
+  display: flex;
+  flex-direction: row;
+}
