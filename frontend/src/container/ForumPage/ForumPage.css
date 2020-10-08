@@ -1,12 +1,12 @@
 .forumpage {
   display: grid;
   text-align: center;
+  grid-template-columns: 2fr 4fr;
 }
 
 .forumpage .leftsection {
   padding: 50px 10%;
   background-color: #eaeaea;
-  grid-column: 1 / 2;
 }
 
 .forumpage .leftsection Button {
@@ -34,7 +34,6 @@
   padding: 50px 3%;
   align-items: center;
   justify-content: center;
-  grid-column: 3 / 6;
 }
 
 .forumpage .rightsection .topbar {
