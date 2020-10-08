@@ -46,16 +46,3 @@
   display: inline-block;
 }
 
-.forumpage .rightsection_createpost {
-  
-  align-items: center;
-  justify-content: center;
-  grid-column: 3/ 6 ;
-}
-
-.forumpage .leftsection_createpost {
-  padding: 50px 10%;
-  background-color: #eaeaea;
-  
-  grid-column: 1/  2 ;
-}

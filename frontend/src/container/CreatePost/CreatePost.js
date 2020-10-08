@@ -15,7 +15,7 @@ class CreatePost extends Component {
     render(){
         return(
           <div className="forumpage">
-          <div className="leftsection">
+          <div className="leftsection_createpost">
             <h2>CZ3002 ASE</h2>
             <Button variant="contained" color="secondary" size="small">
               Join Forum

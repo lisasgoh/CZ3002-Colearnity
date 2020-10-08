@@ -3,17 +3,17 @@
     text-align: center;
   }
   
-  .forumpage .leftsection {
+  .forumpage .leftsection_createpost {
     padding: 50px 10%;
     background-color: #eaeaea;
     grid-column: 1/ span 2 ;
   }
   
-  .forumpage .leftsection Button {
+  .forumpage .leftsection_createpost Button {
     margin: 15px 0;
   }
   
-  .forumpage .leftsection p {
+  .forumpage .leftsection_createpost p {
     text-align: left;
     padding: 20px;
     background-color: skyblue;
@@ -30,12 +30,6 @@
     margin-top: 5%;
   }
   
-  .forumpage .rightsection {
-    padding: 50px 3%;
-    align-items: center;
-    justify-content: center;
-    grid-column: 1 / span 2;
-  }
   
   .forumpage .rightsection_createpost {
     
@@ -55,8 +49,8 @@
 .forumpage .rightsection_createpost .NewPost label {
     display: block;
     margin: 10px ;
-    padding-left: 24em;
-    padding-right: 24em;
+    padding-left: 20em;
+    padding-right: 20em;
     text-align: center;
     font-weight: bold;
 }
