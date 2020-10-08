@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { MenuItems } from "./MenuItems";
-import './Navbar.css';
 import {Link} from 'react-router-dom';
+import Search from '../Search';
+import './Navbar.css';
 
 class Navbar extends Component {
     state = { clicked: false }
@@ -14,6 +15,7 @@ class Navbar extends Component {
         return(
             <nav className="NavbarItems">
                 <Link to="/"><h1 className="navbar-logo">Colearnity</h1></Link>
+                <Search />
                 <div className="menu-icon" onClick={this.handleClick}>
                     <i className={this.state.clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </div>
