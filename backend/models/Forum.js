@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 var Post = require("../models/Post");
-var User = require("../models/User");
+var User = require("../models/Users");
 
 const forumSchema = new Schema({
   name: {
@@ -43,7 +43,7 @@ const forumSchema = new Schema({
   },
 });
 
-forumSchema.pre("remove", function (next) {
+forumSchema.pre("findByIdAndRemove", function (next) {
   Post.remove({ _forum: this._id }).exec();
   next();
 });

@@ -18,15 +18,15 @@ postRouter.get("/:id", (req, res) => {
 });
 
 // create post
+// TODO: add to forum & user db
 postRouter.post("/", (req, res) => {
   const body = req.body;
-  console.log(req.query);
-  console.log(req.body);
+  // check if user is part of forum
   const post = new Post({
     title: body.title,
     description: body.description,
     votes: 0,
-    _poster: req.query.user._id,
+    _poster: req.user._id,
     _comments: [],
     _forum: req.query.forum_id,
   });
@@ -48,4 +48,32 @@ postRouter.put("/:id", (req, res) => {
 });
 
 //delete post
+// delete post from forum
+// delete post from user
+postRouter.delete("/:id", (req, res) => {
+  Post.findByIdAndRemove(req.params.post_id).then((post) => {
+    if (err) res.send(err);
+    else {
+      Forum.findByIdAndUpdate(
+        req.params.forum_id,
+        { $pull: { posts: { _id: req.params.post_id } } },
+        function (err) {
+          if (err) res.send(err);
+          else {
+            Users.findByIdAndUpdate(
+              req.user._id,
+              { $pull: { _posts: { _id: req.params.post_id } } },
+              { multi: true },
+              function (err) {
+                if (err) res.send(err);
+                else res.send("Success: Post Deleted");
+              }
+            );
+          }
+        }
+      );
+    }
+  });
+});
+
 module.exports = postRouter;

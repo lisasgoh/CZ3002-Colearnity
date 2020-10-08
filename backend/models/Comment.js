@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const Vote = require("./Vote");
+
 const commentSchema = new Schema(
   {
     text: {
@@ -21,6 +23,11 @@ const commentSchema = new Schema(
   },
   { timestamps: true }
 );
+
+commentSchema.pre("remove", function (next) {
+  Vote.remove({ _comment: this._id }).exec();
+  next();
+});
 
 const Comment = mongoose.model("Comment", commentSchema);
 

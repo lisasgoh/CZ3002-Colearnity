@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const Comment = require("./Comment");
+const Vote = require("./Vote");
 
 const postSchema = new Schema(
   {
@@ -65,6 +67,11 @@ postSchema.pre("findOne", populateComments);
 
 postSchema.pre("find", populateForum);
 postSchema.pre("findOne", populateForum); */
+postSchema.pre("findByIdAndRemove", function (next) {
+  Comment.remove({ _post: this._id }).exec();
+  Vote.remove({ _post: this._id }).exec();
+  next();
+});
 
 const Post = mongoose.model("Post", postSchema);
 

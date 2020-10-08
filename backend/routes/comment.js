@@ -64,7 +64,16 @@ commentRouter.delete("/:id", (req, res) => {
         { $pull: { comments: { _id: req.params.comment_id } } },
         function (err) {
           if (err) res.send(err);
-          else res.send("Success: Comment Deleted");
+          else {
+            Users.findByIdAndUpdate(
+              req.user._id,
+              { $pull: { _comments: { _id: req.params.comment_id } } },
+              function (err) {
+                if (err) res.send(err);
+                else res.send("Success: Comment Deleted");
+              }
+            );
+          }
         }
       );
     }

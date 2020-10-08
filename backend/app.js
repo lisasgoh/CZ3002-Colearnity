@@ -4,14 +4,16 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var session = require("express-session");
+var passport = require("passport");
 
-/*var indexRouter = require("./routes/index");
+var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var commentRouter = require("./routes/comment");
 var postRouter = require("./routes/post");
-var voteRouter = require("./routes/vote");*/
+var voteRouter = require("./routes/vote");
+var forumRouter = require("./routes/forum");
 
-require("./models/Users");
+var User = require("./models/Users");
 require("./config/passport");
 
 const mongoose = require("mongoose");
@@ -51,23 +53,38 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
-    secret: "passport-tutorial",
-    cookie: { maxAge: 60000 },
+    secret: "secret",
     resave: false,
     saveUninitialized: false,
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
-/*app.use("/", indexRouter);
-app.use("/users", usersRouter);
+passport.serializeUser(function (user, done) {
+  done(null, user._id);
+});
+
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use("/", indexRouter);
+app.use("/api/users", usersRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/votes", voteRouter);
-*/
-app.use(require("./routes"));
+app.use("/api/forum", forumRouter);
+
+app.use(function (req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

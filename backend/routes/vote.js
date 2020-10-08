@@ -20,15 +20,21 @@ votesRouter.get("/:id", (req, res) => {
 //check if vote already exists
 // increase vote increment for post/comment
 votesRouter.post("/", (req, res) => {
-  Vote.exists({ _voter: req.query.user._id }),
+  Vote.exists({ _voter: req.query.user._id }), //user voted for the post before
     function (err, result) {
       if (result === true) {
         const oldVote = Number.vote.dir;
         const newVote = Number.req.query.vote_dir;
         vote.dir = newVote;
+        const diff = 0;
+        if (oldVote === newVote) {
+          diff = -newVote;
+        } else {
+          diff = newVote - oldVote;
+        }
         if (vote._comment != null && req.params.comment_id != null) {
           Comment.findOneAndUpdate(req.params.comment_id, {
-            $inc: { votes: newVote - oldVote },
+            $inc: { votes: diff },
           })
             .then((updatedComment) => {
               res.json(updatedComment);
@@ -36,7 +42,7 @@ votesRouter.post("/", (req, res) => {
             .catch((error) => res.json(error));
         } else if (vote._post != null && req.params.post_id != null) {
           Post.findOneAndUpdate(req.params.post_id, {
-            $inc: { votes: newVote - oldVote },
+            $inc: { votes: diff },
           })
             .then((updatedPost) => {
               res.json(updatedPost);
@@ -59,3 +65,5 @@ votesRouter.post("/", (req, res) => {
       }
     };
 });
+
+module.exports = votesRouter;
