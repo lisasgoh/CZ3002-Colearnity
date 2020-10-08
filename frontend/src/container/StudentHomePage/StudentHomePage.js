@@ -4,15 +4,19 @@ import "./StudentHomePage.css";
 
 class StudentHomePage extends Component {
     render(){
+        
         return(
-            <div className="homepage_post">
-            <h1 className="header">Recent Post</h1>
-                <Post/>
-                <Post/>
-                <Post/>
-                <Post/>
-                <Post/>
-                <Post/>
+
+            <div className="flexbox-container">                
+                <div className="homepage_post">
+                    <h1 >Recent Post</h1>
+                    <Post/>
+                    <Post/>
+                    <Post/>
+                    <Post/>
+                    <Post/>
+                    <Post/>
+                </div>
             </div>
         );
     }
