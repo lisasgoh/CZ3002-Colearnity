@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from '../../components/Button/Button';
 import {Link} from 'react-router-dom';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import './Login.css';
 
 class SignupPage extends Component {
@@ -10,9 +11,7 @@ class SignupPage extends Component {
                 <div className="signup-form">
                     <form>
                         <Link to="/">
-                            <a className="sleft" href="">
-                                back
-                            </a>
+                            <NavigateBeforeIcon />
                         </Link>
                         
                         <h3>Sign Up</h3><p> </p>
