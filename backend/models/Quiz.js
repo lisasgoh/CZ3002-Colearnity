@@ -1,18 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const questionSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-    maxlength: 25,
-  },
-  options: [optionSchema],
-  points: {
-    type: Number,
-  },
-});
-
 const optionSchema = new Schema({
   optionNumber: {
     type: Number,
@@ -23,6 +11,18 @@ const optionSchema = new Schema({
   isCorrectAnswer: {
     type: Boolean,
     default: false,
+  },
+});
+
+const questionSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+    maxlength: 25,
+  },
+  options: [optionSchema],
+  points: {
+    type: Number,
   },
 });
 

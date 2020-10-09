@@ -23,10 +23,6 @@ mongoose.promise = global.Promise;
 
 var app = express();
 
-// json parser
-var bodyParser = require("body-parser");
-app.use(bodyParser.json());
-
 // connect to mongodb
 const url = `mongodb+srv://colearnity:zHiVt0wXsWUQ3MKB@cluster0.4j8bx.mongodb.net/<dbname>?retryWrites=true&w=majority`;
 
@@ -53,6 +49,8 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+var bodyParser = require("body-parser");
+app.use(bodyParser.json());
 app.use(
   session({
     secret: "secret",
@@ -64,14 +62,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function (user, done) {
+  console.log('serialize: ' + user._id);
   done(null, user._id);
 });
 
 passport.deserializeUser(function (id, done) {
+  console.log('deserialize: ' + id);
   User.findById(id, function (err, user) {
     done(err, user);
   });
 });
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);

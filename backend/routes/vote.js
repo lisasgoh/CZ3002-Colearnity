@@ -7,7 +7,7 @@ var votesRouter = express.Router();
 
 // get info of vote
 votesRouter.get("/:id", (req, res) => {
-  Vote.findById(req.params.vote_id),
+  Vote.findById(req.params.id),
     function (err, vote) {
       if (err) res.send(err);
       else {
@@ -24,7 +24,7 @@ votesRouter.post("/", (req, res) => {
     function (err, result) {
       if (result === true) {
         const oldVote = Number.vote.dir;
-        const newVote = Number.req.query.vote_dir;
+        const newVote = Number.req.body.vote_dir;
         vote.dir = newVote;
         const diff = 0;
         if (oldVote === newVote) {
@@ -32,16 +32,16 @@ votesRouter.post("/", (req, res) => {
         } else {
           diff = newVote - oldVote;
         }
-        if (vote._comment != null && req.params.comment_id != null) {
-          Comment.findOneAndUpdate(req.params.comment_id, {
+        if (vote._comment != null && req.query.comment_id != null) {
+          Comment.findOneAndUpdate(req.query.comment_id, {
             $inc: { votes: diff },
           })
             .then((updatedComment) => {
               res.json(updatedComment);
             })
             .catch((error) => res.json(error));
-        } else if (vote._post != null && req.params.post_id != null) {
-          Post.findOneAndUpdate(req.params.post_id, {
+        } else if (vote._post != null && req.query.post_id != null) {
+          Post.findOneAndUpdate(req.query.post_id, {
             $inc: { votes: diff },
           })
             .then((updatedPost) => {
@@ -51,10 +51,10 @@ votesRouter.post("/", (req, res) => {
         }
       } else {
         const vote = new Vote({
-          _voter: req.query.user._id,
+          _voter: req.user._id,
           _comment: req.query.comment_id,
           _post: req.query.post_id,
-          dir: req.query.dir,
+          dir: req.body.vote_dir,
         });
         vote
           .save()

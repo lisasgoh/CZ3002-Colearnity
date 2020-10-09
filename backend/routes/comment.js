@@ -22,7 +22,7 @@ commentRouter.post("/", (req, res) => {
   const comment = new Comment({
     text: req.body.text,
     votes: 0,
-    _commenter: req.query.user._id,
+    _commenter: req.user._id,
     _post: req.query.post_id,
   });
   comment
@@ -45,7 +45,7 @@ commentRouter.post("/", (req, res) => {
 
 // update comment text
 commentRouter.put("/:id", (req, res) => {
-  Comment.findByIdAndUpdate(req.params.comment_id, {
+  Comment.findByIdAndUpdate(req.params.id, {
     text: req.body.text,
   })
     .then((updatedComment) => {
@@ -56,18 +56,18 @@ commentRouter.put("/:id", (req, res) => {
 
 //delete comment
 commentRouter.delete("/:id", (req, res) => {
-  Comment.findByIdAndRemove(req.params.comment_id).then((comment) => {
+  Comment.findByIdAndRemove(req.params.id).then((comment) => {
     if (err) res.send(err);
     else {
       Post.findByIdAndUpdate(
-        req.params.post_id,
-        { $pull: { comments: { _id: req.params.comment_id } } },
+        req.query.post_id,
+        { $pull: { comments: { _id: req.params.id } } },
         function (err) {
           if (err) res.send(err);
           else {
             Users.findByIdAndUpdate(
               req.user._id,
-              { $pull: { _comments: { _id: req.params.comment_id } } },
+              { $pull: { _comments: { _id: req.params.id } } },
               function (err) {
                 if (err) res.send(err);
                 else res.send("Success: Comment Deleted");
