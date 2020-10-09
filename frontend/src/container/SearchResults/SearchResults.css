@@ -1,0 +1,23 @@
+.searchresults {
+  display: grid;
+  text-align: center;
+  grid-template-columns: 2fr 4fr;
+}
+
+.searchresults .leftsection {
+  padding: 50px 3%;
+  background-color: #eaeaea;
+}
+
+.searchresults .forums {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 5%;
+}
+
+.searchresults .rightsection {
+  padding: 50px 3%;
+  align-items: center;
+  justify-content: center;
+}

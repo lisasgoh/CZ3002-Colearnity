@@ -1,7 +1,8 @@
 import React from "react";
 import Navbar from "./components/Navbar/Navbar";
-
 import "./App.css";
+
+import {BrowserRouter, Route} from 'react-router-dom';
 import StudentHomePage from "./container/StudentHomePage/StudentHomePage";
 import LandingPage from "./container/LandingPage/LandingPage"
 import SignupPage from "./container/Login/SignupPage";
@@ -9,7 +10,9 @@ import LoginPage from "./container/Login/LoginPage";
 import StudentProfilePage from "./container/StudentProfilePage/StudentProfilePage";
 import CreatePost from "./container/CreatePost/CreatePost";
 import ForumPage from "./container/ForumPage/ForumPage";
-import {BrowserRouter, Route} from 'react-router-dom';
+import ReviewQuizPage from "./container/ReviewQuizPage/ReviewQuizPage";
+import TakeQuizPage from "./container/TakeQuizPage/TakeQuizPage";
+
 function App() {
   return (
     <BrowserRouter>  
@@ -22,6 +25,8 @@ function App() {
         <Route path="/profilepage" exact component = {StudentProfilePage}/>
         <Route path="/createpost" exact component = {CreatePost}/>
         <Route path="/forumpage" exact component = {ForumPage}/>
+        <Route path="/reviewquizpage" exact component = {ReviewQuizPage}/>
+        <Route path="/takequizpage" exact component = {TakeQuizPage}/>
       </div>
     </BrowserRouter>
   );

@@ -5,6 +5,8 @@ import ReplyRoundedIcon from "@material-ui/icons/ReplyRounded";
 import FavoriteBorderRoundedIcon from "@material-ui/icons/FavoriteBorderRounded";
 import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
 import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
+import EditRoundedIcon from "@material-ui/icons/EditRounded";
+import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import Chip from "@material-ui/core/Chip";
 import "./Post.css";
 // import Typography from "@material-ui/core/Typography";
@@ -35,8 +37,19 @@ export default function Post(props) {
   return (
     <div className="post">
       <div className="postheader">
-        <FaceRoundedIcon />
-        <h6>{props.username} username here</h6>
+        <div className="posterdetails">
+          <FaceRoundedIcon />
+          <h6>{props.username} username here</h6>
+        </div>
+
+        {props.editingaccess ? (
+          <div className="posteractivity">
+            <EditRoundedIcon />
+            <DeleteRoundedIcon />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       <p>
@@ -94,31 +107,3 @@ export default function Post(props) {
     </div>
   );
 }
-
-// export default function EventCard(props) {
-//   const classes = useStyles();
-
-//   return (
-//     <Card className={classes.root}>
-//       <CardActionArea>
-//         <CardMedia
-//           component="img"
-//           alt={props.alt}
-//           height="140"
-//           src={props.image}
-//           //   image={props.image}
-//           title={props.alt}
-//         />
-//         <CardContent>
-//           <Typography gutterBottom variant="h5" component="h2">
-//             {props.name}
-//           </Typography>
-//           <Typography variant="body2" color="textSecondary" component="p">
-//             Lizards are a widespread group of squamate reptiles, with over 6,000
-//             species, ranging across all continents except Antarctica
-//           </Typography>
-//         </CardContent>
-//       </CardActionArea>
-//     </Card>
-//   );
-// }

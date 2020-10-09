@@ -8,12 +8,23 @@
 .postheader {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   margin-bottom: 0.6em;
 }
 
 .postheader h6 {
   margin-left: 0.5em;
   font-size: 1.1em;
+}
+
+.postheader .posterdetails {
+  display: flex;
+  justify-self: flex-start;
+}
+
+.postheader .posteractivity {
+  display: flex;
+  justify-self: flex-end;
 }
 
 .actionbar {

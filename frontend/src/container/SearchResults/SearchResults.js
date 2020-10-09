@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import Post from "../../components/Post/Post";
 import ForumButton from "../../components/ForumButtons/ForumButton";
 import Filter from "../../components/Filter/Filter";
-import "./StudentHomePage.css";
+import "./SearchResults.css";
 
-class StudentHomePage extends Component {
+class SearchResults extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className="studenthomepage">
+      <div className="searchresults">
         <div className="leftsection">
-          <h2>My Forums</h2>
+          <h2>Related Forums</h2>
           <div className="forums">
             <ForumButton
               color="papayawhip"
@@ -32,11 +32,11 @@ class StudentHomePage extends Component {
 
         <div className="rightsection">
           <div className="topbar">
-            <h2>Recent Posts</h2>
+            <h2>Recent Posts for searchQuery (not sure how to dynamic)</h2>
 
             <Filter />
           </div>
-          <Post editingaccess={true} />
+          <Post />
           <Post />
           <Post />
           <Post />
@@ -48,4 +48,4 @@ class StudentHomePage extends Component {
   }
 }
 
-export default StudentHomePage;
+export default SearchResults;
