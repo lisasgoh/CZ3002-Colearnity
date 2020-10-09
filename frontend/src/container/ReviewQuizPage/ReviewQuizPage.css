@@ -31,13 +31,15 @@
 }
 
 .reviewquizpage .rightsection .topbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
 }
 
 .reviewquizpage .rightsection .topbar h6 {
-  justify-items: flex-end;
+  display: inline-block;
+  background-color: lawngreen;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
 }
 
 .reviewquizpage .rightsection .MuiButton-root {

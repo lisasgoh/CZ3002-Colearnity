@@ -41,12 +41,17 @@ class ReviewQuizPage extends Component {
             <h2>Quiz 2: Review</h2>
             <h6>GRADE HERE IDK</h6>
           </div>
-          <QuizQns qnNum="1" qnWeightage="10" />
-          <QuizQns qnNum="2" qnWeightage="10" />
-          <QuizQns qnNum="3" qnWeightage="10" />
-          <QuizQns qnNum="4" qnWeightage="10" />
-          <QuizQns qnNum="5" qnWeightage="10" />
-          <QuizQns qnNum="6" qnWeightage="10" />
+          <QuizQns
+            qnNum="1"
+            qnWeightage="10"
+            disabled={true}
+            value="option 2"
+          />
+          <QuizQns qnNum="2" qnWeightage="10" disabled={true} />
+          <QuizQns qnNum="3" qnWeightage="10" disabled={true} />
+          <QuizQns qnNum="4" qnWeightage="10" disabled={true} />
+          <QuizQns qnNum="5" qnWeightage="10" disabled={true} />
+          <QuizQns qnNum="6" qnWeightage="10" disabled={true} />
           <Button>
             <h4>Review Concepts</h4>
             <p>

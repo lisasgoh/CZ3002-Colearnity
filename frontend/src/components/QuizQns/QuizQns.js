@@ -30,8 +30,8 @@ export default function QuizQns(props) {
       <p>Which is not a divisor of 36?</p>
 
       <div className="options">
-        <FormControl component="fieldset">
-          <RadioGroup value={value} onChange={handleChange}>
+        <FormControl component="fieldset" disabled={props.disabled}>
+          <RadioGroup value={props.value} onChange={handleChange}>
             <FormControlLabel
               value="option 1"
               control={<Radio />}
