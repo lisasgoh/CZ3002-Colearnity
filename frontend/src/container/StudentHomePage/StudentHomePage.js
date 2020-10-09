@@ -34,9 +34,7 @@ class StudentHomePage extends Component {
           <div className="topbar">
             <h2>Recent Posts</h2>
 
-            <div className="filter">
               <Filter />
-            </div>
 
           </div>
           <Post />

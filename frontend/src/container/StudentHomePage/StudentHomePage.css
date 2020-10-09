@@ -36,9 +36,3 @@
   display: inline-block;
 }
 
-.studenthomepage .rightsection .filter {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-}
-

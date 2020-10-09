@@ -1,5 +1,4 @@
 import React from 'react';
-import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {
   InputLabel,
@@ -28,8 +27,8 @@ export default function Filter() {
     };
 
     return (
-        <div>
-            <FilterListRoundedIcon className="svg_icons"/>
+        <div className="filter">
+            <i class="fas fa-filter fa-2x"></i>
             <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel>Filter Post</InputLabel>
                 <Select value={filter} onChange={handleChange}>
