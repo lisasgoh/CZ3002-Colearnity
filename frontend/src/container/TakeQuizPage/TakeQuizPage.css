@@ -1,0 +1,42 @@
+.takequizpage {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 2fr 4fr;
+}
+
+.takequizpage .leftsection {
+    padding: 50px 10%;
+    background-color: #eaeaea;
+}
+
+.takequizpage .leftsection h2 {
+        margin-bottom: 30px;
+}
+
+.takequizpage .leftsection h3 {
+margin-top: 30px;
+}
+
+.takequizpage .quizzes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-top: 5%;
+}
+
+.takequizpage .rightsection {
+    padding: 50px 3%;
+    align-items: center;
+    justify-content: center;
+}
+
+.takequizpage .rightsection .topbar {
+    text-align: center;
+}
+
+.takequizpage .rightsection .topbar h6 {
+    display: inline-block;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}

@@ -3,11 +3,13 @@
     padding: 1em;
     margin-bottom: 10px;
     border-bottom: solid black 1px;
+    text-align: left;
 }
 
 .qnsheader {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 .h6 {

@@ -23,7 +23,7 @@ export default function QuizQns(props) {
   return (
     <div className="question">
       <div className="qnsheader">
-        <h6>Question no. {props.qnNum}</h6>
+        <h6>Question {props.qnNum}</h6>
         <h6>{props.qnWeightage} marks</h6>
       </div>
 
