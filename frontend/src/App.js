@@ -12,6 +12,7 @@ import CreatePost from "./container/CreatePost/CreatePost";
 import ForumPage from "./container/ForumPage/ForumPage";
 import ReviewQuizPage from "./container/ReviewQuizPage/ReviewQuizPage";
 import TakeQuizPage from "./container/TakeQuizPage/TakeQuizPage";
+import TeacherHomePage from "./container/TeacherHomePage/TeacherHomePage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/forumpage" exact component = {ForumPage}/>
         <Route path="/reviewquizpage" exact component = {ReviewQuizPage}/>
         <Route path="/takequizpage" exact component = {TakeQuizPage}/>
+        <Route path="/teacherhomepage" exact component = {TeacherHomePage}/>
       </div>
     </BrowserRouter>
   );
