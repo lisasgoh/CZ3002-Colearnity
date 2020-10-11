@@ -5,15 +5,32 @@ import Filter from "../../components/Filter/Filter";
 import "./StudentHomePage.css";
 import TeacherPost from "../../components/Post/TeacherPost";
 
+import API from "../../utils/API";
+
 class StudentHomePage extends Component {
+  state = {
+    forums: [],
+  };
+
+  async componentDidMount() {
+    await API.get("/users/current").then((response) => {
+      const userForums = response.data.forums;
+      this.setState({ userForums });
+    });
+  }
+
   render() {
     const { classes } = this.props;
     return (
       <div className="studenthomepage">
         <div className="leftsection">
           <h2>My Forums</h2>
+
           <div className="forums">
-            <ForumButton
+            {this.state.forums.map((forum) => (
+              <ForumButton forumTitle={forum.name} />
+            ))}
+            {/* <ForumButton
               color="papayawhip"
               hovercolor="peachpuff"
               forumTitle="CZ3002 ASE"
@@ -27,7 +44,7 @@ class StudentHomePage extends Component {
               color="lavender"
               hovercolor="darkslateblue"
               forumTitle="CZ1007 Data Structures"
-            />
+            /> */}
           </div>
         </div>
 
@@ -37,6 +54,15 @@ class StudentHomePage extends Component {
 
             <Filter />
           </div>
+          {/* THIS IS WRONG TO CHANGE IMPT CHANGE THIS */}
+          {/* {this.state.posts.map((post) => (
+            <Post
+              username={post.username}
+              content={post.description}
+              numLikes={post.votes}
+              tags={post.tags}
+            />
+          ))} */}
           <Post editingaccess={true} />
           <Post />
           <Post />
