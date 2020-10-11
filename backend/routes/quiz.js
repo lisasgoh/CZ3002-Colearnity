@@ -13,8 +13,22 @@ quizRouter.post("/", (req, res) => {
     title: req.body.title,
     description: req.body.description,
     _teacher: req.user.id,
-    _forum: req.query.forum_id
+    _forum: req.query.forum_id,
+    questions: [
+        {
+            title: req.body.question.qn_title,
+            option: [
+                {
+                    optionNumber: req.body.question.option.optionNumber,
+                    answerBody: req.body.question.option.answerBody,
+                    isCorrectAnswer: req.body.question.option.isCorrectAnswer
+                }
 
+            ],
+            point: req.body.question.point
+
+        }
+    ]
   });
   quiz
     .save()
@@ -29,6 +43,15 @@ quizRouter.post("/", (req, res) => {
 // get quiz by id
 quizRouter.get("/:quiz_id", (req, res) => {
     Quiz.findById(req.params.quiz_id, function (err, quiz) {
+      if (err) res.send(err);
+      else res.json(quiz);
+    });
+  });
+
+// get quiz under forum given a forum id
+quizRouter.get("/filter/:forum_id", (req, res) => {
+    const id = req.params.forum_id;
+    Quiz.find({_forum : id}, function (err, quiz) {
       if (err) res.send(err);
       else res.json(quiz);
     });
@@ -62,10 +85,6 @@ quizRouter.delete("/:quiz_id", (req, res, next) =>{
     })
     .catch(err =>{ res.send(err);});
 })
-
-// get quiz under forum given a forum id?
-
-
 
 module.exports = quizRouter;
 
