@@ -13,8 +13,11 @@ import ForumPage from "./container/ForumPage/ForumPage";
 import ReviewQuizPage from "./container/ReviewQuizPage/ReviewQuizPage";
 import TakeQuizPage from "./container/TakeQuizPage/TakeQuizPage";
 import TeacherHomePage from "./container/TeacherHomePage/TeacherHomePage";
+import SubforumPage from "./container/SubforumPage/SubforumPage";
+import TeacherForumPage from "./container/TeacherForumPage/TeacherForumPage";
 
 function App() {
+  
   return (
     <BrowserRouter>  
       <div className="App">
@@ -29,6 +32,8 @@ function App() {
         <Route path="/reviewquizpage" exact component = {ReviewQuizPage}/>
         <Route path="/takequizpage" exact component = {TakeQuizPage}/>
         <Route path="/teacherhomepage" exact component = {TeacherHomePage}/>
+        <Route path ="/subforumpage" exact component = {SubforumPage}/>
+        <Route path ="/teacherforumpage" exact component = {TeacherForumPage}/>
       </div>
     </BrowserRouter>
   );
