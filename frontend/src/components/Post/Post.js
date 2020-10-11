@@ -103,6 +103,17 @@ export default function Post(props) {
           component="a"
           href="https://www.google.com"
         />
+
+        {props.tags.map((tag) => (
+          <StyledChip
+            size="small"
+            label={tag.name}
+            //   onClick={handleClick}
+            clickable
+            component="a"
+            href="https://www.google.com"
+          />
+        ))}
       </div>
     </div>
   );
