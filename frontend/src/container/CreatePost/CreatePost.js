@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import NewPost from "./../../components/NewPost/NewPost";
 
+import { Link } from 'react-router-dom';
 
 class CreatePost extends Component {
 

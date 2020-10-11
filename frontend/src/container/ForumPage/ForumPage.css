@@ -46,3 +46,7 @@
   display: inline-block;
 }
 
+.forumpage .rightsection .addpost {
+  display: flex;
+}
+
