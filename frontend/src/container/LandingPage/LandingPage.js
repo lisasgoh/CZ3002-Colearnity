@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from "../../components/Button/Button";
 import "./LandingPage.css";
 
@@ -18,11 +18,6 @@ class LandingPage extends Component {
                         </Link>
                     </div>
                     <div className="ls-btn">
-                        <Link to="/createpost">
-                            <Button>Create Post</Button>
-                        </Link>
-                    </div>
-                    <div className="ls-btn">
                         <Link to="/forumpage">
                             <Button>Forum Page</Button>
                         </Link>
@@ -32,12 +27,6 @@ class LandingPage extends Component {
                             <Button>Review Quiz Page</Button>
                         </Link>
                     </div>
-                    <div className="ls-btn">
-                        <Link to="/takequizpage">
-                            <Button>Take Quiz Page</Button>
-                        </Link>
-                    </div>
-
                     <div className="ls-btn">
                         <Link to="/teacherhomepage">
                             <Button>Teacher Home Page</Button>

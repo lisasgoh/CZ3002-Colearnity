@@ -3,7 +3,7 @@ import "./CreatePost.css";
 import  Post  from "../../components/Post/Post";
 import Button from "@material-ui/core/Button";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
-
+import { Link } from 'react-router-dom';
 
 class CreatePost extends Component {
 
@@ -49,7 +49,7 @@ class CreatePost extends Component {
                       <option value="CZ3006">CZ3006 ASE</option>
                       <option value="CZ3001">CZ3001 ACOA</option>
                   </select>
-                  <button >Add Post</button>
+                  <Link to="/forumpage"><button >Add Post</button></Link>
               </div>
             </div>
           </div>
