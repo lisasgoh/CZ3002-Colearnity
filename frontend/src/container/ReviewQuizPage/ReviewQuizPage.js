@@ -44,8 +44,8 @@ class ReviewQuizPage extends Component {
           <QuizQns
             qnNum="1"
             qnWeightage="10"
-            disabled={true}
             value="option 2"
+            disabled={false}
           />
           <QuizQns qnNum="2" qnWeightage="10" disabled={true} />
           <QuizQns qnNum="3" qnWeightage="10" disabled={true} />
