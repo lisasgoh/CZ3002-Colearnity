@@ -8,11 +8,6 @@ import {
 import "./QuizQns.css";
 
 export default function QuizQns(props) {
-  // state = {
-  //     userAns: null,
-  //     curQns: 0,
-  //     options: []
-  // }
 
   const [value, setValue] = React.useState("Option 1");
 
@@ -34,22 +29,22 @@ export default function QuizQns(props) {
           <RadioGroup value={props.value} onChange={handleChange}>
             <FormControlLabel
               value="option 1"
-              control={<Radio />}
+              control={<Radio color="primary" />}
               label="Option 1"
             />
             <FormControlLabel
               value="option 2"
-              control={<Radio />}
+              control={<Radio color="primary" />}
               label="Option 2"
             />
             <FormControlLabel
               value="Option 3"
-              control={<Radio />}
+              control={<Radio color="primary" />}
               label="Option 3"
             />
             <FormControlLabel
               value="Option 4"
-              control={<Radio />}
+              control={<Radio color="primary" />}
               label="Option 4"
             />
           </RadioGroup>

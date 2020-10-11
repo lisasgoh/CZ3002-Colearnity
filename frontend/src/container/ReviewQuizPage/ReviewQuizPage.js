@@ -4,6 +4,7 @@ import QuizButton from "../../components/ForumButtons/QuizButton";
 import Button from "@material-ui/core/Button";
 import QuizQns from "../../components/QuizQns/QuizQns";
 import Divider from "@material-ui/core/Divider";
+import { Link } from 'react-router-dom';
 import "./ReviewQuizPage.css";
 
 class ReviewQuizPage extends Component {
@@ -28,11 +29,13 @@ class ReviewQuizPage extends Component {
               completionDate="25/9/2020"
               grade="6/10"
             />
-            <QuizButton
-              quizTitle="Quiz 3"
-              completed={false}
-              dueDate="25/12/2020"
-            />
+            <Link to="/takequizpage">
+              <QuizButton
+                quizTitle="Quiz 3"
+                completed={false}
+                dueDate="25/12/2020"
+              />
+            </Link>
           </div>
         </div>
 
@@ -44,8 +47,8 @@ class ReviewQuizPage extends Component {
           <QuizQns
             qnNum="1"
             qnWeightage="10"
-            disabled={true}
             value="option 2"
+            disabled={false}
           />
           <QuizQns qnNum="2" qnWeightage="10" disabled={true} />
           <QuizQns qnNum="3" qnWeightage="10" disabled={true} />

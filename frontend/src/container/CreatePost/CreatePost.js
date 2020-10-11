@@ -3,6 +3,7 @@ import "./CreatePost.css";
 import Post from "../../components/Post/Post";
 import Button from "@material-ui/core/Button";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
+import { Link } from 'react-router-dom';
 
 class CreatePost extends Component {
   state = {
@@ -33,36 +34,22 @@ class CreatePost extends Component {
             <SubforumButton subforumTitle="CZ3001 ACOA" />
             <SubforumButton subforumTitle="CZ1007 Data Structures" />
           </div>
-        </div>
-
-        <div className="rightsection_createpost">
-          <div className="NewPost">
-            <h1>Add a Post</h1>
-            <label>Title</label>
-            <input
-              type="text"
-              value={this.state.title}
-              onChange={(event) => this.setState({ title: event.target.value })}
-            />
-            <label>Content</label>
-            <textarea
-              rows="10"
-              value={this.state.content}
-              onChange={(event) =>
-                this.setState({ content: event.target.value })
-              }
-            />
-            <label>Tags</label>
-            <select
-              value={this.state.tags}
-              onChange={(event) =>
-                this.setState({ author: event.target.value })
-              }
-            >
-              <option value="CZ3006">CZ3006 ASE</option>
-              <option value="CZ3001">CZ3001 ACOA</option>
-            </select>
-            <button type="submit">Add Post</button>
+  
+          <div className="rightsection_createpost">
+            <div className="NewPost">
+                  <h1>Add a Post</h1>
+                  <label>Title</label>
+                  <input type="text" value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} />
+                  <label>Content</label>
+                  <textarea rows="10" value={this.state.content} onChange={(event) => this.setState({content: event.target.value})} />
+                  <label>Tags</label>
+                  <select value={this.state.tags} onChange={(event) => this.setState({author: event.target.value})}>
+                      <option value="CZ3006">CZ3006 ASE</option>
+                      <option value="CZ3001">CZ3001 ACOA</option>
+                  </select>
+                  <Link to="/forumpage"><button >Add Post</button></Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

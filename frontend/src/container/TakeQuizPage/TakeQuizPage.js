@@ -104,7 +104,7 @@ export default function TakeQuizPage() {
                     <h2>Software Quality Management</h2>
                     <Divider variant="middle" />
 
-                    <h3>Quiz Progress</h3>
+                    {/* <h3>Quiz Progress</h3> */}
                     
                 </div>
 

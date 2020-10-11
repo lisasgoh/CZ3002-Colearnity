@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
+import { Link } from 'react-router-dom';
 import "./ForumPage.css";
 
 import API from "../../utils/API";
@@ -87,7 +88,7 @@ class ForumPage extends Component {
 
         <div className="rightsection">
           <div className="topbar">
-            <AddCircleOutlineRoundedIcon />
+            <Link to="/createpost"><AddCircleOutlineRoundedIcon /></Link>
             <h2>Recent Posts</h2>
             <FilterListRoundedIcon />
           </div>
