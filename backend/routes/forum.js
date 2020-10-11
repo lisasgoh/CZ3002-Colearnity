@@ -1,6 +1,9 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
 const Forum = require('../models/Forum');
+const User = require('../models/Users');
 const Users = require('../models/Users');
 
 const forumRouter = express.Router();
@@ -60,7 +63,21 @@ forumRouter.get('/:id', (req, res) => {
       },
       populate: { path: '_poster', model: 'Users', select: { _id: 1, username: 1 } },
     })
-    .then((forum) => res.json(forum))
+    .then((forum) => {
+      forum = forum.toObject();
+      console.log(req.user.id);
+      Users.findById(req.user.id).then((user) => {
+        if (user._forums.includes(req.params.id)) {
+          forum.isSubscribed = true;
+          return forum;
+        }
+        forum.isSubscribed = false;
+        return forum;
+      })
+        .then((finalForum) => {
+          res.json(finalForum);
+        });
+    })
     .catch((err) => res.send(err));
 });
 
