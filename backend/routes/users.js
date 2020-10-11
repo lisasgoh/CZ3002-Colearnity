@@ -83,7 +83,7 @@ router.post('/login', auth.optional, (req, res, next) => {
 });
 
 // GET current route (required, only authenticated users have access)
-router.get('/current', auth.required, (req, res) => {
+router.get('/current', (req, res) => {
   console.log(req.isAuthenticated());
   const {
     payload: { id },
@@ -105,7 +105,7 @@ router.get('/current', auth.required, (req, res) => {
   // return res.json({ user: user.toAuthJSON() });
 });
 
-router.get('/home', auth.required, (req, res) => {
+router.get('/home', (req, res) => {
   console.log(req.isAuthenticated());
   const {
     payload: { id },

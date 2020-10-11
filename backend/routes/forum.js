@@ -76,18 +76,20 @@ forumRouter.get('/:id', (req, res) => {
     })
     .then((forum) => {
       forum = forum.toObject();
-      Users.findById(req.user.id).then((user) => {
-        if (user._forums.includes(req.params.id)) {
-          forum.isSubscribed = true;
+      forum.isSubscribed = false;
+      if (req.user) {
+        Users.findById(req.user.id).then((user) => {
+          if (user._forums.includes(req.params.id)) {
+            forum.isSubscribed = true;
+            return forum;
+          }
           return forum;
-        }
-        forum.isSubscribed = false;
-        return forum;
-      })
-        .then((finalForum) => {
-          console.log(finalForum);
-          res.json(finalForum);
         });
+      } return forum;
+    })
+    .then((finalForum) => {
+      console.log(finalForum);
+      res.json(finalForum);
     })
     .catch((err) => res.send(err));
 });
