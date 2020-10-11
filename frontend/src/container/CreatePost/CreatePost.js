@@ -5,9 +5,16 @@ import Button from "@material-ui/core/Button";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import { Link } from "react-router-dom";
 
+import axios from "axios";
 import API from "../../utils/API";
 
+const url = require('url');
+
 class CreatePost extends Component {
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
   state = {
     title: "CZ3006 ASE",
     content: "",
@@ -44,17 +51,40 @@ class CreatePost extends Component {
   // };
 
   handleSubmit = (event) => {
+    console.log("Submit a post");
     event.preventDefault();
+    console.log("Submit a post");
 
     const post = {
-      postTitle: this.state.title,
-      postContent: this.state.content,
-      postTags: this.state.tags,
+      title: this.state.title,
+      description: this.state.content,
+      is_sub: false
+      // postTags: this.state.tags,
     };
-
-    API.post("/posts", { post }).then((response) => {
+  //   API.post("/posts", params.toString(), {
+  //     headers: {
+  //       authorization: `Token ${auth_token}`
+  //     },
+  //     data: { post }
+  //  })
+    console.log(post);
+    const params = new URLSearchParams({ forum_id: '5f80a05fe739614e280406bd' });
+    console.log(window.location.href);
+    const forum_id = '5f80a05fe739614e280406bd'; 
+    const auth_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A';
+    console.log("DFDS");
+    axios({
+      method: 'post',
+      url: `http://localhost:3000/api/posts?forum_id=${forum_id}`,
+      headers: {authorization: `Token ${auth_token}`}, 
+      data: {
+        title: this.state.title,
+        description: this.state.description,
+        is_sub: false // This is the body part
+      }}
+      ).then((response) => {
       console.log(response.data);
-    });
+    }).catch((err) => console.log(err));
   };
 
   render() {
@@ -84,7 +114,7 @@ class CreatePost extends Component {
           <div className="rightsection_createpost">
             <div className="NewPost">
               <h1>Add a Post</h1>
-              <form onSubmit={this.handleSubmit}>
+              <form onSubmit={ this.handleSubmit }>
                 <label>Title</label>
                 <input
                   type="text"
@@ -111,9 +141,9 @@ class CreatePost extends Component {
                   <option value="CZ3006">CZ3006 ASE</option>
                   <option value="CZ3001">CZ3001 ACOA</option>
                 </select>
-                <Link to="/forumpage">
+                 {/* <Link to="/forumpage"> */}
                   <button type="submit">Add Post</button>
-                </Link>
+                {/* </Link> */}
               </form>
             </div>
           </div>
