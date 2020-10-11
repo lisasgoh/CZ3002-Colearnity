@@ -55,7 +55,9 @@ forumRouter.get('/:id', (req, res) => {
     .populate({
       path: '_posts',
       model: 'Post',
-      select: { title: 1, votes: 1, _poster: 1 },
+      select: {
+        title: 1, votes: 1, _poster: 1, description: 1, tags: 1,
+      },
       populate: { path: '_poster', model: 'Users', select: { _id: 1, username: 1 } },
     })
     .then((forum) => res.json(forum))
