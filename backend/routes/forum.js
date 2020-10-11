@@ -1,9 +1,9 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
 const Forum = require('../models/Forum');
-const User = require('../models/Users');
 const Users = require('../models/Users');
 
 const forumRouter = express.Router();
@@ -11,6 +11,7 @@ const forumRouter = express.Router();
 // create new forum
 // add to users
 // TODO: add to users if teacher
+// if req.query.forum is valid id
 forumRouter.post('/', (req, res) => {
   // console.log("HI");
   console.log(req.user);
@@ -21,8 +22,14 @@ forumRouter.post('/', (req, res) => {
     _teacher: req.user.id,
     is_sub: req.body.is_sub,
   });
-  forum
-    .save()
+  if (req.body.is_sub === true) { // add parent forum id and subforums list
+    forum._parentforum = req.query.forum_id;
+    Forum.findById(req.query.forum_id).then((forum) => {
+      forum._subforums.unshift(req.query.forum_id);
+      return forum.save();
+    });
+  }
+  return forum.save()
     .then(() => {
       res.json(forum);
     })
@@ -31,14 +38,18 @@ forumRouter.post('/', (req, res) => {
     });
 });
 
-// TODO : Subscribe to forum
+// TODO : un/Subscribe to forum
 forumRouter.post('/:id', (req, res) => {
   console.log('HI');
   console.log(req.user);
   console.log(req.isAuthenticated());
   Users.findById(req.user.id)
     .then((user) => {
-      user._forums.unshift(req.params.id);
+      if (user._forums.includes(req.params.id)) {
+        user._forums.remove(req.params.id);
+      } else {
+        user._forums.unshift(req.params.id);
+      }
       return user.save();
     })
     .then((user) => {
@@ -53,8 +64,8 @@ forumRouter.post('/:id', (req, res) => {
 forumRouter.get('/:id', (req, res) => {
   Forum.findById(req.params.id)
     .populate({ path: '_teacher', model: 'Users', select: { _id: 1, username: 1 } })
-    .populate({ path: '_subforums', model: 'Forum' })
-    .populate({ path: '_quizzes', model: 'Quiz' })
+    .populate({ path: '_subforums', model: 'Forum', select: { _id: 1, name: 1 } })
+    .populate({ path: '_quizzes', model: 'Quiz', select: { _id: 1, title: 1 } })
     .populate({
       path: '_posts',
       model: 'Post',
@@ -65,18 +76,20 @@ forumRouter.get('/:id', (req, res) => {
     })
     .then((forum) => {
       forum = forum.toObject();
-      console.log(req.user.id);
-      Users.findById(req.user.id).then((user) => {
-        if (user._forums.includes(req.params.id)) {
-          forum.isSubscribed = true;
+      forum.isSubscribed = false;
+      if (req.user) {
+        Users.findById(req.user.id).then((user) => {
+          if (user._forums.includes(req.params.id)) {
+            forum.isSubscribed = true;
+            return forum;
+          }
           return forum;
-        }
-        forum.isSubscribed = false;
-        return forum;
-      })
-        .then((finalForum) => {
-          res.json(finalForum);
         });
+      } return forum;
+    })
+    .then((finalForum) => {
+      console.log(finalForum);
+      res.json(finalForum);
     })
     .catch((err) => res.send(err));
 });
@@ -102,13 +115,13 @@ forumRouter.put('/:id', (req, res) => {
 });
 
 // delete forum
-// delete all posts
+// TODO: delete all posts
 // delete from users (cascade delete)
 forumRouter.delete('/:id', (req, res) => {
   Forum.findByIdAndRemove(req.params.id).then(() => {
     Users.update(
       {},
-      { $pull: { _forums: { _id: this.id } } },
+      { $pull: { _forums: { _id: req.params.id } } },
       { multi: true },
       (err) => {
         if (err) res.send(err);

@@ -2,7 +2,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 const express = require('express');
-const Comment = require('../models/Comment');
 const Post = require('../models/Post');
 const Forum = require('../models/Forum');
 const Users = require('../models/Users');
@@ -36,6 +35,32 @@ postRouter.get('/', (req, res) => {
 
 // create post
 // TODO: add to forum & user db
+postRouter.post('/', (req, res) => {
+  const { body } = req;
+  // check if user is part of forum
+  const post = new Post({
+    title: body.title,
+    description: body.description,
+    votes: 0,
+    _poster: req.user.id,
+    _comments: [],
+    _forum: req.query.forum_id,
+  });
+  post
+    .save()
+    .then(() => Forum.findById(req.query.forum_id)
+      .then((forum) => {
+        forum._posts.unshift(post);
+        console.log(forum);
+        return forum.save();
+      }).then(() => Users.findById(req.user.id).then((user) => {
+        user._posts.unshift(post);
+        console.log(user);
+        return user.save();
+      }).then((user) => res.json(user))
+        .catch((error) => res.json(error))));
+});
+
 postRouter.post('/', (req, res) => {
   const { body } = req;
   // check if user is part of forum

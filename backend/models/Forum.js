@@ -41,6 +41,11 @@ const forumSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  _parentforum: {
+    type: Schema.Types.ObjectId,
+    ref: 'Forum',
+  },
+
 });
 
 forumSchema.pre('findByIdAndRemove', function (next) {

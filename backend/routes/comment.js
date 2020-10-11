@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const Comment = require('../models/Comment');
@@ -27,16 +29,17 @@ commentRouter.post('/', (req, res) => {
     _commenter: req.user.id,
     _post: req.query.post_id,
   });
+  console.log(comment);
   comment
     .save()
     .then(() => Post.findById(req.query.post_id))
     .then((post) => {
-      post.comments.unshift(comment);
+      post._comments.unshift(comment);
       return post.save();
     })
     .then((post) => {
       // res.redirect(`/`);
-      res.json(comment);
+      console.log(comment);
       res.json(post);
     })
     .catch((err) => {
@@ -56,6 +59,8 @@ commentRouter.put('/:id', (req, res) => {
 });
 
 // delete comment
+// delete from users???? TODO REMOVE
+// delete from posts
 commentRouter.delete('/:id', (req, res) => {
   Comment.findByIdAndRemove(req.params.id).then((comment) => {
     Post.findByIdAndUpdate(
