@@ -17,51 +17,71 @@ class ForumPage extends Component {
       forumDesc: null,
       subforums: null,
       posts: null,
+      forumMembership: null,
     };
   }
 
-  async componentDidMount() {
-    await API.get("/forum/{uuid}").then((response) => {
+  componentDidMount() {
+    API.get("/forum/5f7f81aeacc7375f68ca66e5").then((response) => {
       const forumData = response.data;
+      console.log(forumData);
       this.setState({
         ...this.state,
         ...{
           forumTitle: forumData.name,
           forumDesc: forumData.description,
-          subforums: forumData.subforums,
-          posts: forumData.posts,
+          subforums: forumData._subforums,
+          posts: forumData._posts,
+          forumMembership: forumData.isSubscribed,
         },
       });
     });
   }
 
+  handleMembershipChange = (event) => {
+    this.setState({ forumMembership: !this.state.forumMembership });
+
+    // const forum = {
+    //   isSubscribed: this.state.forumMembership,
+    // };
+
+    // API.post("/forum/5f7f81aeacc7375f68ca66e5", { forum }).then((response) => {
+    //   console.log(response.data);
+    // });
+  };
+
   render() {
-    const { forumTitle, forumDesc, subforums, posts } = this.state;
+    const {
+      forumTitle,
+      forumDesc,
+      subforums,
+      posts,
+      forumMembership,
+    } = this.state;
 
     return (
       <div className="forumpage">
         <div className="leftsection">
-          <h2>CZ3002 ASE {forumTitle}</h2>
-          <Button variant="contained" color="secondary" size="small">
-            Join Forum
+          <h2>{forumTitle}</h2>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            onClick={this.handleMembershipChange}
+          >
+            {forumMembership ? "Leave Forum" : "Join Forum"}
           </Button>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-            pretium orci eget lobortis porttitor. Praesent consectetur lacus eu
-            egestas blandit. Mauris ultrices consequat diam sit amet ornare.
-            Etiam elementum felis in nisl condimentum scelerisque. Integer
-            scelerisque turpis at ipsum aliquam elementum. Praesent non posuere
-            sem, eget varius purus. {forumDesc}
-          </p>
+          <p>{forumDesc}</p>
 
           <h3>Subforums</h3>
           <div className="subforums">
             <SubforumButton subforumTitle="CZ3002 ASE" />
             <SubforumButton subforumTitle="CZ3001 ACOA" />
             <SubforumButton subforumTitle="CZ1007 Data Structures" />
-            {subforums.map((subforum) => (
-              <SubforumButton subforumTitle={subforum.name} />
-            ))}
+            {subforums &&
+              subforums.map((subforum) => (
+                <SubforumButton subforumTitle={subforum.name} />
+              ))}
           </div>
         </div>
 
@@ -71,20 +91,15 @@ class ForumPage extends Component {
             <h2>Recent Posts</h2>
             <FilterListRoundedIcon />
           </div>
-          {posts.map((post) => (
-            <Post
-              username={post.username}
-              content={post.description}
-              numLikes={post.votes}
-              tags={post.tags}
-            />
-          ))}
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
+          {posts &&
+            posts.map((post) => (
+              <Post
+                username={post._poster.username}
+                content={post.description}
+                numLikes={post.votes}
+                tags={post.tags}
+              />
+            ))}
         </div>
       </div>
     );

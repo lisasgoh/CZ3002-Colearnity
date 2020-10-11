@@ -39,7 +39,7 @@ export default function Post(props) {
       <div className="postheader">
         <div className="posterdetails">
           <FaceRoundedIcon />
-          <h6>{props.username} username here</h6>
+          <h6>{props.username}</h6>
         </div>
 
         {props.editingaccess ? (
@@ -52,14 +52,7 @@ export default function Post(props) {
         )}
       </div>
 
-      <p>
-        {props.content}Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nulla pretium orci eget lobortis porttitor. Praesent consectetur lacus
-        eu egestas blandit. Mauris ultrices consequat diam sit amet ornare.
-        Etiam elementum felis in nisl condimentum scelerisque. Integer
-        scelerisque turpis at ipsum aliquam elementum. Praesent non posuere sem,
-        eget varius purus.
-      </p>
+      <p>{props.content}</p>
 
       <div className="actionbar">
         <Button
@@ -83,7 +76,7 @@ export default function Post(props) {
         >
           Like
         </Button>
-        <span> {props.numLikes} 20 Likes</span>
+        <span> {props.numLikes} Likes</span>
       </div>
 
       <div className="tags">
@@ -103,7 +96,7 @@ export default function Post(props) {
           component="a"
           href="https://www.google.com"
         />
-{/* 
+        {/* 
         {props.tags.map((tag) => (
           <StyledChip
             size="small"
