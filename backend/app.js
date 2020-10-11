@@ -13,7 +13,7 @@ var postRouter = require("./routes/post");
 var voteRouter = require("./routes/vote");
 var forumRouter = require("./routes/forum");
 var quizRouter = require("./routes/quiz");
-var Router = require("./routes/quiz");
+var resultRouter = require("./routes/result");
 
 
 var User = require("./models/Users");
@@ -85,6 +85,8 @@ app.use("/api/posts", postRouter);
 app.use("/api/votes", voteRouter);
 app.use("/api/forum", forumRouter);
 app.use("/api/quiz", quizRouter);
+app.use("/api/result", resultRouter);
+
 
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
