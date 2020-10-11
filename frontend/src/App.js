@@ -10,6 +10,7 @@ import LoginPage from "./container/Login/LoginPage";
 import StudentProfilePage from "./container/StudentProfilePage/StudentProfilePage";
 import CreatePost from "./container/CreatePost/CreatePost";
 import ForumPage from "./container/ForumPage/ForumPage";
+import SubforumPage from "./container/SubforumPage/SubforumPage";
 import ReviewQuizPage from "./container/ReviewQuizPage/ReviewQuizPage";
 import TakeQuizPage from "./container/TakeQuizPage/TakeQuizPage";
 import TeacherHomePage from "./container/TeacherHomePage/TeacherHomePage";
@@ -26,6 +27,7 @@ function App() {
         <Route path="/profilepage" exact component={StudentProfilePage} />
         <Route path="/createpost" exact component={CreatePost} />
         <Route path="/forumpage" exact component={ForumPage} />
+        <Route path="/subforumpage" exact component={SubforumPage} />
         <Route path="/reviewquizpage" exact component={ReviewQuizPage} />
         <Route path="/takequizpage" exact component={TakeQuizPage} />
         <Route path="/teacherhomepage" exact component={TeacherHomePage} />

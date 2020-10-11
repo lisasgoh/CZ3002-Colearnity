@@ -5,12 +5,58 @@ import Button from "@material-ui/core/Button";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import { Link } from "react-router-dom";
 
+import API from "../../utils/API";
+
 class CreatePost extends Component {
   state = {
     title: "CZ3006 ASE",
     content: "",
     tags: "CZ3006 ASE",
   };
+
+  // componentDidMount() {
+  //   API.get("/forum/5f7f81aeacc7375f68ca66e5").then((response) => {
+  //     const forumData = response.data;
+  //     console.log(forumData);
+  //     this.setState({
+  //       ...this.state,
+  //       ...{
+  //         forumTitle: forumData.name,
+  //         forumDesc: forumData.description,
+  //         subforums: forumData._subforums,
+  //         posts: forumData._posts,
+  //         forumMembership: forumData.isSubscribed,
+  //       },
+  //     });
+  //   });
+  // }
+
+  //   handleMembershipChange = (event) => {
+  //   this.setState({ forumMembership: !this.state.forumMembership });
+
+  //   // const forum = {
+  //   //   isSubscribed: this.state.forumMembership,
+  //   // };
+
+  //   // API.post("/forum/5f7f81aeacc7375f68ca66e5", { forum }).then((response) => {
+  //   //   console.log(response.data);
+  //   // });
+  // };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    const post = {
+      postTitle: this.state.title,
+      postContent: this.state.content,
+      postTags: this.state.tags,
+    };
+
+    API.post("/posts", { post }).then((response) => {
+      console.log(response.data);
+    });
+  };
+
   render() {
     return (
       <div className="forumpage">
@@ -38,35 +84,37 @@ class CreatePost extends Component {
           <div className="rightsection_createpost">
             <div className="NewPost">
               <h1>Add a Post</h1>
-              <label>Title</label>
-              <input
-                type="text"
-                value={this.state.title}
-                onChange={(event) =>
-                  this.setState({ title: event.target.value })
-                }
-              />
-              <label>Content</label>
-              <textarea
-                rows="10"
-                value={this.state.content}
-                onChange={(event) =>
-                  this.setState({ content: event.target.value })
-                }
-              />
-              <label>Tags</label>
-              <select
-                value={this.state.tags}
-                onChange={(event) =>
-                  this.setState({ author: event.target.value })
-                }
-              >
-                <option value="CZ3006">CZ3006 ASE</option>
-                <option value="CZ3001">CZ3001 ACOA</option>
-              </select>
-              <Link to="/forumpage">
-                <button>Add Post</button>
-              </Link>
+              <form onSubmit={this.handleSubmit}>
+                <label>Title</label>
+                <input
+                  type="text"
+                  value={this.state.title}
+                  onChange={(event) =>
+                    this.setState({ title: event.target.value })
+                  }
+                />
+                <label>Content</label>
+                <textarea
+                  rows="10"
+                  value={this.state.content}
+                  onChange={(event) =>
+                    this.setState({ content: event.target.value })
+                  }
+                />
+                <label>Tags</label>
+                <select
+                  value={this.state.tags}
+                  onChange={(event) =>
+                    this.setState({ author: event.target.value })
+                  }
+                >
+                  <option value="CZ3006">CZ3006 ASE</option>
+                  <option value="CZ3001">CZ3001 ACOA</option>
+                </select>
+                <Link to="/forumpage">
+                  <button type="submit">Add Post</button>
+                </Link>
+              </form>
             </div>
           </div>
         </div>
