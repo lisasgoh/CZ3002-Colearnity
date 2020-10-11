@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+
 const { Schema } = mongoose;
 
 const questionResultSchema = new Schema({
@@ -10,7 +11,7 @@ const questionResultSchema = new Schema({
 const resultSchema = new Schema({
   _quiz: {
     type: Schema.Types.ObjectId,
-    ref: "Quiz",
+    ref: 'Quiz',
   },
   results: [
     {
@@ -20,6 +21,6 @@ const resultSchema = new Schema({
   question_results: [questionResultSchema],
 });
 
-const Results = mongoose.model("Results", resultSchema);
+const Results = mongoose.model('Results', resultSchema);
 
 module.exports = Results;

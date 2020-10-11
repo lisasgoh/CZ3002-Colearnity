@@ -5,7 +5,9 @@ import Filter from "../../components/Filter/Filter";
 import "./StudentHomePage.css";
 import TeacherPost from "../../components/Post/TeacherPost";
 
-import API from "../../utils/API";
+// import users from "../../utils/API";
+
+import usersService from "../../services/users";
 
 class StudentHomePage extends Component {
   state = {
@@ -13,11 +15,19 @@ class StudentHomePage extends Component {
   };
 
   async componentDidMount() {
-    await API.get("/users/current").then((response) => {
-      const userForums = response.data.forums;
-      this.setState({ userForums });
+    usersService.getUser().then((response) => {
+      console.log(response.data);
+      // this.setState({ userForums });
     });
   }
+  
+  /* useEffect(() => {
+    personService
+      .getAll('http://localhost:3001/persons')
+      .then(personData => {
+        setPersons(personData)
+      })
+  }, []) */
 
   render() {
     const { classes } = this.props;

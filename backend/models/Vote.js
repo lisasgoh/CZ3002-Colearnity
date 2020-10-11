@@ -1,19 +1,20 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+
 const { Schema } = mongoose;
 
 const voteSchema = new Schema({
   _voter: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   _comment: {
     type: Schema.Types.ObjectId,
-    ref: "Comment",
+    ref: 'Comment',
   },
   _post: {
     type: Schema.Types.ObjectId,
-    ref: "Post",
+    ref: 'Post',
   },
   dir: {
     type: Number,
@@ -53,8 +54,8 @@ postSchema.pre("find", populatePost);
 postSchema.pre("findOne", populatePost);
 
 postSchema.pre("find", populateComment);
-postSchema.pre("findOne", populateComment);*/
+postSchema.pre("findOne", populateComment); */
 
-const Vote = mongoose.model("Vote", voteSchema);
+const Vote = mongoose.model('Vote', voteSchema);
 
 module.exports = Vote;

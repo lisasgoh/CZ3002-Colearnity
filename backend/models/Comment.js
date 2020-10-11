@@ -1,7 +1,8 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+
 const { Schema } = mongoose;
 
-const Vote = require("./Vote");
+const Vote = require('./Vote');
 
 const commentSchema = new Schema(
   {
@@ -10,7 +11,7 @@ const commentSchema = new Schema(
     },
     _commenter: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     votes: {
@@ -18,17 +19,28 @@ const commentSchema = new Schema(
     },
     _post: {
       type: Schema.Types.ObjectId,
-      ref: "Post",
+      ref: 'Post',
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-commentSchema.pre("remove", function (next) {
+const populateComments = function (next) {
+  this.populate({
+    path: 'comments',
+    select: 'commenter createdAt text votes',
+  });
+  next();
+};
+
+commentSchema.pre('find', populateComments);
+commentSchema.pre('findById', populateComments);
+
+commentSchema.pre('remove', function (next) {
   Vote.remove({ _comment: this._id }).exec();
   next();
 });
 
-const Comment = mongoose.model("Comment", commentSchema);
+const Comment = mongoose.model('Comment', commentSchema);
 
 module.exports = Comment;
