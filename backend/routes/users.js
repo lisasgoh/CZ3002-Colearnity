@@ -95,8 +95,34 @@ router.get('/current', auth.required, (req, res) => {
     select: {
       _id: 1, title: 1, description: 1, votes: 1,
     },
-    populate: { path: '_poster', model: 'Users', select: { _id: 1, username: 1 } },
   }];
+
+  return Users.findById(id).populate(populateQuery).exec((err, user) => {
+    if (err) res.send(err);
+    res.json(user);
+  });
+  // }).catch((err) => res.json(err));
+  // return res.json({ user: user.toAuthJSON() });
+});
+
+router.get('/home', auth.required, (req, res) => {
+  console.log(req.isAuthenticated());
+  const {
+    payload: { id },
+  } = req;
+
+  const populateQuery = {
+    path: '_forums',
+    model: 'Forum',
+    select: { _id: 1, name: 1 },
+    populate: {
+      path: '_posts',
+      model: 'Post',
+      select: {
+        _id: 1, title: 1, description: 1, votes: 1,
+      },
+    },
+  };
 
   return Users.findById(id).populate(populateQuery).exec((err, user) => {
     if (err) res.send(err);

@@ -52,7 +52,12 @@ forumRouter.get('/:id', (req, res) => {
     .populate({ path: '_teacher', model: 'Users', select: { _id: 1, username: 1 } })
     .populate({ path: '_subforums', model: 'Forum' })
     .populate({ path: '_quizzes', model: 'Quiz' })
-    .populate({ path: '_posts', model: 'Post', select: { title: 1, votes: 1, _poster: 1 } })
+    .populate({
+      path: '_posts',
+      model: 'Post',
+      select: { title: 1, votes: 1, _poster: 1 },
+      populate: { path: '_poster', model: 'Users', select: { _id: 1, username: 1 } },
+    })
     .then((forum) => res.json(forum))
     .catch((err) => res.send(err));
 });
