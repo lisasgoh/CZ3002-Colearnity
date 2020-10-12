@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import API from "../../utils/API";
 
-const url = require('url');
+const url = require("url");
 
 class CreatePost extends Component {
   constructor(props) {
@@ -50,44 +50,59 @@ class CreatePost extends Component {
   //   // });
   // };
 
-  handleSubmit = (event) => {
+  handleSubmit = (forum_id, event) => {
     console.log("Submit a post");
     event.preventDefault();
     console.log("Submit a post");
 
     const post = {
       title: this.state.title,
-      description: this.state.content,
-      is_sub: false
+      description: this.state.description,
+      is_sub: false,
       // postTags: this.state.tags,
     };
-  //   API.post("/posts", params.toString(), {
-  //     headers: {
-  //       authorization: `Token ${auth_token}`
-  //     },
-  //     data: { post }
-  //  })
+    //   API.post("/posts", params.toString(), {
+    //     headers: {
+    //       authorization: `Token ${auth_token}`
+    //     },
+    //     data: { post }
+    //  })
     console.log(post);
-    const params = new URLSearchParams({ forum_id: '5f80a05fe739614e280406bd' });
+    // console.log(this.props.location);
+    // const { forum_id } = this.props.location;
+    console.log(forum_id);
+    // const params = new URLSearchParams({
+    //   forum_id: "5f80a05fe739614e280406bd",
+    // });
     console.log(window.location.href);
-    const forum_id = '5f80a05fe739614e280406bd'; 
-    const auth_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A';
+    // const forum_id = "5f80a05fe739614e280406bd";
+    const auth_token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A";
     console.log("DFDS");
+
+    console.log(this.state.title);
+    console.log(this.state.description);
+
     axios({
-      method: 'post',
+      method: "post",
       url: `http://localhost:3000/api/posts?forum_id=${forum_id}`,
-      headers: {authorization: `Token ${auth_token}`}, 
+      headers: { authorization: `Token ${auth_token}` },
       data: {
         title: this.state.title,
-        description: this.state.description,
-        is_sub: false // This is the body part
-      }}
-      ).then((response) => {
-      console.log(response.data);
-    }).catch((err) => console.log(err));
+        description: this.state.content,
+        is_sub: false, // This is the body part
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   render() {
+    const { data } = this.props.location;
+    console.log("IN RENDER: " + data);
+
     return (
       <div className="forumpage">
         <div className="leftsection_createpost">
@@ -113,41 +128,41 @@ class CreatePost extends Component {
         </div>
 
         <div className="rightsection_createpost">
-            <div className="NewPost">
-              <h1>Add a Post</h1>
-              <form onSubmit={ this.handleSubmit }>
-                <label>Title</label>
-                <input
-                  type="text"
-                  value={this.state.title}
-                  onChange={(event) =>
-                    this.setState({ title: event.target.value })
-                  }
-                />
-                <label>Content</label>
-                <textarea
-                  rows="10"
-                  value={this.state.content}
-                  onChange={(event) =>
-                    this.setState({ content: event.target.value })
-                  }
-                />
-                <label>Tags</label>
-                <select
-                  value={this.state.tags}
-                  onChange={(event) =>
-                    this.setState({ author: event.target.value })
-                  }
-                >
-                  <option value="CZ3006">CZ3006 ASE</option>
-                  <option value="CZ3001">CZ3001 ACOA</option>
-                </select>
-                 {/* <Link to="/forumpage"> */}
-                  <button type="submit">Add Post</button>
-                {/* </Link> */}
-              </form>
-            </div>
+          <div className="NewPost">
+            <h1>Add a Post</h1>
+            <form onSubmit={(e) => this.handleSubmit(data, e)}>
+              <label>Title</label>
+              <input
+                type="text"
+                value={this.state.title}
+                onChange={(event) =>
+                  this.setState({ title: event.target.value })
+                }
+              />
+              <label>Content</label>
+              <textarea
+                rows="10"
+                value={this.state.content}
+                onChange={(event) =>
+                  this.setState({ content: event.target.value })
+                }
+              />
+              <label>Tags</label>
+              <select
+                value={this.state.tags}
+                onChange={(event) =>
+                  this.setState({ author: event.target.value })
+                }
+              >
+                <option value="CZ3006">CZ3006 ASE</option>
+                <option value="CZ3001">CZ3001 ACOA</option>
+              </select>
+              {/* <Link to="/forumpage"> */}
+              <button type="submit">Add Post</button>
+              {/* </Link> */}
+            </form>
           </div>
+        </div>
       </div>
     );
   }
