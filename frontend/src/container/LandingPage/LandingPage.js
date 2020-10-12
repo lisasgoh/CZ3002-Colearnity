@@ -23,8 +23,18 @@ class LandingPage extends Component {
                         </Link>
                     </div>
                     <div className="ls-btn">
+                        <Link to="/subforumpage">
+                            <Button>Sub Forum Page</Button>
+                        </Link>
+                    </div>
+                    <div className="ls-btn">
                         <Link to="/reviewquizpage">
                             <Button>Review Quiz Page</Button>
+                        </Link>
+                    </div>
+                    <div className="ls-btn">
+                        <Link to="/takequizpage">
+                            <Button>Take Quiz Page</Button>
                         </Link>
                     </div>
                     <div className="ls-btn">
