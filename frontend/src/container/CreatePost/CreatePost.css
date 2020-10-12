@@ -68,6 +68,7 @@
 }
 
 .forumpage .rightsection_createpost .NewPost button {
+  display: inline-flex;
   margin: 5px 0;
   padding: 10px;
   font: inherit;
