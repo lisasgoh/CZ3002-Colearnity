@@ -110,8 +110,9 @@ class CreatePost extends Component {
             <SubforumButton subforumTitle="CZ3001 ACOA" />
             <SubforumButton subforumTitle="CZ1007 Data Structures" />
           </div>
+        </div>
 
-          <div className="rightsection_createpost">
+        <div className="rightsection_createpost">
             <div className="NewPost">
               <h1>Add a Post</h1>
               <form onSubmit={ this.handleSubmit }>
@@ -147,7 +148,6 @@ class CreatePost extends Component {
               </form>
             </div>
           </div>
-        </div>
       </div>
     );
   }
