@@ -5,9 +5,14 @@ import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRoun
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import Divider from "@material-ui/core/Divider";
 import "./../SubforumPage/SubforumPage.css";
+import Icon from '@material-ui/core/Icon';
+import "./TeacherForumPage.css";
+
+
 
 class TeacherForumPage extends Component {
   render() {
+    let combined = ['icon', 'fa fa-plus-circle'].join(' ');
     return (
       <div className="subforumpage">
         <div className="leftsection">
@@ -31,6 +36,8 @@ class TeacherForumPage extends Component {
               completedNo="35/35"
               grade="7/10"
             />
+            <Icon className={combined} style={{ color: '#fa923f',fontSize: 100, margin:'0.3em' }} />
+
           </div>
         </div>
 

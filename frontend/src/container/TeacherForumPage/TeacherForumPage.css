@@ -1,0 +1,10 @@
+.icon {
+    
+    background-color: transparent;
+    cursor: pointer;
+  }
+  
+  .icon:hover,
+  .icon:active {
+    color: white;
+  }
