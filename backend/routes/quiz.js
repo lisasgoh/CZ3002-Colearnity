@@ -9,27 +9,30 @@ var quizRouter = express.Router();
 quizRouter.post("/", (req, res) => {
   //console.log(req.user);
   //console.log(req.isAuthenticated());
+  const question_list = [];
+  for (const qns of req.body.questions){
+    const question = {};
+    question.title = qns.title;
+    question.point = qns.point;
+    option_list = []
+    for (const ops of qns.options){
+      const option = {};
+      option.optionNumber = ops.optionNumber;
+      option.answerBody = ops.answerBody;
+      option.isCorrectAnswer = ops.isCorrectAnswer;
+      option_list.push(option);
+    };
+    question.options = option_list; 
+    question_list.push(question);
+  };
   const quiz = new Quiz({
     title: req.body.title,
     description: req.body.description,
     _teacher: req.user.id,
     _forum: req.query.forum_id,
-    questions: [
-        {
-            title: req.body.question.qn_title,
-            option: [
-                {
-                    optionNumber: req.body.question.option.optionNumber,
-                    answerBody: req.body.question.option.answerBody,
-                    isCorrectAnswer: req.body.question.option.isCorrectAnswer
-                }
-
-            ],
-            point: req.body.question.point
-
-        }
-    ]
+    questions: question_list
   });
+  console.log(question_list);
   quiz
     .save()
     .then((Quiz) => {

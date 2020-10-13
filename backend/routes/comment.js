@@ -6,7 +6,7 @@ var commentRouter = express.Router();
 
 //get comment by id
 commentRouter.get("/:id", (req, res) => {
-  Comment.findById(req.params.comment_id, function (err, comment) {
+  Comment.findById(req.params.id, function (err, comment) {
     if (err) res.send(err);
     else res.json(comment);
   });
