@@ -17,6 +17,12 @@
   font-size: 1.1em;
 }
 
+.posttitle {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
 .postheader .posterdetails {
   display: flex;
   justify-self: flex-start;
