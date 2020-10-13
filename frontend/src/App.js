@@ -15,6 +15,7 @@ import TakeQuizPage from "./container/TakeQuizPage/TakeQuizPage";
 import TeacherHomePage from "./container/TeacherHomePage/TeacherHomePage";
 import SubforumPage from "./container/SubforumPage/SubforumPage";
 import TeacherForumPage from "./container/TeacherForumPage/TeacherForumPage";
+import TeacherSubforumPage from "./container/TeacherSubforumPage/TeacherSubforumPage";
 
 function App() {
   
@@ -34,6 +35,7 @@ function App() {
         <Route path="/teacherhomepage" exact component = {TeacherHomePage}/>
         <Route path ="/subforumpage" exact component = {SubforumPage}/>
         <Route path ="/teacherforumpage" exact component = {TeacherForumPage}/>
+        <Route path ="/teachersubforumpage" exact component = {TeacherSubforumPage}/>
       </div>
     </BrowserRouter>
   );
