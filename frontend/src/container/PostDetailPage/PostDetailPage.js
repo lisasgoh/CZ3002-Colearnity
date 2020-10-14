@@ -7,6 +7,7 @@ import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import { Link } from 'react-router-dom';
 import './PostDetailPage.css';
 import Comments from "./../../components/Comments/Comments";
+import AltComments from "./../../components/AltComments/AltComments";
 
 export class PostDetailPage extends Component {
     render() {
@@ -40,9 +41,9 @@ export class PostDetailPage extends Component {
                         <h2>Replies</h2>
                         
                     </div>
+                    <AltComments/>
+                    <AltComments/>
                     <Comments/>
-                        <Comments/>
-                        <Comments/>
                 </div>
             </div>
         )
