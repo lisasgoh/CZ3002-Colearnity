@@ -6,6 +6,7 @@ import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRoun
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import { Link } from 'react-router-dom';
 import './PostDetailPage.css';
+import Comments from "./../../components/Comments/Comments";
 
 export class PostDetailPage extends Component {
     render() {
@@ -37,7 +38,11 @@ export class PostDetailPage extends Component {
                     <Post />
                     <div className="topbar">
                         <h2>Replies</h2>
+                        
                     </div>
+                    <Comments/>
+                        <Comments/>
+                        <Comments/>
                 </div>
             </div>
         )
