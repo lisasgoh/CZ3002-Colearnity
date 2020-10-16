@@ -100,6 +100,7 @@ class ForumPage extends Component {
           {posts &&
             posts.map((post) => (
               <Post
+                title={post.title}
                 username={post._poster.username}
                 content={post.description}
                 numLikes={post.votes}

@@ -53,16 +53,11 @@ export default function Post(props) {
       </div>
 
       <div className="posttitle">
-        {props.title} Post title
+        {props.title}
       </div>
 
       <p>
-        {props.content}Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nulla pretium orci eget lobortis porttitor. Praesent consectetur lacus
-        eu egestas blandit. Mauris ultrices consequat diam sit amet ornare.
-        Etiam elementum felis in nisl condimentum scelerisque. Integer
-        scelerisque turpis at ipsum aliquam elementum. Praesent non posuere sem,
-        eget varius purus.
+        {props.content}
       </p>
 
       <div className="actionbar">
