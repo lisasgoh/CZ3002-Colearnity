@@ -6,6 +6,7 @@ var quizRouter = express.Router();
 
 
 //create new quiz
+//save the quiz in forum
 quizRouter.post("/", (req, res) => {
   //console.log(req.user);
   //console.log(req.isAuthenticated());
@@ -32,15 +33,20 @@ quizRouter.post("/", (req, res) => {
     _forum: req.query.forum_id,
     questions: question_list
   });
-  console.log(question_list);
-  quiz
-    .save()
-    .then((Quiz) => {
-      res.json(quiz);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
+  //console.log(question_list);
+    quiz.save((err, doc) => {
+      if (err)
+          res.send(err);
+      Forum.findByIdAndUpdate(req.query.forum_id,
+          { $push: { _quizzes: doc._id } },
+          { new: true },
+          (err, post) => {
+              if (err)
+                  res.send(err);
+              res.json({doc});
+          }
+      )
+  });
 });
 
 // get quiz by id
@@ -60,6 +66,7 @@ quizRouter.get("/filter/:forum_id", (req, res) => {
     });
   });
 
+/*
 // update quiz details, 
 quizRouter.put("/:quiz_id", (req, res, next) =>{
     const id = req.params.quiz_id;
@@ -77,16 +84,30 @@ quizRouter.put("/:quiz_id", (req, res, next) =>{
             res.send(err);
         });
 })
+*/
 
 // delete quiz by id
+// delete the quiz refernce from the forum
 quizRouter.delete("/:quiz_id", (req, res, next) =>{
     const id = req.params.quiz_id;
-    Quiz.findByIdAndDelete(id)
+    /*Quiz.findByIdAndDelete(id)
     .exec()
     .then(result => {
         res.json(result);
     })
-    .catch(err =>{ res.send(err);});
+    .catch(err =>{ res.send(err);});*/
+    Quiz.findByIdAndRemove(id, (err) => {
+      if(err)
+          console.error(err);
+    
+      Forum.update({ 
+          "topics" : { $in : [id] } 
+      }, { 
+          $pullAll : { _quizzes : [id] }
+      } , (err, subject) => {
+    
+      })
+    });
 })
 
 module.exports = quizRouter;
