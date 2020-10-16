@@ -58,8 +58,7 @@ commentRouter.put('/:id', (req, res) => {
     .catch((error) => res.send(error));
 });
 
-// delete comment
-// delete from users???? TODO REMOVE
+// delete comments
 // delete from posts
 commentRouter.delete('/:id', (req, res) => {
   Comment.findByIdAndRemove(req.params.id).then((comment) => {

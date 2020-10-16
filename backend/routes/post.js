@@ -59,11 +59,11 @@ postRouter.post('/', (req, res) => {
         forum._posts.unshift(post);
         console.log(forum);
         return forum.save();
-      })// .then(() => Users.findById(req.user.id).then((user) => {
-    // user._posts.unshift(post);
-    // console.log(user);
-    // return user.save();
-      // })
+      }).then(() => Users.findById(req.user.id).then((user) => {
+        user._posts.unshift(post);
+        console.log(user);
+        return user.save();
+      }))
       .then((user) => res.json(user))
       .catch((error) => res.json(error)));
 });
@@ -110,7 +110,7 @@ postRouter.delete('/:id', (req, res) => {
   Post.findByIdAndRemove(req.params.id).then((post) => {
     Forum.findByIdAndUpdate(
       req.query.forum_id,
-      { $pull: { posts: { _id: req.params.id } } },
+      { $pull: { _posts: { _id: req.params.id } } },
     ).then(() => {
       Users.findByIdAndUpdate(
         req.user.id,

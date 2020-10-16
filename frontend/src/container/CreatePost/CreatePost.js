@@ -5,10 +5,11 @@ import Button from "@material-ui/core/Button";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import NewPost from "./../../components/NewPost/NewPost";
 
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import axios from "axios";
-import API from "../../utils/API";
+import postService from './../../services/post';
+// import API from "../../utils/API";
 
 const url = require("url");
 
@@ -57,12 +58,6 @@ class CreatePost extends Component {
     event.preventDefault();
     console.log("Submit a post");
 
-    const post = {
-      title: this.state.title,
-      description: this.state.description,
-      is_sub: false,
-      // postTags: this.state.tags,
-    };
     //   API.post("/posts", params.toString(), {
     //     headers: {
     //       authorization: `Token ${auth_token}`
@@ -77,28 +72,16 @@ class CreatePost extends Component {
     //   forum_id: "5f80a05fe739614e280406bd",
     // });
     console.log(window.location.href);
-    // const forum_id = "5f80a05fe739614e280406bd";
-    const auth_token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A";
-    console.log("DFDS");
 
-    console.log(this.state.title);
-    console.log(this.state.description);
-
-    axios({
-      method: "post",
-      url: `http://localhost:3000/api/posts?forum_id=${forum_id}`,
-      headers: { authorization: `Token ${auth_token}` },
-      data: {
-        title: this.state.title,
-        description: this.state.content,
-        is_sub: false, // This is the body part
-      },
-    })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((err) => console.log(err));
+    const post = {
+      title: this.state.title,
+      description: this.state.description,
+      is_sub: false,
+      // postTags: this.state.tags,
+    };
+    postService.create(post, forum_id)
+      .then((newPost) => console.log(newPost))
+      .catch((err => console.log(err)));
   };
 
   render() {

@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import "./ForumPage.css";
 
 import API from "../../utils/API";
+//import forumService from './../../services/forum';
 
 class ForumPage extends Component {
   constructor(props) {

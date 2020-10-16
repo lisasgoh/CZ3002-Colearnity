@@ -20,8 +20,8 @@ const voteRouter = require('./routes/vote');
 const forumRouter = require('./routes/forum');
 const quizRouter = require('./routes/quiz');
 const resultRouter = require('./routes/result');
-const searchRouter = require("./routes/search");
-const filterRouter = require("./routes/filter");
+const searchRouter = require('./routes/search');
+const filterRouter = require('./routes/filter');
 
 const User = require('./models/Users');
 require('./config/passport');
@@ -82,16 +82,16 @@ passport.deserializeUser((id, done) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/", indexRouter);
-app.use("/api/users", usersRouter);
-app.use("/api/comments", commentRouter);
-app.use("/api/posts", postRouter);
-app.use("/api/votes", voteRouter);
-app.use("/api/forum", forumRouter);
-app.use("/api/quiz", quizRouter);
-app.use("/api/result", resultRouter);
-app.use("/api/search", searchRouter);
-app.use("/api/filter", filterRouter);
+app.use('/', indexRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/comments', commentRouter);
+app.use('/api/posts', postRouter);
+app.use('/api/votes', voteRouter);
+app.use('/api/forum', forumRouter);
+app.use('/api/quiz', quizRouter);
+app.use('/api/result', resultRouter);
+app.use('/api/search', searchRouter);
+app.use('/api/filter', filterRouter);
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;

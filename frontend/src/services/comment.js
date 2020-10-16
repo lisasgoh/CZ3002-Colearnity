@@ -1,22 +1,12 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3000/api/posts'
+const baseUrl = 'http://localhost:3000/api/comments'
 
-const getIndivPost = (id) => {
-  const request = axios.get(`${baseUrl}/${id}`);
-  return request.then(response => response.data);
-}
-const getForumPosts = (forum_id) => {
-    const request = axios.get(baseUrl, { params: {
-        forum_id: forum_id,
-      }})
-  return request.then(response => response.data)
-}
-const create = (newObject, forum_id) => {
+const create = (newObject, post_id) => {
   const auth_token =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A";
   const request = axios({
     method: "post",
-    url: `${baseUrl}?forum_id=${forum_id}`,
+    url: `${baseUrl}?post_id=${post_id}`,
     headers: { authorization: `Token ${auth_token}` },
     data: newObject,
   });
@@ -33,4 +23,4 @@ const deleteObj = id => {
     return axios.delete(`${baseUrl}/${id}`);
 }
 
-export default { getIndivPost, getForumPosts, create, update, deleteObj }
+export default { create, update, deleteObj }
