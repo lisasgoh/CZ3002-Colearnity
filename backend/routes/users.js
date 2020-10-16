@@ -83,11 +83,8 @@ router.post('/login', auth.optional, (req, res, next) => {
 });
 
 // GET current route (required, only authenticated users have access)
-router.get('/current', (req, res) => {
+router.get('/current', auth.required, (req, res) => {
   console.log(req.isAuthenticated());
-  const {
-    payload: { id },
-  } = req;
 
   const populateQuery = [{ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } }, {
     path: '_posts',
@@ -97,12 +94,25 @@ router.get('/current', (req, res) => {
     },
   }];
 
-  return Users.findById(id).populate(populateQuery).exec((err, user) => {
+  return Users.findById(req.user.id).populate(populateQuery).exec((err, user) => {
     if (err) res.send(err);
     res.json(user);
   });
   // }).catch((err) => res.json(err));
   // return res.json({ user: user.toAuthJSON() });
+});
+
+router.get('/:id', (req, res) => {
+  console.log('DFDSFSD');
+  Users.findById(req.params.id).populate({ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } })
+    .populate({
+      path: '_posts',
+      model: 'Post',
+      select: {
+        _id: 1, title: 1, description: 1, votes: 1,
+      },
+    }).then((user) => res.json(user))
+    .catch((err) => res.json(err));
 });
 
 router.get('/home', (req, res) => {

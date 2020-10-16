@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const express = require('express');
 const Comment = require('../models/Comment');
 const Post = require('../models/Post');
@@ -17,53 +18,83 @@ votesRouter.get('/:id', (req, res) => {
 // check if vote already exists
 // increase vote increment for post/comment
 votesRouter.post('/', (req, res) => {
-  Vote.exists({ _voter: req.query.user.id })
-    .then((result) => { // user voted for the post before
-      if (result === true) {
-        const oldVote = Number.vote.dir;
-        const newVote = Number.req.body.vote_dir;
-        Vote.findByIdAndUpdate(req.params.id, {
-          dir: newVote,
-        }).then((vote) => {
-          let diff = 0;
-          if (oldVote === newVote) {
-            diff = -newVote;
-          } else {
-            diff = newVote - oldVote;
-          }
-          if (vote.comment != null && req.query.comment_id != null) {
-            Comment.findOneAndUpdate(req.query.comment_id, {
-              $inc: { votes: diff },
-            })
-              .then((updatedComment) => {
-                res.json(updatedComment);
-              })
-              .catch((error) => res.json(error));
-          } else if (vote.post != null && req.query.post_id != null) {
-            Post.findOneAndUpdate(req.query.post_id, {
-              $inc: { votes: diff },
-            })
-              .then((updatedPost) => {
-                res.json(updatedPost);
-              })
-              .catch((error) => res.json(error));
-          }
-        }).catch((err) => res.json(err));
-      } else {
+  // Check if user voted for post/comment before
+  if (req.query.post_id != null) {
+    Vote.findOne({ _voter: req.user.id, _post: req.query.post_id })
+      .then((vote) => {
+        let diff = 0;
+        if (vote == null) {
+          const newVote = new Vote({
+            _voter: req.user.id,
+            _post: req.query.post_id,
+            dir: req.body.vote_dir,
+          });
+          diff = req.body.vote_dir;
+          newVote.save();
+          return diff;
+        }
+        console.log(vote);
+        console.log('The user has voted on this post');
+        const oldVoteVal = vote.dir;
+        const newVoteVal = Number(req.body.vote_dir);
+        if (oldVoteVal === newVoteVal) {
+          diff = -newVoteVal;
+          vote.dir = 0;
+        } else {
+          diff = newVoteVal - oldVoteVal;
+          vote.dir = newVoteVal;
+        }
+        vote.save();
+        return diff;
+      })
+      .then((diff) => {
+        Post.findByIdAndUpdate(req.query.post_id, {
+          $inc: { votes: diff },
+        })
+          .then((oldPost) => {
+            res.json(oldPost);
+          })
+          .catch((error) => res.json(error));
+      });
+  } else if (req.query.comment_id != null) {
+    Vote.findOne({ _voter: req.user.id, _comment: req.query.comment_id }).then((vote) => {
+      let diff = 0;
+      if (vote == null) {
         const newVote = new Vote({
           _voter: req.user.id,
           _comment: req.query.comment_id,
-          _post: req.query.post_id,
           dir: req.body.vote_dir,
         });
-        newVote
-          .save()
-          .then((savedVote) => {
-            res.json(savedVote);
-          })
-          .catch((error) => res.json(error));
+        diff = req.body.vote_dir;
+        newVote.save();
+        return diff;
       }
-    }).catch((err) => res.json(err)); // vote exists
+      console.log(vote);
+      console.log('The user has voted on this comment');
+      const oldVoteVal = vote.dir;
+      const newVoteVal = Number(req.body.vote_dir);
+      console.log(oldVoteVal);
+      console.log(newVoteVal);
+      if (oldVoteVal === newVoteVal) {
+        diff = -newVoteVal;
+        vote.dir = 0;
+      } else {
+        diff = newVoteVal - oldVoteVal;
+        vote.dir = newVoteVal;
+      }
+      vote.save();
+      console.log(diff);
+      return diff;
+    }).then((diff) => {
+      Comment.findByIdAndUpdate(req.query.comment_id, {
+        $inc: { votes: diff },
+      })
+        .then((oldComment) => {
+          res.json(oldComment);
+        })
+        .catch((error) => res.json(error));
+    });
+  }
 });
 
 module.exports = votesRouter;
