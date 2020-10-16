@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import QuizButton from "../../components/ForumButtons/QuizButton";
-import NewQuiz from "../../components/NewQuiz/NewQuiz";
+import NewQuizQn from "../../components/NewQuizQn/NewQuizQn";
 import Button from "@material-ui/core/Button";
-import QuizQns from "../../components/QuizQns/QuizQns";
 import Divider from "@material-ui/core/Divider";
 import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
@@ -74,7 +73,15 @@ class TeacherCreateQuiz extends Component {
                 <div className="topbar">
                     <h2>Create Quiz</h2>
                 </div>
-                <NewQuiz />
+
+                <p>Quiz Title</p>
+                <TextField label="Enter Quiz Title" variant="outlined" />
+
+                <NewQuizQn qnNum="1"/>
+                <NewQuizQn qnNum="2"/>
+                <Button color="primary">Add New Question</Button>
+                <Button color="primary">Submit New Quiz</Button>
+                
             </div>
           </div>
         );

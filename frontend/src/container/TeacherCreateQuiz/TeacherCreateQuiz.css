@@ -41,6 +41,13 @@
     align-items: center;
 }
 
+/* .teachercreatequiz .rightsection .createquiz {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-weight: bold;
+} */
+
 .teachercreatequiz .rightsection h2 {
     display: inline-block;
 }

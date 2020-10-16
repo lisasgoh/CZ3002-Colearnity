@@ -1,14 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Button,
+    Divider,
     TextField,
     InputLabel,
     MenuItem,
     FormControl,
     Select
   } from '@material-ui/core';
-import './NewQuiz.css';
+import './NewQuizQn.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
   
-function NewQuiz() {
+  export default function NewQuiz(props) {
     const classes = useStyles();
     const [selected, setSelected] = React.useState('');
 
@@ -35,11 +35,9 @@ function NewQuiz() {
     };
 
     return (
-        <div className="newquiz">
+        <div className="newquizqn">
             <form className={classes.root} noValidate autoComplete="off">
-                <p>Quiz Title</p>
-                <TextField label="Enter Quiz Title" variant="outlined" />
-                <p>Question 1</p>
+                <p>Question {props.qnNum}</p>
                 <TextField label="Enter Question" variant="outlined" />
 
                 <p>Option 1</p>
@@ -65,9 +63,7 @@ function NewQuiz() {
                     <MenuItem value={'Option 4'}>Option 4</MenuItem>
                 </Select>
             </FormControl>
-            <Button color="secondary">Submit New Quiz</Button>
+            <Divider variant="middle" />
         </div>
     )
 }
-
-export default NewQuiz
