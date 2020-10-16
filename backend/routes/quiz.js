@@ -1,5 +1,9 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-underscore-dangle */
 const express = require('express');
 const Quiz = require('../models/Quiz');
+const Forum = require('../models/Forum');
 
 const quizRouter = express.Router();
 
@@ -50,15 +54,17 @@ quizRouter.post('/', (req, res) => {
     _forum: req.query.forum_id,
     questions: questionList,
   });
-  console.log(questionList);
-  quiz
-    .save()
-    .then(() => {
-      res.json(quiz);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
+  // console.log(question_list);
+  quiz.save((err, doc) => {
+    if (err) { res.send(err); }
+    Forum.findByIdAndUpdate(req.query.forum_id,
+      { $push: { _quizzes: doc._id } },
+      { new: true },
+      (err, post) => {
+        if (err) { res.send(err); }
+        res.json({ doc });
+      });
+  });
 });
 
 // get quiz by id
@@ -81,34 +87,47 @@ quizRouter.get('/filter', (req, res) => {
   });
 });
 
+/*
 // update quiz details,
-quizRouter.put('/:id', (req, res) => {
-  const { id } = req.params;
-  const updateOps = {};
-  // req.body.map((ops).value => updateOps[ops.propName])
-  for (const ops of req.body) {
-    updateOps[ops.propName] = ops.value;
-  }
-  Quiz.findByIdAndUpdate(id, { $set: updateOps })
-    .exec()
-    .then((result) => {
-      console.log(result);
-      res.json(result);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
-});
+quizRouter.put("/:quiz_id", (req, res, next) =>{
+    const id = req.params.quiz_id;
+    const updateOps = {};
+    for (const ops of req.body){
+        updateOps[ops.propName] = ops.value;
+    }
+    Quiz.findByIdAndUpdate(id, {$set: updateOps})
+        .exec()
+        .then( result =>{
+            console.log(result);
+            res.json(result);
+        })
+        .catch(err => {
+            res.send(err);
+        });
+})
+*/
 
 // delete quiz by id
-quizRouter.delete('/:id', (req, res) => {
-  const { id } = req.params;
-  Quiz.findByIdAndDelete(id)
+// delete the quiz refernce from the forum
+quizRouter.delete('/:quiz_id', (req, res, next) => {
+  const id = req.params.quiz_id;
+  /* Quiz.findByIdAndDelete(id)
     .exec()
     .then((result) => {
       res.json(result);
     })
-    .catch((err) => { res.send(err); });
+    .catch(err =>{ res.send(err);}); */
+  Quiz.findByIdAndRemove(id, (err) => {
+    if (err) { console.error(err); }
+
+    Forum.update({
+      topics: { $in: [id] },
+    }, {
+      $pullAll: { _quizzes: [id] },
+    }, (err, subject) => {
+
+    });
+  });
 });
 
 module.exports = quizRouter;
