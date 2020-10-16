@@ -4,7 +4,15 @@ import {Link} from 'react-router-dom';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import './Login.css';
 
+import usersService from "../../services/users";
+
 class LoginPage extends Component {
+    /*function Login() {
+        usersService.login()).then((response) => {
+            console.log(response.data);
+            // this.setState({ userForums });
+          });
+    }*/
     render() {
         return (
             <div className="main">
@@ -26,7 +34,7 @@ class LoginPage extends Component {
                             <input type="password" className="form-control" placeholder="Enter password" />
                         </div>
                         <Link to="/homepage">
-                            <Button>Login</Button>
+                            <Button >Login</Button>
                         </Link>
                             
                         <p className="sright">Forgot <a href="#">password?</a></p>

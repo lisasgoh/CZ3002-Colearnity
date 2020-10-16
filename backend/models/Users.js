@@ -1,13 +1,14 @@
-const mongoose = require("mongoose");
-const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
+/* eslint-disable no-underscore-dangle */
+const mongoose = require('mongoose');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 const { Schema } = mongoose;
 
 const GradeSchema = new mongoose.Schema({
   _quiz: {
     type: Schema.Types.ObjectId,
-    ref: "Quiz",
+    ref: 'Quiz',
   },
   grades: [
     {
@@ -45,35 +46,36 @@ const UsersSchema = new Schema({
   _forums: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Forum",
+      ref: 'Forum',
+      unique: true,
     },
   ],
   _grades: [GradeSchema],
   _posts: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Post",
+      ref: 'Post',
     },
   ],
   _quizzes: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Quiz",
+      ref: 'Quiz',
     },
   ],
 });
 
 UsersSchema.methods.setPassword = function (password) {
-  this.salt = crypto.randomBytes(16).toString("hex");
+  this.salt = crypto.randomBytes(16).toString('hex');
   this.hash = crypto
-    .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
-    .toString("hex");
+    .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
+    .toString('hex');
 };
 
 UsersSchema.methods.validatePassword = function (password) {
   const hash = crypto
-    .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
-    .toString("hex");
+    .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
+    .toString('hex');
   return this.hash === hash;
 };
 
@@ -88,7 +90,7 @@ UsersSchema.methods.generateJWT = function () {
       id: this._id,
       exp: parseInt(expirationDate.getTime() / 1000, 10),
     },
-    "secret"
+    'secret',
   );
 };
 
@@ -100,6 +102,6 @@ UsersSchema.methods.toAuthJSON = function () {
   };
 };
 
-const User = mongoose.model("Users", UsersSchema);
+const User = mongoose.model('Users', UsersSchema);
 
 module.exports = User;

@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+
 const { Schema } = mongoose;
 
-var Post = require("../models/Post");
-var User = require("../models/Users");
+const Post = require('./Post');
 
 const forumSchema = new Schema({
   name: {
@@ -16,38 +16,43 @@ const forumSchema = new Schema({
   },
   _teacher: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   _subforums: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Forum",
+      ref: 'Forum',
     },
   ],
   _quizzes: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Quiz",
+      ref: 'Quiz',
     },
   ],
   _posts: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Post",
+      ref: 'Post',
     },
   ],
   is_sub: {
     type: Boolean,
     required: true,
   },
+  _parentforum: {
+    type: Schema.Types.ObjectId,
+    ref: 'Forum',
+  },
+
 });
 
-forumSchema.pre("findByIdAndRemove", function (next) {
-  Post.remove({ _forum: this._id }).exec();
+forumSchema.pre('findByIdAndRemove', function (next) {
+  Post.remove({ _forum: this.id }).exec();
   next();
 });
 
-const Forum = mongoose.model("Forum", forumSchema);
+const Forum = mongoose.model('Forum', forumSchema);
 
 module.exports = Forum;

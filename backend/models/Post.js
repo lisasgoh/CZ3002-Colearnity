@@ -1,7 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+
 const { Schema } = mongoose;
-const Comment = require("./Comment");
-const Vote = require("./Vote");
+const Comment = require('./Comment');
+const Vote = require('./Vote');
+
+const TagSchema = new mongoose.Schema({
+  tag: {
+    type: String,
+    unique: true,
+  },
+});
 
 const postSchema = new Schema(
   {
@@ -15,25 +23,26 @@ const postSchema = new Schema(
     },
     _poster: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     _comments: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Comment",
+        ref: 'Comment',
       },
     ],
     _forum: {
       type: Schema.Types.ObjectId,
-      ref: "Forum",
+      ref: 'Forum',
       required: true,
     },
     votes: {
       type: Number,
     },
+    tags: [TagSchema],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 /*
 const populatePoster = function (next) {
@@ -67,12 +76,12 @@ postSchema.pre("findOne", populateComments);
 
 postSchema.pre("find", populateForum);
 postSchema.pre("findOne", populateForum); */
-postSchema.pre("findByIdAndRemove", function (next) {
-  Comment.remove({ _post: this._id }).exec();
-  Vote.remove({ _post: this._id }).exec();
+postSchema.pre('findByIdAndRemove', function (next) {
+  Comment.remove({ _post: this.id }).exec();
+  Vote.remove({ _post: this.id }).exec();
   next();
 });
 
-const Post = mongoose.model("Post", postSchema);
+const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;
