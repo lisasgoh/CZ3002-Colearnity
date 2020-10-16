@@ -127,7 +127,9 @@ class CreatePost extends Component {
             <SubforumButton subforumTitle="CZ3001 ACOA" />
             <SubforumButton subforumTitle="CZ1007 Data Structures" />
           </div>
-  
+        </div>
+
+          <div className="rightsection_createpost">
           <NewPost/>
           </div>
         </div>
