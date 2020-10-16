@@ -43,7 +43,7 @@ export class PostDetailPage extends Component {
                     </div>
                     <AltComments/>
                     <AltComments/>
-                    <Comments/>
+                    <AltComments/>
                 </div>
             </div>
         )

@@ -17,9 +17,15 @@ import Button from "@material-ui/core/Button";
 const useStyles = makeStyles((theme) => ({
   root: {
     //maxWidth: 345,
-    alignSelf:'flex-start',
     marginTop:'1em',
     border: '1px solid rgba(0, 0, 0, 0.05)',
+  },
+  head:{
+    display:'flex',
+    alignSelf:'flex-start',
+    justifyContent:'flex-start',
+    alignContent:'flex-start',
+    textAlign: 'left', alignSelf: 'stretch'
   },
   media: {
     height: 0,
@@ -47,20 +53,24 @@ export default function AltComments(props) {
 
   return (
     <Card className={classes.root}>
-      <CardHeader
+      <CardHeader className={classes.head}
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
             I
           </Avatar>
         }
 
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title="Username"
+        subheader="September 14, 2020"
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook together with your
-          guests. Add 1 cup of frozen peas along with the mussels, if you like.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Nulla pretium orci eget lobortis porttitor. Praesent consectetur lacus
+        eu egestas blandit. Mauris ultrices consequat diam sit amet ornare.
+        Etiam elementum felis in nisl condimentum scelerisque. Integer
+        scelerisque turpis at ipsum aliquam elementum. Praesent non posuere sem,
+        eget varius purus.
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

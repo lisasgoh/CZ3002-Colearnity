@@ -5,15 +5,42 @@ import Filter from "../../components/Filter/Filter";
 import "./StudentHomePage.css";
 import TeacherPost from "../../components/Post/TeacherPost";
 
+// import users from "../../utils/API";
+
+import usersService from "../../services/users";
+
 class StudentHomePage extends Component {
+  state = {
+    forums: [],
+  };
+
+  async componentDidMount() {
+    usersService.getUser().then((response) => {
+      console.log(response.data);
+      // this.setState({ userForums });
+    });
+  }
+  
+  /* useEffect(() => {
+    personService
+      .getAll('http://localhost:3001/persons')
+      .then(personData => {
+        setPersons(personData)
+      })
+  }, []) */
+
   render() {
     const { classes } = this.props;
     return (
       <div className="studenthomepage">
         <div className="leftsection">
           <h2>My Forums</h2>
+
           <div className="forums">
-            <ForumButton
+            {this.state.forums.map((forum) => (
+              <ForumButton forumTitle={forum.name} />
+            ))}
+            {/* <ForumButton
               color="papayawhip"
               hovercolor="peachpuff"
               forumTitle="CZ3002 ASE"
@@ -27,7 +54,7 @@ class StudentHomePage extends Component {
               color="lavender"
               hovercolor="darkslateblue"
               forumTitle="CZ1007 Data Structures"
-            />
+            /> */}
           </div>
         </div>
 
@@ -37,6 +64,15 @@ class StudentHomePage extends Component {
 
             <Filter />
           </div>
+          {/* THIS IS WRONG TO CHANGE IMPT CHANGE THIS */}
+          {/* {this.state.posts.map((post) => (
+            <Post
+              username={post.username}
+              content={post.description}
+              numLikes={post.votes}
+              tags={post.tags}
+            />
+          ))} */}
           <Post editingaccess={true} />
           <Post />
           <Post />

@@ -1,35 +1,37 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var session = require("express-session");
-var passport = require("passport");
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
+const passport = require('passport');
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-var commentRouter = require("./routes/comment");
-var postRouter = require("./routes/post");
-var voteRouter = require("./routes/vote");
-var forumRouter = require("./routes/forum");
-var quizRouter = require("./routes/quiz");
-var resultRouter = require("./routes/result");
-var searchRouter = require("./routes/search");
-var filterRouter = require("./routes/filter");
+const mongoose = require('mongoose');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const commentRouter = require('./routes/comment');
+const postRouter = require('./routes/post');
+const voteRouter = require('./routes/vote');
+const forumRouter = require('./routes/forum');
+const quizRouter = require('./routes/quiz');
+const resultRouter = require('./routes/result');
+const searchRouter = require("./routes/search");
+const filterRouter = require("./routes/filter");
 
-
-var User = require("./models/Users");
-require("./config/passport");
-
-const mongoose = require("mongoose");
-const cors = require("cors");
+const User = require('./models/Users');
+require('./config/passport');
 
 mongoose.promise = global.Promise;
 
-var app = express();
+const app = express();
 
 // connect to mongodb
-const url = `mongodb+srv://colearnity:zHiVt0wXsWUQ3MKB@cluster0.4j8bx.mongodb.net/<dbname>?retryWrites=true&w=majority`;
+const url = 'mongodb+srv://colearnity:zHiVt0wXsWUQ3MKB@cluster0.4j8bx.mongodb.net/<dbname>?retryWrites=true&w=majority';
 
 mongoose
   .connect(url, {
@@ -39,46 +41,46 @@ mongoose
     useCreateIndex: true,
   })
   .then((result) => {
-    console.log("connected to MongoDB");
+    console.log('connected to MongoDB');
   })
   .catch((error) => {
-    console.log("error connecting to MongoDB:", error.message);
+    console.log('error connecting to MongoDB:', error.message);
   });
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
 app.use(cors());
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-var bodyParser = require("body-parser");
+
 app.use(bodyParser.json());
 app.use(
   session({
-    secret: "secret",
+    secret: 'secret',
     resave: false,
     saveUninitialized: false,
-  })
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function (user, done) {
-  console.log('serialize: ' + user._id);
+passport.serializeUser((user, done) => {
+  console.log(`serialize: ${user._id}`);
   done(null, user._id);
 });
 
-passport.deserializeUser(function (id, done) {
-  console.log('deserialize: ' + id);
-  User.findById(id, function (err, user) {
+passport.deserializeUser((id, done) => {
+  console.log(`deserialize: ${id}`);
+  User.findById(id, (err, user) => {
     done(err, user);
   });
 });
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/", indexRouter);
 app.use("/api/users", usersRouter);
@@ -91,26 +93,29 @@ app.use("/api/result", resultRouter);
 app.use("/api/search", searchRouter);
 app.use("/api/filter", filterRouter);
 
-
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render('error');
 });
-
+/*
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+}); */
 module.exports = app;

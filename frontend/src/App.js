@@ -2,18 +2,18 @@ import React from "react";
 import Navbar from "./components/Navbar/Navbar";
 import "./App.css";
 
-import {BrowserRouter, Route} from 'react-router-dom';
+import { BrowserRouter, Route } from "react-router-dom";
 import StudentHomePage from "./container/StudentHomePage/StudentHomePage";
-import LandingPage from "./container/LandingPage/LandingPage"
+import LandingPage from "./container/LandingPage/LandingPage";
 import SignupPage from "./container/Login/SignupPage";
 import LoginPage from "./container/Login/LoginPage";
 import StudentProfilePage from "./container/StudentProfilePage/StudentProfilePage";
 import CreatePost from "./container/CreatePost/CreatePost";
 import ForumPage from "./container/ForumPage/ForumPage";
+import SubforumPage from "./container/SubforumPage/SubforumPage";
 import ReviewQuizPage from "./container/ReviewQuizPage/ReviewQuizPage";
 import TakeQuizPage from "./container/TakeQuizPage/TakeQuizPage";
 import TeacherHomePage from "./container/TeacherHomePage/TeacherHomePage";
-import SubforumPage from "./container/SubforumPage/SubforumPage";
 import TeacherForumPage from "./container/TeacherForumPage/TeacherForumPage";
 import TeacherSubforumPage from "./container/TeacherSubforumPage/TeacherSubforumPage";
 import PostDetailPage from "./container/PostDetailPage/PostDetailPage";
@@ -21,7 +21,7 @@ import PostDetailPage from "./container/PostDetailPage/PostDetailPage";
 function App() {
   
   return (
-    <BrowserRouter>  
+    <BrowserRouter>
       <div className="App">
         <Navbar />
         <Route path="/" exact component = {LandingPage}/>
