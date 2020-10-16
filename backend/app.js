@@ -14,6 +14,8 @@ var voteRouter = require("./routes/vote");
 var forumRouter = require("./routes/forum");
 var quizRouter = require("./routes/quiz");
 var resultRouter = require("./routes/result");
+var searchRouter = require("./routes/search");
+var filterRouter = require("./routes/filter");
 
 
 var User = require("./models/Users");
@@ -86,6 +88,8 @@ app.use("/api/votes", voteRouter);
 app.use("/api/forum", forumRouter);
 app.use("/api/quiz", quizRouter);
 app.use("/api/result", resultRouter);
+app.use("/api/search", searchRouter);
+app.use("/api/filter", filterRouter);
 
 
 app.use(function (req, res, next) {
