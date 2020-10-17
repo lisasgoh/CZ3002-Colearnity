@@ -24,6 +24,7 @@ class ForumPage extends Component {
   }
 
   componentDidMount() {
+    console.log(window.location);
     API.get("/forum/5f7f81aeacc7375f68ca66e5").then((response) => {
       const forumData = response.data;
       console.log(forumData);

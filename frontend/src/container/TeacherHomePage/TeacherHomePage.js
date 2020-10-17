@@ -8,14 +8,14 @@ import TeacherPost from "../../components/Post/TeacherPost";
 class StudentHomePage extends Component {
   render() {
     const ColoredLine = ({ color }) => (
-        <hr
-            style={{
-                color: color,
-                backgroundColor: color,
-                height: 2,
-                marginTop:"2em"
-            }}
-        />
+      <hr
+        style={{
+          color: color,
+          backgroundColor: color,
+          height: 2,
+          marginTop: "2em",
+        }}
+      />
     );
     const { classes } = this.props;
     return (
@@ -38,12 +38,10 @@ class StudentHomePage extends Component {
               hovercolor="darkslateblue"
               forumTitle="CZ1007 Data Structures"
             />
-
-
           </div>
 
-            <ColoredLine color="grey"/>
-          <h2 style={{marginTop:"2em"}}>Forums Created</h2>
+          <ColoredLine color="grey" />
+          <h2 style={{ marginTop: "2em" }}>Forums Created</h2>
           <div className="forums">
             <ForumButton
               color="papayawhip"
@@ -60,8 +58,6 @@ class StudentHomePage extends Component {
               hovercolor="darkslateblue"
               forumTitle="CZ1007 Data Structures"
             />
-
-            
           </div>
         </div>
 
@@ -71,12 +67,12 @@ class StudentHomePage extends Component {
 
             <Filter />
           </div>
-          <TeacherPost/>
-          <TeacherPost/>
-          <TeacherPost/>
-          <TeacherPost/>
-          <TeacherPost/>
-          <TeacherPost/>
+          <TeacherPost />
+          <TeacherPost />
+          <TeacherPost />
+          <TeacherPost />
+          <TeacherPost />
+          <TeacherPost />
         </div>
       </div>
     );

@@ -60,26 +60,21 @@ router.post('/login', auth.optional, (req, res, next) => {
     });
   }
 
-  return passport.authenticate(
-    'local',
-    //    { session: false },
-    (err, passportUser, info) => {
+  passport.authenticate('local', (err, passportUser, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!passportUser) { return res.redirect('/login'); }
+    const user = passportUser;
+    user.token = passportUser.generateJWT();
+    req.login(user, (err) => {
       if (err) {
-        return next(err);
+        return res.status(401).json(err);
       }
-      if (passportUser) {
-        const user = passportUser;
-        user.token = passportUser.generateJWT();
-        req.login(user, (err) => {
-          if (err) {
-            return res.status(401).json(err);
-          }
-          return res.json({ user: user.toAuthJSON() });
-        });
-      }
-      // return status(400).info;
-    },
-  )(req, res, next);
+      // return res.json({ user: user.toAuthJSON() });
+      return res.redirect('/homepage');
+    });
+  })(req, res, next);
 });
 
 // GET current route (required, only authenticated users have access)

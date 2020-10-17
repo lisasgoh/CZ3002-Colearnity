@@ -13,34 +13,33 @@ class LoginPage extends Component {
             // this.setState({ userForums });
           });
     }*/
+    // state = {
+    //     title: 'CZ3006 ASE',
+    //     content: '',
+    //     tags: 'CZ3006 ASE'
+    // }
     render() {
-        return (
-            <div className="main">
-                <div className="login-form">
-                    <form>
-                        <Link to="/">
-                            <NavigateBeforeIcon />
-                        </Link>
-                        
-                        <h3>Login</h3><p> </p>
-                        
-                        <div className="form-group">
-                            <label>Username</label>
-                            <input type="username" className="form-control" placeholder="Enter username" />
-                        </div>
-        
-                        <div className="form-group">
-                            <label>Password</label>
-                            <input type="password" className="form-control" placeholder="Enter password" />
-                        </div>
-                        <Link to="/homepage">
-                            <Button >Login</Button>
-                        </Link>
-                            
-                        <p className="sright">Forgot <a href="#">password?</a></p>
-                    </form>
+      return (
+          <div className="main">
+            <div className="login-form">
+              <form>
+                <Link to="/">
+                  <NavigateBeforeIcon />
+                </Link>
+                <h3>Login</h3><p> </p>        
+                <div className="form-group">
+                  <label>Username</label>
+                  <input type="username" className="form-control" placeholder="Enter username" />
                 </div>
+                <div className="form-group">
+                  <label>Password</label>
+                    <input type="password" className="form-control" placeholder="Enter password" />
+                </div>
+                <Button >Login</Button>
+                <p className="sright">Forgot <a href="#">password?</a></p>
+              </form>
             </div>
+          </div>
         );
     }
 }

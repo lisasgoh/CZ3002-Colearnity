@@ -20,26 +20,29 @@ import PostDetailPage from "./container/PostDetailPage/PostDetailPage";
 import TeacherCreateQuiz from "./container/TeacherCreateQuiz/TeacherCreateQuiz";
 
 function App() {
-  
   return (
     <BrowserRouter>
       <div className="App">
         <Navbar />
-        <Route path="/" exact component = {LandingPage}/>
-        <Route path="/login" exact component = {LoginPage}/>
-        <Route path="/signup" exact component = {SignupPage}/>
-        <Route path="/homepage" exact component = {StudentHomePage}/>
-        <Route path="/profilepage" exact component = {StudentProfilePage}/>
-        <Route path="/createpost" exact component = {CreatePost}/>
-        <Route path="/forumpage" exact component = {ForumPage}/>
-        <Route path="/reviewquizpage" exact component = {ReviewQuizPage}/>
-        <Route path="/takequizpage" exact component = {TakeQuizPage}/>
-        <Route path="/teacherhomepage" exact component = {TeacherHomePage}/>
-        <Route path ="/subforumpage" exact component = {SubforumPage}/>
-        <Route path ="/teacherforumpage" exact component = {TeacherForumPage}/>
-        <Route path ="/teachersubforumpage" exact component = {TeacherSubforumPage}/>
-        <Route path ="/postdetailpage" exact component = {PostDetailPage}/>
-        <Route path ="/teachercreatequiz" exact component = {TeacherCreateQuiz}/>
+        <Route path="/" exact component={LandingPage} />
+        <Route path="/login" exact component={LoginPage} />
+        <Route path="/signup" exact component={SignupPage} />
+        <Route path="/homepage" exact component={StudentHomePage} />
+        <Route path="/profilepage" exact component={StudentProfilePage} />
+        <Route path="/createpost" exact component={CreatePost} />
+        <Route path="/forumpage" exact component={ForumPage} />
+        <Route path="/reviewquizpage" exact component={ReviewQuizPage} />
+        <Route path="/takequizpage" exact component={TakeQuizPage} />
+        <Route path="/teacherhomepage" exact component={TeacherHomePage} />
+        <Route path="/subforumpage" exact component={SubforumPage} />
+        <Route path="/teacherforumpage" exact component={TeacherForumPage} />
+        <Route
+          path="/teachersubforumpage"
+          exact
+          component={TeacherSubforumPage}
+        />
+        <Route path="/postdetailpage" exact component={PostDetailPage} />
+        <Route path="/teachercreatequiz" exact component={TeacherCreateQuiz} />
       </div>
     </BrowserRouter>
   );

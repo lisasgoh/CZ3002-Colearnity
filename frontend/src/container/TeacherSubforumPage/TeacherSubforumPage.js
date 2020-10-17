@@ -4,7 +4,7 @@ import QuizButton from "../../components/ForumButtons/QuizButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import Divider from "@material-ui/core/Divider";
-import Icon from '@material-ui/core/Icon';
+import Icon from "@material-ui/core/Icon";
 import "./TeacherSubforumPage.css";
 
 import API from "../../utils/API";
@@ -39,7 +39,7 @@ class TeacherSubforumPage extends Component {
 
   render() {
     const { subforumTitle, subforumDesc, quizzes, posts } = this.state;
-    let combined = ['icon', 'fa fa-plus-circle'].join(' ');
+    let combined = ["icon", "fa fa-plus-circle"].join(" ");
     return (
       <div className="teachersubforumpage">
         <div className="leftsection">
@@ -68,7 +68,10 @@ class TeacherSubforumPage extends Component {
               dueDate="25/12/2020"
             />
           </div>
-          <Icon className={combined} style={{ color: '#fa923f',fontSize: 100, margin:'0.3em' }} />
+          <Icon
+            className={combined}
+            style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
+          />
         </div>
 
         <div className="rightsection">

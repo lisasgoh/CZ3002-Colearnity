@@ -5,14 +5,12 @@ import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRoun
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import Divider from "@material-ui/core/Divider";
 import "./../SubforumPage/SubforumPage.css";
-import Icon from '@material-ui/core/Icon';
+import Icon from "@material-ui/core/Icon";
 import "./TeacherForumPage.css";
-
-
 
 class TeacherForumPage extends Component {
   render() {
-    let combined = ['icon', 'fa fa-plus-circle'].join(' ');
+    let combined = ["icon", "fa fa-plus-circle"].join(" ");
     return (
       <div className="subforumpage">
         <div className="leftsection">
@@ -23,7 +21,7 @@ class TeacherForumPage extends Component {
           <div className="quizzes">
             <QuizButtonTeacher
               quizTitle="Quiz 1"
-              completedNo = "23/35"
+              completedNo="23/35"
               grade="10/10"
             />
             <QuizButtonTeacher
@@ -36,8 +34,10 @@ class TeacherForumPage extends Component {
               completedNo="35/35"
               grade="7/10"
             />
-            <Icon className={combined} style={{ color: '#fa923f',fontSize: 100, margin:'0.3em' }} />
-
+            <Icon
+              className={combined}
+              style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
+            />
           </div>
         </div>
 
@@ -48,11 +48,11 @@ class TeacherForumPage extends Component {
             <FilterListRoundedIcon />
           </div>
           <TeacherPost />
-          <TeacherPost  />
-          <TeacherPost  />
-          <TeacherPost  />
-          <TeacherPost  />
-          <TeacherPost  />
+          <TeacherPost />
+          <TeacherPost />
+          <TeacherPost />
+          <TeacherPost />
+          <TeacherPost />
         </div>
       </div>
     );
