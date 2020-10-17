@@ -7,8 +7,8 @@ import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import { Link } from "react-router-dom";
 import "./ForumPage.css";
 
-import API from "../../utils/API";
-//import forumService from './../../services/forum';
+// import API from "../../utils/API";
+import forumService from "./../../services/forum";
 
 class ForumPage extends Component {
   constructor(props) {
@@ -24,18 +24,20 @@ class ForumPage extends Component {
   }
 
   componentDidMount() {
-    API.get("/forum/5f7f81aeacc7375f68ca66e5").then((response) => {
-      const forumData = response.data;
-      console.log(forumData);
+    forumService
+      .getForum("5f7f81aeacc7375f68ca66e5")
+      .then((response) => console.log(response));
+
+    forumService.getForum("5f7f81aeacc7375f68ca66e5").then((forum) => {
       this.setState({
         ...this.state,
         ...{
-          forumID: forumData._id,
-          forumTitle: forumData.name,
-          forumDesc: forumData.description,
-          subforums: forumData._subforums,
-          posts: forumData._posts,
-          forumMembership: forumData.isSubscribed,
+          forumID: forum._id,
+          forumTitle: forum.name,
+          forumDesc: forum.description,
+          subforums: forum._subforums,
+          posts: forum._posts,
+          forumMembership: forum.isSubscribed,
         },
       });
     });
@@ -84,7 +86,17 @@ class ForumPage extends Component {
             <SubforumButton subforumTitle="CZ1007 Data Structures" />
             {subforums &&
               subforums.map((subforum) => (
-                <SubforumButton subforumTitle={subforum.name} />
+                <Link
+                  to={{
+                    pathname: `/subforumpage/${subforum._id}`,
+                    state: { id: subforum._id },
+                  }}
+                >
+                  <SubforumButton
+                    subforumTitle={subforum.name}
+                    _id={subforum._id}
+                  />
+                </Link>
               ))}
           </div>
         </div>
