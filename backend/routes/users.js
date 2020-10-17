@@ -71,8 +71,8 @@ router.post('/login', auth.optional, (req, res, next) => {
       if (err) {
         return res.status(401).json(err);
       }
-      // return res.json({ user: user.toAuthJSON() });
-      return res.redirect('/homepage');
+      return res.json({ user: user.toAuthJSON() });
+      // return res.redirect('/homepage');
     });
   })(req, res, next);
 });

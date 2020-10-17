@@ -22,6 +22,7 @@ commentRouter.get('/', (req, res) => {
 });
 
 // create new comment
+// TODO: test whether text is null?
 commentRouter.post('/', (req, res) => {
   const comment = new Comment({
     text: req.body.text,

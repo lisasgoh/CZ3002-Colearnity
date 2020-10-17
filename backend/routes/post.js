@@ -40,13 +40,13 @@ postRouter.post('/', (req, res) => {
   console.log(req.body);
   console.log(req.query);
   console.log(req.user);
-  const temp = '5f7f525d56b9835b245e8aaf';
+  // const temp = '5f7f525d56b9835b245e8aaf';
   // check if user is part of forum
   const post = new Post({
     title: req.body.title,
     description: req.body.description,
     votes: 0,
-    _poster: temp, // req.user.id
+    _poster: req.user.id,
     _comments: [],
     _forum: req.query.forum_id,
   });

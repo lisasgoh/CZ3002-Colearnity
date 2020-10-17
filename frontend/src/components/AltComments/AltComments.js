@@ -56,21 +56,16 @@ export default function AltComments(props) {
       <CardHeader className={classes.head}
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            I
+            {props.username[0]}
           </Avatar>
         }
 
-        title="Username"
-        subheader="September 14, 2020"
+        title={props.username}
+        subheader={props.createdAt}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nulla pretium orci eget lobortis porttitor. Praesent consectetur lacus
-        eu egestas blandit. Mauris ultrices consequat diam sit amet ornare.
-        Etiam elementum felis in nisl condimentum scelerisque. Integer
-        scelerisque turpis at ipsum aliquam elementum. Praesent non posuere sem,
-        eget varius purus.
+          {props.text}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -92,7 +87,7 @@ export default function AltComments(props) {
         >
           Like
         </Button>
-        <span> {props.numLikes}{numLikes} likes</span>
+        <span> {props.numLikes} likes</span>
       </div>
 
       </CardActions>

@@ -4,6 +4,7 @@ import QuizButton from "../../components/ForumButtons/QuizButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import Divider from "@material-ui/core/Divider";
+import { Link } from "react-router-dom";
 import "./SubforumPage.css";
 
 // import API from "../../utils/API";
@@ -79,12 +80,18 @@ class SubforumPage extends Component {
           </div>
           {posts &&
             posts.map((post) => (
+              <Link
+              to={{
+                pathname: `/postdetailpage/${post._id}`,
+              }}
+            >
               <Post
                 username={post._poster.username}
                 content={post.description}
                 numLikes={post.votes}
                 tags={post.tags}
               />
+              </Link>
             ))}
         </div>
       </div>

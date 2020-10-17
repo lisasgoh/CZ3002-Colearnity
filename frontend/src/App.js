@@ -41,7 +41,7 @@ function App() {
           exact
           component={TeacherSubforumPage}
         />
-        <Route path="/postdetailpage" exact component={PostDetailPage} />
+        <Route path="/postdetailpage/:id" exact component={PostDetailPage} />
         <Route path="/teachercreatequiz" exact component={TeacherCreateQuiz} />
       </div>
     </BrowserRouter>

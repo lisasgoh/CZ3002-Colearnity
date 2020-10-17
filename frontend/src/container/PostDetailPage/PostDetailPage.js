@@ -9,7 +9,41 @@ import "./PostDetailPage.css";
 import Comments from "./../../components/Comments/Comments";
 import AltComments from "./../../components/AltComments/AltComments";
 
+import postService from "./../../services/post";
+
 export class PostDetailPage extends Component {
+  constructor(props) {
+    super(props);
+    // const id = this.props.match.params.id;
+
+    this.state = {
+      id: this.props.match.params.id,
+      postTitle: null,
+      postDesc: null,
+      postComments: null,
+      postVotes: null,
+      poster: null,
+      postTime: null,
+    };
+  }
+  componentDidMount() {
+    postService.getIndivPost(`${this.state.id}`).then((post) => {
+      // console.log(forumData);
+      console.log(post);
+      this.setState({
+        ...this.state,
+        ...{
+          postTitle: post.title,
+          postDesc: post.description,
+          postComments: post._comments,
+          postVotes: post.votes,
+          poster: post._poster.username,
+          postTime: post.createdAt,
+        },
+      });
+    });
+  }
+
   render() {
     return (
       <div className="postdetailpage">
@@ -27,22 +61,32 @@ export class PostDetailPage extends Component {
             sem, eget varius purus.
           </p>
 
-          <h3>Subforums</h3>
+          {/* <h3>Subforums</h3>
           <div className="subforums">
             <SubforumButton subforumTitle="CZ3002 ASE" />
             <SubforumButton subforumTitle="CZ3001 ACOA" />
             <SubforumButton subforumTitle="CZ1007 Data Structures" />
-          </div>
+          </div> */}
         </div>
 
         <div className="rightsection">
-          <Post />
+          <Post
+            username={this.state.poster}
+            title={this.state.postTitle}
+            content={this.state.postDesc}
+          />
           <div className="topbar">
             <h2>Replies</h2>
           </div>
-          <AltComments />
-          <AltComments />
-          <AltComments />
+          {this.state.postComments &&
+            this.state.postComments.map((comment) => (
+              <AltComments
+                text={comment.text}
+                username={comment._commenter.username}
+                numLikes={comment.votes}
+                createdAt={comment.createdAt}
+              />
+            ))}
         </div>
       </div>
     );
