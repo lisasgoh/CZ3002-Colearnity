@@ -6,13 +6,16 @@ import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import Divider from "@material-ui/core/Divider";
 import "./SubforumPage.css";
 
-import API from "../../utils/API";
+// import API from "../../utils/API";
+import forumService from "./../../services/forum";
 
 class SubforumPage extends Component {
   constructor(props) {
     super(props);
+    // const id = this.props.match.params.id;
 
     this.state = {
+      id: this.props.match.params.id,
       subforumTitle: null,
       subforumDesc: null,
       quizzes: null,
@@ -21,9 +24,8 @@ class SubforumPage extends Component {
   }
 
   componentDidMount() {
-    API.get("/forum/5f7f81aeacc7375f68ca66e5").then((response) => {
-      const forumData = response.data;
-      console.log(forumData);
+    forumService.getForum(`${this.state.id}`).then((forumData) => {
+      // console.log(forumData);
       this.setState({
         ...this.state,
         ...{

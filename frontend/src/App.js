@@ -34,7 +34,7 @@ function App() {
         <Route path="/reviewquizpage" exact component={ReviewQuizPage} />
         <Route path="/takequizpage" exact component={TakeQuizPage} />
         <Route path="/teacherhomepage" exact component={TeacherHomePage} />
-        <Route path="/subforumpage" exact component={SubforumPage} />
+        <Route path="/subforumpage/:id" exact component={SubforumPage} />
         <Route path="/teacherforumpage" exact component={TeacherForumPage} />
         <Route
           path="/teachersubforumpage"
