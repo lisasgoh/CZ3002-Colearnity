@@ -8,6 +8,20 @@ const questionResultSchema = new Schema({
   qn_number: Number,
 });
 
+/*
+const quizAttemptSchema = new Schema({
+  _user: {
+    type: Schema.Types.ObjectId,
+    ref: 'Users',
+  },
+  attempt: [
+    {
+      type: Number, // list of answers submitted by the user
+    },
+  ],
+});
+*/
+
 const resultSchema = new Schema({
   _quiz: {
     type: Schema.Types.ObjectId,
@@ -15,10 +29,11 @@ const resultSchema = new Schema({
   },
   results: [
     {
-      type: Number,
+      type: Number, // list of quiz scores
     },
   ],
-  question_results: [questionResultSchema],
+  // attempts: [quizAttemptSchema],
+  question_results: [questionResultSchema], // count of correct/ wrong attempts for each question
 });
 
 const Results = mongoose.model('Results', resultSchema);

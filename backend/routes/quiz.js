@@ -4,6 +4,8 @@
 const express = require('express');
 const Quiz = require('../models/Quiz');
 const Forum = require('../models/Forum');
+const Result = require('../models/Results');
+const Users = require('../models/Users');
 
 const quizRouter = express.Router();
 
@@ -11,7 +13,6 @@ const quizRouter = express.Router();
 quizRouter.post('/', (req, res) => {
   // console.log(req.user);
   // console.log(req.isAuthenticated());
-  const questionList = [];
   const { questions } = req.body;
   questions.map((question) => {
     const opts = question.options;
@@ -30,31 +31,13 @@ quizRouter.post('/', (req, res) => {
     };
     return newQn;
   });
-  /*
-  for (const qns of questions) {
-    const question = {};
-    question.title = qns.title;
-    question.point = qns.point;
-    optionList = [];
-    const options = qns.options;
-    for (const ops of qns.options) {
-      const option = {};
-      option.optionNumber = ops.optionNumber;
-      option.answerBody = ops.answerBody;
-      option.isCorrectAnswer = ops.isCorrectAnswer;
-      optionList.push(option);
-    }
-    question.options = optionLlist;
-    questionList.push(question);
-  } */
   const quiz = new Quiz({
     title: req.body.title,
     description: req.body.description,
     _teacher: req.user.id,
     _forum: req.query.forum_id,
-    questions: questionList,
+    question: questions,
   });
-  // console.log(question_list);
   quiz.save((err, doc) => {
     if (err) { res.send(err); }
     Forum.findByIdAndUpdate(req.query.forum_id,
@@ -87,47 +70,23 @@ quizRouter.get('/filter', (req, res) => {
   });
 });
 
-/*
-// update quiz details,
-quizRouter.put("/:quiz_id", (req, res, next) =>{
-    const id = req.params.quiz_id;
-    const updateOps = {};
-    for (const ops of req.body){
-        updateOps[ops.propName] = ops.value;
-    }
-    Quiz.findByIdAndUpdate(id, {$set: updateOps})
-        .exec()
-        .then( result =>{
-            console.log(result);
-            res.json(result);
-        })
-        .catch(err => {
-            res.send(err);
-        });
-})
-*/
-
-// delete quiz by id
-// delete the quiz refernce from the forum
-quizRouter.delete('/:quiz_id', (req, res, next) => {
-  const id = req.params.quiz_id;
-  /* Quiz.findByIdAndDelete(id)
-    .exec()
-    .then((result) => {
-      res.json(result);
-    })
-    .catch(err =>{ res.send(err);}); */
-  Quiz.findByIdAndRemove(id, (err) => {
-    if (err) { console.error(err); }
-
-    Forum.update({
-      topics: { $in: [id] },
-    }, {
-      $pullAll: { _quizzes: [id] },
-    }, (err, subject) => {
-
-    });
-  });
+quizRouter.delete('/:id', (req, res) => {
+  Quiz.findByIdAndRemove(req.params.id).then((quiz) => {
+    Forum.findByIdAndUpdate(
+      req.query.forum_id,
+      { $pull: { _quizzes: { _id: req.params.id } } },
+    )
+      .then((forum) => {
+        Users.findByIdAndUpdate(
+          req.user.id,
+          { $pull: { _quizzes: { _id: req.params.id } } },
+        )
+          .then((user) => {
+            res.send('Success: Quiz Deleted');
+          })
+          .catch((err) => res.send(err));
+      }).catch((err) => res.send(err));
+  }).catch((err) => res.send(err));
 });
 
 module.exports = quizRouter;
