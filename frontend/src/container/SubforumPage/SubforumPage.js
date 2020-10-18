@@ -26,7 +26,7 @@ class SubforumPage extends Component {
 
   componentDidMount() {
     forumService.getForum(`${this.state.id}`).then((forumData) => {
-      // console.log(forumData);
+      console.log(forumData);
       this.setState({
         ...this.state,
         ...{
@@ -51,7 +51,18 @@ class SubforumPage extends Component {
           <h3>Quizzes</h3>
           <div className="quizzes">
             {quizzes &&
-              quizzes.map((quiz) => <QuizButton quizTitle={quiz.title} />)}
+              quizzes.map((quiz) => (
+                <Link
+                  to={{
+                    pathname: quiz.taken
+                      ? `/forum/reviewquizpage/${quiz._id}`
+                      : `/forum/takequizpage/${quiz._id}`,
+                    state: quiz,
+                  }}
+                >
+                  <QuizButton quizTitle={quiz.title} _id={quiz._id} />
+                </Link>
+              ))}
             <QuizButton
               quizTitle="Quiz 1"
               completed={true}

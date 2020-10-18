@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import QuizQns from "../../components/QuizQns/QuizQns";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -9,7 +9,10 @@ import StepButton from "@material-ui/core/StepButton";
 import StepContent from "@material-ui/core/StepContent";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import { useLocation } from "react-router-dom";
 import "./TakeQuizPage.css";
+
+import quizService from "./../../services/quiz";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +54,21 @@ export default function TakeQuizPage() {
   //     super();
   //     this.setActiveStep = { activeStep: '0' };
   // }
+
+  const { quizID } = useLocation();
+  const [quizTitle, setTitle] = useState(null);
+  const [quizDesc, setDesc] = useState(null);
+  const [quizQns, setQns] = useState([]);
+  console.log(quizID); //should be only quizID
+
+  useEffect(() => {
+    quizService.getQuiz(`${quizID}`).then((quizData) => {
+      console.log(quizData);
+      setTitle(quizData.name);
+      setDesc(quizData.description);
+      setQns(quizData.questions);
+    });
+  }, []);
 
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);

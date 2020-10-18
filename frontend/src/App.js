@@ -31,8 +31,8 @@ function App() {
         <Route path="/profilepage" exact component={StudentProfilePage} />
         <Route path="/createpost" exact component={CreatePost} />
         <Route path="/forumpage" exact component={ForumPage} />
-        <Route path="/reviewquizpage" exact component={ReviewQuizPage} />
-        <Route path="/takequizpage" exact component={TakeQuizPage} />
+        <Route path="/reviewquizpage:id" exact component={ReviewQuizPage} />
+        <Route path="/takequizpage/:id" exact component={TakeQuizPage} />
         <Route path="/teacherhomepage" exact component={TeacherHomePage} />
         <Route path="/subforumpage/:id" exact component={SubforumPage} />
         <Route path="/teacherforumpage" exact component={TeacherForumPage} />

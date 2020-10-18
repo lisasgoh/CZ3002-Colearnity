@@ -20,7 +20,7 @@ class StudentHomePage extends Component {
       // this.setState({ userForums });
     });
   }
-  
+
   /* useEffect(() => {
     personService
       .getAll('http://localhost:3001/persons')
@@ -35,11 +35,17 @@ class StudentHomePage extends Component {
       <div className="studenthomepage">
         <div className="leftsection">
           <h2>My Forums</h2>
-
           <div className="forums">
-            {this.state.forums.map((forum) => (
-              <ForumButton forumTitle={forum.name} />
-            ))}
+            {forums &&
+              forums.map((forum) => (
+                <Link
+                  to={{
+                    pathname: `/forumpage/${forum._id}`,
+                  }}
+                >
+                  <ForumButton forumTitle={forum.name} />
+                </Link>
+              ))}
             {/* <ForumButton
               color="papayawhip"
               hovercolor="peachpuff"
@@ -65,20 +71,15 @@ class StudentHomePage extends Component {
             <Filter />
           </div>
           {/* THIS IS WRONG TO CHANGE IMPT CHANGE THIS */}
-          {/* {this.state.posts.map((post) => (
+          {posts && posts.map((post) => (
             <Post
               username={post.username}
               content={post.description}
               numLikes={post.votes}
               tags={post.tags}
             />
-          ))} */}
+          ))}
           <Post editingaccess={true} />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
         </div>
       </div>
     );
