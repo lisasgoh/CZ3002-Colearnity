@@ -3,6 +3,7 @@ import Post from "../../components/Post/Post";
 import ForumButton from "../../components/ForumButtons/ForumButton";
 import Filter from "../../components/Filter/Filter";
 import "./StudentHomePage.css";
+import { Link } from "react-router-dom";
 import TeacherPost from "../../components/Post/TeacherPost";
 
 // import users from "../../utils/API";
@@ -10,14 +11,27 @@ import TeacherPost from "../../components/Post/TeacherPost";
 import usersService from "../../services/users";
 
 class StudentHomePage extends Component {
-  state = {
-    forums: [],
-  };
+  constructor(props) {
+    super(props);
 
-  async componentDidMount() {
-    usersService.getUser().then((response) => {
-      console.log(response.data);
-      // this.setState({ userForums });
+    this.state = {
+      forums: [],
+      posts: [], //posts are from all forums, not user posts - consider how to populate
+      isStudent: null,
+    };
+  }
+
+  componentDidMount() {
+    usersService.getUser().then((userData) => {
+      console.log(userData);
+      this.setState({
+        ...this.state,
+        ...{
+          forums: userData._forums,
+          posts: userData._forums._posts,
+          isStudent: userData.is_student,
+        },
+      });
     });
   }
 
@@ -30,7 +44,7 @@ class StudentHomePage extends Component {
   }, []) */
 
   render() {
-    const { classes } = this.props;
+    const { forums, posts, isStudent } = this.state;
     return (
       <div className="studenthomepage">
         <div className="leftsection">
@@ -71,14 +85,15 @@ class StudentHomePage extends Component {
             <Filter />
           </div>
           {/* THIS IS WRONG TO CHANGE IMPT CHANGE THIS */}
-          {posts && posts.map((post) => (
-            <Post
-              username={post.username}
-              content={post.description}
-              numLikes={post.votes}
-              tags={post.tags}
-            />
-          ))}
+          {posts &&
+            posts.map((post) => (
+              <Post
+                username={post.username}
+                content={post.description}
+                numLikes={post.votes}
+                tags={post.tags}
+              />
+            ))}
           <Post editingaccess={true} />
         </div>
       </div>

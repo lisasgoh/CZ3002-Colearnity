@@ -4,12 +4,62 @@ import { Link } from "react-router-dom";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import "./Login.css";
 
+import usersService from "./../../services/users";
+
 class SignupPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      // id: this.props.match.params.id,
+      username: null,
+      email: null,
+      is_student: true,
+      password: null,
+      university: null,
+      course_of_study: null,
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleInputChange(event) {
+    this.setState({
+      ...this.state,
+      ...{
+        [event.target.name]: event.target.value,
+      },
+    });
+  }
+
+  handleSubmit(event) {
+    console.log("form was submitted");
+    event.preventDefault();
+
+    usersService
+      .create(JSON.stringify(this.state))
+      .then((newUser) => console.log(newUser))
+      .catch((error) => console.log(error));
+
+    // const post = {
+    //   title: this.state.title,
+    //   description: this.state.description,
+    //   is_sub: false,
+    //   // postTags: this.state.tags,
+    // };
+    // postService.create(post, forum_id)
+    //   .then((newPost) => console.log(newPost))
+    //   .catch((err => console.log(err)));
+  }
+
   render() {
+    console.log("username: " + this.state.username);
+    console.log("email: " + this.state.email);
     return (
       <div className="main">
         <div className="signup-form">
-          <form>
+          <form onSubmit={this.handleSubmit}>
             <Link to="/">
               <NavigateBeforeIcon />
             </Link>
@@ -23,6 +73,8 @@ class SignupPage extends Component {
                 type="username"
                 className="form-control"
                 placeholder="Enter username"
+                name="username"
+                onChange={this.handleInputChange}
               />
             </div>
 
@@ -32,6 +84,8 @@ class SignupPage extends Component {
                 type="email"
                 className="form-control"
                 placeholder="Enter email"
+                name="email"
+                onChange={this.handleInputChange}
               />
             </div>
 
@@ -41,6 +95,8 @@ class SignupPage extends Component {
                 type="password"
                 className="form-control"
                 placeholder="Enter password"
+                name="password"
+                onChange={this.handleInputChange}
               />
             </div>
 
@@ -50,6 +106,8 @@ class SignupPage extends Component {
                 type="university"
                 className="form-control"
                 placeholder="Enter University"
+                name="university"
+                onChange={this.handleInputChange}
               />
             </div>
 
@@ -59,10 +117,14 @@ class SignupPage extends Component {
                 type="course"
                 className="form-control"
                 placeholder="Enter course of study"
+                name="course_of_study"
+                onChange={this.handleInputChange}
               />
             </div>
 
-            <Button>Sign Up</Button>
+            <Button type="submit" value="Submit">
+              Sign Up
+            </Button>
 
             <p className="sright">
               Already registered?
