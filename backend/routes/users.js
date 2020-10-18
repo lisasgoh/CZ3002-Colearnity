@@ -108,27 +108,14 @@ router.get('/current', auth.required, (req, res) => {
   // }).catch((err) => res.json(err));
   // return res.json({ user: user.toAuthJSON() });
 });
-
-// Testing
-router.get('/:id', (req, res) => {
-  console.log('DFDSFSD');
-  Users.findById(req.params.id).populate({ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } })
-    .populate({
-      path: '_posts',
-      model: 'Post',
-      select: {
-        _id: 1, title: 1, description: 1, votes: 1,
-      },
-    }).then((user) => res.json(user))
-    .catch((err) => res.json(err));
-});
-
 router.get('/home', (req, res) => {
   console.log(req.isAuthenticated());
-  const {
+  console.log(req.user.id);
+  /*  const {
     payload: { id },
   } = req;
-
+*/
+  console.log('DFSDrereerwrereeFS');
   const populateQuery = {
     path: '_forums',
     model: 'Forum',
@@ -142,12 +129,29 @@ router.get('/home', (req, res) => {
     },
   };
 
-  return Users.findById(id).populate(populateQuery).exec((err, user) => {
-    if (err) res.send(err);
-    res.json(user);
-  });
+  return Users.findById(req.user.id)
+    .populate(populateQuery)
+    .then((user) => {
+      console.log(user);
+      res.json(user);
+    })
+    .catch((err) => res.send(err));
   // }).catch((err) => res.json(err));
   // return res.json({ user: user.toAuthJSON() });
+});
+
+// Testing
+router.get('/:id', (req, res) => {
+  console.log('DFDSFShgghfddfD');
+  Users.findById(req.params.id).populate({ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } })
+    .populate({
+      path: '_posts',
+      model: 'Post',
+      select: {
+        _id: 1, title: 1, description: 1, votes: 1,
+      },
+    }).then((user) => res.json(user))
+    .catch((err) => res.json(err));
 });
 
 module.exports = router;
