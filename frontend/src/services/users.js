@@ -6,6 +6,11 @@ const getUser = () => {
   return request.then((response) => response.data);
 };
 
+const getUserById = (id) => {
+  const request = axios.get(`${baseUrl}/${id}`);
+  return request.then((response) => response.data);
+};
+
 const create = (newObject) => {
   const request = axios.post(baseUrl, newObject);
   console.log(request.then((response) => response.data));
@@ -32,4 +37,4 @@ const deleteObj = id => {
     return axios.delete(`${baseUrl}/${id}`);
 }*/
 
-export default { getUser, create, login };
+export default { getUser, getUserById, create, login };

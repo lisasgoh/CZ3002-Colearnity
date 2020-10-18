@@ -8,10 +8,10 @@ const Users = require('../models/Users');
 
 // POST new user route (optional, everyone has access)
 router.post('/', auth.optional, (req, res) => {
-  const {
-    body: { user },
-  } = req;
-
+  const user = req.body;
+  console.log(user);
+  console.log(user.email);
+  console.log(user.password);
   if (!user.email) {
     return res.status(422).json({
       errors: {
@@ -141,7 +141,7 @@ router.get('/home', (req, res) => {
 });
 
 // Testing
-router.get('/:id', (req, res) => {
+/* router.get('/:id', (req, res) => {
   console.log('DFDSFShgghfddfD');
   Users.findById(req.params.id).populate({ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } })
     .populate({
@@ -152,6 +152,38 @@ router.get('/:id', (req, res) => {
       },
     }).then((user) => res.json(user))
     .catch((err) => res.json(err));
+});* /
+router.get('/home', (req, res) => {
+  console.log(req.isAuthenticated());
+  console.log(req.user.id);
+  /*  const {
+    payload: { id },
+  } = req;
+*/
+router.get('/:id', (req, res) => {
+  console.log('DFSDrereerwrereeFS');
+  const populateQuery = {
+    path: '_forums',
+    model: 'Forum',
+    select: { _id: 1, name: 1 },
+    populate: {
+      path: '_posts',
+      model: 'Post',
+      select: {
+        _id: 1, title: 1, description: 1, votes: 1,
+      },
+    },
+  };
+
+  return Users.findById(req.params.id)
+    .populate(populateQuery)
+    .then((user) => {
+      console.log(user);
+      res.json(user);
+    })
+    .catch((err) => res.send(err));
+// }).catch((err) => res.json(err));
+// return res.json({ user: user.toAuthJSON() });
 });
 
 module.exports = router;

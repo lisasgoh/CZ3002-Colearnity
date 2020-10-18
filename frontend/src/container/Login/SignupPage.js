@@ -37,8 +37,10 @@ class SignupPage extends Component {
     console.log("form was submitted");
     event.preventDefault();
 
+    console.log(this.state);
+
     usersService
-      .create(JSON.stringify(this.state))
+      .create(this.state)
       .then((newUser) => console.log(newUser))
       .catch((error) => console.log(error));
 
