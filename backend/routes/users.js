@@ -39,11 +39,20 @@ router.post('/', auth.optional, (req, res) => {
 });
 
 // POST login route (optional, everyone has access)
-router.post('/login', auth.optional, (req, res, next) => {
+router.post('/login', auth.optional, (req, res) => {
+  console.log('HERE');
+  console.log(req.body);
   const {
     body: { user },
   } = req;
-
+  /*
+  if (!user) {
+    return res.status(401).json({
+      errors: {
+        email: 'is required',
+      },
+    });
+  } */
   if (!user.email) {
     return res.status(422).json({
       errors: {
@@ -59,22 +68,25 @@ router.post('/login', auth.optional, (req, res, next) => {
       },
     });
   }
-
-  passport.authenticate('local', (err, passportUser, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!passportUser) { return res.redirect('/login'); }
-    const user = passportUser;
-    user.token = passportUser.generateJWT();
-    req.login(user, (err) => {
+  return passport.authenticate(
+    'local',
+    (err, passportUser) => {
       if (err) {
         return res.status(401).json(err);
       }
-      return res.json({ user: user.toAuthJSON() });
-      // return res.redirect('/homepage');
-    });
-  })(req, res, next);
+      if (passportUser) {
+        const user = passportUser;
+        user.token = passportUser.generateJWT();
+        req.login(user, (err) => {
+          if (err) {
+            return res.status(401).json(err);
+          }
+          return res.json({ user: user.toAuthJSON() });
+        });
+      }
+      // return res.status(400).info;
+    },
+  )(req, res);
 });
 
 // GET current route (required, only authenticated users have access)
@@ -97,6 +109,7 @@ router.get('/current', auth.required, (req, res) => {
   // return res.json({ user: user.toAuthJSON() });
 });
 
+// Testing
 router.get('/:id', (req, res) => {
   console.log('DFDSFSD');
   Users.findById(req.params.id).populate({ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } })
