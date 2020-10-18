@@ -15,6 +15,7 @@ class ForumPage extends Component {
     super(props);
 
     this.state = {
+      id: this.props.match.params.id,
       forumTitle: null,
       forumDesc: null,
       subforums: null,
@@ -25,10 +26,10 @@ class ForumPage extends Component {
 
   componentDidMount() {
     forumService
-      .getForum("5f7f81aeacc7375f68ca66e5")
+      .getForum(`${this.state.id}`)
       .then((response) => console.log(response));
 
-    forumService.getForum("5f7f81aeacc7375f68ca66e5").then((forum) => {
+    forumService.getForum(`${this.state.id}`).then((forum) => {
       this.setState({
         ...this.state,
         ...{

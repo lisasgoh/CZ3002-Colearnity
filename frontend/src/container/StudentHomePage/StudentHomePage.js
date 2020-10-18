@@ -22,13 +22,20 @@ class StudentHomePage extends Component {
   }
 
   componentDidMount() {
-    usersService.getUser().then((userData) => {
+    usersService.getUserById("5f7f525d56b9835b245e8aaf").then((userData) => {
       console.log(userData);
+      var i, j;
+      for (i = 0; i < userData._forums.length; i++) {
+        for (j = 0; j < userData._forums[i]._posts.length; j++) {
+          this.state.posts.push(userData._forums[i]._posts[j]);
+        }
+      }
+      console.log(this.state.posts);
       this.setState({
         ...this.state,
         ...{
           forums: userData._forums,
-          posts: userData._forums._posts,
+          // posts: userData._forums.filter((forum) => forum._posts),
           isStudent: userData.is_student,
         },
       });
@@ -45,6 +52,8 @@ class StudentHomePage extends Component {
 
   render() {
     const { forums, posts, isStudent } = this.state;
+    console.log(forums);
+    console.log(posts);
     return (
       <div className="studenthomepage">
         <div className="leftsection">
@@ -88,7 +97,8 @@ class StudentHomePage extends Component {
           {posts &&
             posts.map((post) => (
               <Post
-                username={post.username}
+                title={post.title}
+                username={post._poster.username}
                 content={post.description}
                 numLikes={post.votes}
                 tags={post.tags}

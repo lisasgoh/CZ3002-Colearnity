@@ -30,7 +30,7 @@ function App() {
         <Route path="/homepage" exact component={StudentHomePage} />
         <Route path="/profilepage" exact component={StudentProfilePage} />
         <Route path="/createpost" exact component={CreatePost} />
-        <Route path="/forumpage" exact component={ForumPage} />
+        <Route path="/forumpage/:id" exact component={ForumPage} />
         <Route path="/reviewquizpage:id" exact component={ReviewQuizPage} />
         <Route path="/takequizpage/:id" exact component={TakeQuizPage} />
         <Route path="/teacherhomepage" exact component={TeacherHomePage} />
