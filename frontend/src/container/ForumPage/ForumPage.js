@@ -86,12 +86,7 @@ class ForumPage extends Component {
             <SubforumButton subforumTitle="CZ1007 Data Structures" />
             {subforums &&
               subforums.map((subforum) => (
-                <Link
-                  to={{
-                    pathname: `/subforumpage/${subforum._id}`,
-                    state: { id: subforum._id },
-                  }}
-                >
+                <Link to={{ pathname: `/subforumpage/${subforum._id}` }}>
                   <SubforumButton
                     subforumTitle={subforum.name}
                     _id={subforum._id}
