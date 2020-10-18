@@ -57,7 +57,7 @@ class SubforumPage extends Component {
                     pathname: quiz.taken
                       ? `/forum/reviewquizpage/${quiz._id}`
                       : `/forum/takequizpage/${quiz._id}`,
-                    state: quiz,
+                    quizID: quiz._id,
                   }}
                 >
                   <QuizButton quizTitle={quiz.title} _id={quiz._id} />
@@ -92,16 +92,16 @@ class SubforumPage extends Component {
           {posts &&
             posts.map((post) => (
               <Link
-              to={{
-                pathname: `/postdetailpage/${post._id}`,
-              }}
-            >
-              <Post
-                username={post._poster.username}
-                content={post.description}
-                numLikes={post.votes}
-                tags={post.tags}
-              />
+                to={{
+                  pathname: `/postdetailpage/${post._id}`,
+                }}
+              >
+                <Post
+                  username={post._poster.username}
+                  content={post.description}
+                  numLikes={post.votes}
+                  tags={post.tags}
+                />
               </Link>
             ))}
         </div>
