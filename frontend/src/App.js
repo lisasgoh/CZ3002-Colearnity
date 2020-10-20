@@ -18,6 +18,7 @@ import TeacherForumPage from "./container/TeacherForumPage/TeacherForumPage";
 import TeacherSubforumPage from "./container/TeacherSubforumPage/TeacherSubforumPage";
 import PostDetailPage from "./container/PostDetailPage/PostDetailPage";
 import TeacherCreateQuiz from "./container/TeacherCreateQuiz/TeacherCreateQuiz";
+import ReplyPage from "./container/ReplyPage/ReplyPage";
 
 function App() {
   return (
@@ -36,13 +37,10 @@ function App() {
         <Route path="/teacherhomepage" exact component={TeacherHomePage} />
         <Route path="/subforumpage/:id" exact component={SubforumPage} />
         <Route path="/teacherforumpage" exact component={TeacherForumPage} />
-        <Route
-          path="/teachersubforumpage"
-          exact
-          component={TeacherSubforumPage}
-        />
+        <Route path="/teachersubforumpage" exact component={TeacherSubforumPage} />
         <Route path="/postdetailpage/:id" exact component={PostDetailPage} />
         <Route path="/teachercreatequiz" exact component={TeacherCreateQuiz} />
+        <Route path="/replypage" exact component={ReplyPage} />
       </div>
     </BrowserRouter>
   );

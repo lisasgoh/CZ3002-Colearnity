@@ -64,6 +64,11 @@ class LandingPage extends Component {
                             <Button>Teacher Create Quiz</Button>
                         </Link>
                     </div>
+                    <div className="ls-btn">
+                        <Link to="/replypage">
+                            <Button>Reply Page</Button>
+                        </Link>
+                    </div>
                 </div>
         );
     }
