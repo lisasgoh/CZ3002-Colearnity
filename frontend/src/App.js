@@ -19,6 +19,7 @@ import TeacherSubforumPage from "./container/TeacherSubforumPage/TeacherSubforum
 import PostDetailPage from "./container/PostDetailPage/PostDetailPage";
 import TeacherCreateQuiz from "./container/TeacherCreateQuiz/TeacherCreateQuiz";
 import ReplyPage from "./container/ReplyPage/ReplyPage";
+import CreateForum from "./container/CreateForum/CreateForum";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/postdetailpage/:id" exact component={PostDetailPage} />
         <Route path="/teachercreatequiz" exact component={TeacherCreateQuiz} />
         <Route path="/replypage" exact component={ReplyPage} />
+        <Route path="/createforum" exact component={CreateForum} />
       </div>
     </BrowserRouter>
   );

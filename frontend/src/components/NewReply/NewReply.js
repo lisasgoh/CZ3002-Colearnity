@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./../../container/CreatePost/CreatePost.css";
+import "./../../container/ReplyPage/ReplyPage.css";
 
 class NewReply extends Component {
 
@@ -21,7 +21,7 @@ class NewReply extends Component {
                   <textarea rows="10" value={this.state.content} onChange={(event) => this.setState({content: event.target.value})} />
                   <label>Tags</label>
                   <select value={this.state.tags} onChange={(event) => this.setState({tags: event.target.value})}>
-                      <option value="CZ3006">CZ3002 ASE</option>
+                      <option value="CZ3002">CZ3002 ASE</option>
                       <option value="CZ3001">CZ3001 ACOA</option>
                   </select>
                   <button >Add Reply</button>

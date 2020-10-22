@@ -1,0 +1,71 @@
+.createforum {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 2fr 4fr;
+}
+  
+.createforum .leftsection {
+    padding: 50px 10%;
+    background-color: #eaeaea;
+}
+  
+.createforum .forums {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-top: 5%;
+}
+  
+.createforum .rightsection_createforum {
+    padding: 50px 3%;
+    align-items: center;
+    justify-content: center;
+}
+  
+.createforum .rightsection .NewForum {
+    width: 100%;
+    margin: 2em;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    text-align: center;
+    padding-bottom: 5em;
+}
+  
+.createforum .rightsection_createforum .NewForum label {
+    display: block;
+    margin: 10px;
+    padding-left: 20em;
+    padding-right: 20em;
+    text-align: center;
+    font-weight: bold;
+}
+  
+.createforum .rightsection_createforum .NewForum input,
+.createforum .rightsection_createforum .NewForum textarea,
+.createforum .rightsection_createforum .NewForum select {
+    display: block;
+    width: 80%;
+    box-sizing: border-box;
+    border: 1px solid black;
+    outline: none;
+    font: inherit;
+    margin: auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+  
+.createforum .rightsection_createforum .NewForum button {
+    margin: 5px 0;
+    padding: 10px;
+    font: inherit;
+    border: 1px solid #fa923f;
+    background-color: transparent;
+    color: #fa923f;
+    cursor: pointer;
+}
+  
+.createforum .rightsection_createforum .NewForum button:hover,
+.createforum .rightsection_createforum .NewForum button:active {
+    color: white;
+    background-color: #fa923f;
+}
