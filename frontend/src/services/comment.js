@@ -7,7 +7,7 @@ const create = (newObject, post_id) => {
   const request = axios({
     method: "post",
     url: `${baseUrl}?post_id=${post_id}`,
-    headers: { authorization: auth_token },
+    headers: { token: auth_token },
     data: newObject,
   });
   console.log(request.then((response) => response.data));
