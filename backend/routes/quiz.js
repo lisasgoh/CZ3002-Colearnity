@@ -43,7 +43,7 @@ quizRouter.post('/', (req, res) => {
     Forum.findByIdAndUpdate(req.query.forum_id,
       { $push: { _quizzes: doc._id } },
       { new: true },
-      (err, post) => {
+      (err, doc) => {
         if (err) { res.send(err); }
         res.json({ doc });
       });
@@ -70,16 +70,19 @@ quizRouter.get('/filter', (req, res) => {
   });
 });
 
+// delete quiz
+// delete quiz from forum
+// delete quiz from user
 quizRouter.delete('/:id', (req, res) => {
   Quiz.findByIdAndRemove(req.params.id).then((quiz) => {
     Forum.findByIdAndUpdate(
       req.query.forum_id,
-      { $pull: { _quizzes: { _id: req.params.id } } },
+      { $pull: { _quizzes: req.params.id } },
     )
       .then((forum) => {
         Users.findByIdAndUpdate(
           req.user.id,
-          { $pull: { _quizzes: { _id: req.params.id } } },
+          { $pull: { _quizzes: req.params.id } },
         )
           .then((user) => {
             res.send('Success: Quiz Deleted');

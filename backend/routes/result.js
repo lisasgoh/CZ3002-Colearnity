@@ -3,13 +3,14 @@ const Result = require('../models/Results');
 // const Quiz = require('../models/Quiz');
 const QuizAttempt = require('../models/QuizAttempt');
 const Users = require('../models/Users');
+const Results = require('../models/Results');
 
 const resultRouter = express.Router();
 
 // post empty set of result when a new quiz is created
-resultRouter.post('/quiz_id', (req, res) => {
+resultRouter.post('/', (req, res) => {
   const result = new Result({
-    _quiz: req.params.quiz_id,
+    _quiz: req.query.quiz_id,
     result: [],
     question_results: [],
   });
@@ -39,6 +40,14 @@ resultRouter.post('/takequiz', (req, res) => {
     .then((user) => {
       user.quizzes.unshift(req.query.quiz_id);
       return user.save();
+    })
+    .then(() => {
+      Results.findOneAndUpdate({ _quiz: req.query.quiz_id },
+        {
+          results: { $push: req.body.result },
+        }, {
+          new: true,
+        });
     })
     .catch((err) => {
       res.send(err);

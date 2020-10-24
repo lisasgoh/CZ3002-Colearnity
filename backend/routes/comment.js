@@ -65,12 +65,12 @@ commentRouter.delete('/:id', (req, res) => {
   Comment.findByIdAndRemove(req.params.id).then((comment) => {
     Post.findByIdAndUpdate(
       req.query.post_id,
-      { $pull: { comments: { _id: req.params.id } } },
+      { $pull: { _comments: req.params.id } },
     )
       .then((post) => {
         Users.findByIdAndUpdate(
           req.user.id,
-          { $pull: { _comments: { _id: req.params.id } } },
+          { $pull: { _comments: req.params.id } },
         )
           .then((user) => {
             res.send('Success: Comment Deleted');
