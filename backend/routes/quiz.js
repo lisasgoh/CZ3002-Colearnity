@@ -1,18 +1,17 @@
+/* eslint-disable no-console */
 /* eslint-disable no-shadow */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
 const Quiz = require('../models/Quiz');
 const Forum = require('../models/Forum');
 const Result = require('../models/Results');
-const QuizAttempt = require('../models/QuizAttempt');
 const { Users } = require('../models/Users');
 const { Grade } = require('../models/Users');
-const resultRouter = require('./result');
 
 const quizRouter = express.Router();
 
 // create new quiz
+// Update user
 quizRouter.post('/', (req, res) => {
   // console.log(req.user);
   // console.log(req.isAuthenticated());
@@ -46,11 +45,12 @@ quizRouter.post('/', (req, res) => {
     if (err) { res.send(err); }
     Forum.findByIdAndUpdate(req.query.forum_id,
       { $push: { _quizzes: doc._id } },
-      { new: true },
-      (err, post) => {
-        if (err) { res.send(err); }
-        res.json({ doc });
-      });
+      { new: true })
+      .then(() => {
+        Users.findByIdAndUpdate(req.user.id,
+          { $push: { _quizzes: doc._id } });
+      })
+      .catch((err) => res.send(err));
   });
 });
 
@@ -125,18 +125,19 @@ quizRouter.get('/filter', (req, res) => {
   });
 });
 
+// Only for teachers
 quizRouter.delete('/:id', (req, res) => {
-  Quiz.findByIdAndRemove(req.params.id).then((quiz) => {
+  Quiz.findByIdAndRemove(req.params.id).then(() => {
     Forum.findByIdAndUpdate(
       req.query.forum_id,
       { $pull: { _quizzes: { _id: req.params.id } } },
     )
-      .then((forum) => {
+      .then(() => {
         Users.findByIdAndUpdate(
           req.user.id,
           { $pull: { _quizzes: { _id: req.params.id } } },
         )
-          .then((user) => {
+          .then(() => {
             res.send('Success: Quiz Deleted');
           })
           .catch((err) => res.send(err));

@@ -1,7 +1,17 @@
 import axios from "axios";
 const baseUrl = "http://localhost:3000/api/quiz";
+
 const getQuiz = (id) => {
   const request = axios.get(`${baseUrl}/${id}`);
+  return request.then((response) => response.data);
+};
+
+const doQuiz = (newObject, id) => {
+  const request = axios({
+      method: "post",
+      url: `${baseUrl}/${id}`,
+      data: newObject,
+  });
   return request.then((response) => response.data);
 };
 
@@ -20,5 +30,5 @@ const deleteObj = (id) => {
 };
 
 export default {
-  getQuiz, postQuiz,  deleteObj
+  getQuiz, doQuiz, postQuiz,  deleteObj
 };
