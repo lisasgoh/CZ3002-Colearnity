@@ -18,7 +18,6 @@ class StudentHomePage extends Component {
       forums: [],
       posts: [], //posts are from all forums, not user posts - consider how to populate
       isStudent: null,
-      username:"",
     };
   }
 
@@ -26,7 +25,6 @@ class StudentHomePage extends Component {
     usersService.getUserById("5f7f525d56b9835b245e8aaf").then((userData) => {
       console.log(userData);
       var i, j;
-
       for (i = 0; i < userData._forums.length; i++) {
         for (j = 0; j < userData._forums[i]._posts.length; j++) {
           this.state.posts.push(userData._forums[i]._posts[j]);
@@ -39,7 +37,6 @@ class StudentHomePage extends Component {
           forums: userData._forums,
           // posts: userData._forums.filter((forum) => forum._posts),
           isStudent: userData.is_student,
-          username: userData.username
         },
       });
     });
@@ -101,10 +98,10 @@ class StudentHomePage extends Component {
             posts.map((post) => (
               <Post
                 title={post.title}
-                username={this.state.username}
+                username={post._poster.username}
                 content={post.description}
                 numLikes={post.votes}
-                //tags={post.tags}
+                tags={post.tags}
               />
             ))}
           <Post editingaccess={true} />
