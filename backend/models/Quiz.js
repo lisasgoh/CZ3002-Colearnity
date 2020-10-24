@@ -30,6 +30,22 @@ const questionSchema = new Schema({
   },
 });
 
+const questionResultSchema = new Schema({
+  correct: Number,
+  wrong: Number,
+  qn_number: Number,
+});
+
+const resultSchema = new Schema({
+  results: [
+    {
+      type: Number, // list of quiz scores
+    },
+  ],
+  // attempts: [quizAttemptSchema],
+  question_results: [questionResultSchema], // count of correct/ wrong attempts for each question
+});
+
 const quizSchema = new Schema({
   title: {
     type: String,
@@ -49,6 +65,7 @@ const quizSchema = new Schema({
     ref: 'Forum',
   },
   questions: [questionSchema],
+  results: resultSchema,
 });
 const Quiz = mongoose.model('Quiz', quizSchema);
 

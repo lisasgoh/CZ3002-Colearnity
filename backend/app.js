@@ -23,7 +23,7 @@ const resultRouter = require('./routes/result');
 const searchRouter = require('./routes/search');
 const filterRouter = require('./routes/filter');
 
-const User = require('./models/Users');
+const { Users } = require('./models/Users');
 require('./config/passport');
 
 mongoose.promise = global.Promise;
@@ -75,7 +75,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   console.log(`deserialize: ${id}`);
-  User.findById(id, (err, user) => {
+  Users.findById(id, (err, user) => {
     done(err, user);
   });
 });

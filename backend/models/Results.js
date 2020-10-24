@@ -8,20 +8,6 @@ const questionResultSchema = new Schema({
   qn_number: Number,
 });
 
-/*
-const quizAttemptSchema = new Schema({
-  _user: {
-    type: Schema.Types.ObjectId,
-    ref: 'Users',
-  },
-  attempt: [
-    {
-      type: Number, // list of answers submitted by the user
-    },
-  ],
-});
-*/
-
 const resultSchema = new Schema({
   _quiz: {
     type: Schema.Types.ObjectId,

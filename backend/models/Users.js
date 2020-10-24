@@ -57,12 +57,12 @@ const UsersSchema = new Schema({
       ref: 'Post',
     },
   ],
-  _quizzes: [
+  /* _quizzes: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Quiz',
     },
-  ],
+  ], */
 });
 
 UsersSchema.methods.setPassword = function (password) {
@@ -102,6 +102,10 @@ UsersSchema.methods.toAuthJSON = function () {
   };
 };
 
-const User = mongoose.model('Users', UsersSchema);
+const Users = mongoose.model('Users', UsersSchema);
+const Grade = mongoose.model('Grade', GradeSchema);
 
-module.exports = User;
+module.exports = {
+  Users,
+  Grade,
+};
