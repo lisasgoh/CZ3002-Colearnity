@@ -100,6 +100,13 @@ router.get('/current', auth.required, (req, res) => {
     select: {
       _id: 1, title: 1, description: 1, votes: 1,
     },
+    populate: {
+      path: '_poster',
+      model: 'Users',
+      select: {
+        _id: 1, username: 1,
+      },
+    },
   }];
 
   return Users.findById(req.user.id).populate(populateQuery).exec((err, user) => {
@@ -126,6 +133,13 @@ router.get('/home', (req, res) => {
       model: 'Post',
       select: {
         _id: 1, title: 1, description: 1, votes: 1,
+      },
+      populate: {
+        path: '_poster',
+        model: 'Users',
+        select: {
+          _id: 1, username: 1,
+        },
       },
     },
   };
