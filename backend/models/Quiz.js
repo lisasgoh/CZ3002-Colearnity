@@ -16,6 +16,9 @@ const optionSchema = new Schema({
 });
 
 const questionSchema = new Schema({
+  questionNumber: {
+    type: Number,
+  },
   title: {
     type: String,
     required: true,

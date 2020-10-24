@@ -14,7 +14,7 @@ quizRouter.post('/', (req, res) => {
   // console.log(req.user);
   // console.log(req.isAuthenticated());
   const { questions } = req.body;
-  questions.map((question) => {
+  questions.map((question, index) => {
     const opts = question.options;
     const newOpts = opts.map((opt) => {
       const newOpt = {
@@ -25,6 +25,7 @@ quizRouter.post('/', (req, res) => {
       return newOpt;
     });
     const newQn = {
+      questionNumber: index,
       title: question.title,
       point: question.point,
       options: newOpts,

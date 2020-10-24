@@ -117,13 +117,12 @@ router.get('/current', auth.required, (req, res) => {
   // return res.json({ user: user.toAuthJSON() });
 });
 router.get('/home', (req, res) => {
-  console.log(req.isAuthenticated());
-  console.log(req.user.id);
+  // console.log(req.isAuthenticated());
+  // console.log(req.user.id);
   /*  const {
     payload: { id },
   } = req;
 */
-  console.log('DFSDrereerwrereeFS');
   const populateQuery = {
     path: '_forums',
     model: 'Forum',
