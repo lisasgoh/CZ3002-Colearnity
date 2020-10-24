@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
@@ -143,7 +144,8 @@ router.get('/home', (req, res) => {
 // Testing
 /* router.get('/:id', (req, res) => {
   console.log('DFDSFShgghfddfD');
-  Users.findById(req.params.id).populate({ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } })
+  Users.findById(req.params.id)
+    .populate({ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } })
     .populate({
       path: '_posts',
       model: 'Post',
@@ -171,6 +173,13 @@ router.get('/:id', (req, res) => {
       model: 'Post',
       select: {
         _id: 1, title: 1, description: 1, votes: 1,
+      },
+      populate: {
+        path: '_poster',
+        model: 'Users',
+        select: {
+          _id: 1, username: 1,
+        },
       },
     },
   };
