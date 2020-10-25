@@ -22,7 +22,7 @@ class StudentHomePage extends Component {
   }
 
   componentDidMount() {
-    usersService.getUserById("5f7f525d56b9835b245e8aaf").then((userData) => {
+    usersService.getUserHomePage().then((userData) => {
       console.log(userData);
       var i, j;
       for (i = 0; i < userData._forums.length; i++) {

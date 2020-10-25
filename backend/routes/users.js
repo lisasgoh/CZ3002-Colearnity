@@ -46,14 +46,6 @@ router.post('/login', auth.optional, (req, res) => {
   const {
     body: { user },
   } = req;
-  /*
-  if (!user) {
-    return res.status(401).json({
-      errors: {
-        email: 'is required',
-      },
-    });
-  } */
   if (!user.email) {
     return res.status(422).json({
       errors: {
@@ -108,21 +100,15 @@ router.get('/current', auth.required, (req, res) => {
       },
     },
   }];
-
   return Users.findById(req.user.id).populate(populateQuery).exec((err, user) => {
     if (err) res.send(err);
     res.json(user);
   });
-  // }).catch((err) => res.json(err));
-  // return res.json({ user: user.toAuthJSON() });
 });
-router.get('/home', (req, res) => {
-  // console.log(req.isAuthenticated());
-  // console.log(req.user.id);
-  /*  const {
-    payload: { id },
-  } = req;
-*/
+router.get('/home', auth.required, (req, res) => {
+  console.log('HERERERER');
+  // console.log(req.headers);
+  console.log(req.user);
   const populateQuery = {
     path: '_forums',
     model: 'Forum',
@@ -150,8 +136,6 @@ router.get('/home', (req, res) => {
       res.json(user);
     })
     .catch((err) => res.send(err));
-  // }).catch((err) => res.json(err));
-  // return res.json({ user: user.toAuthJSON() });
 });
 
 // Testing
@@ -176,7 +160,6 @@ router.get('/home', (req, res) => {
   } = req;
 */
 router.get('/:id', (req, res) => {
-  console.log('DFSDrereerwrereeFS');
   const populateQuery = {
     path: '_forums',
     model: 'Forum',
@@ -204,8 +187,6 @@ router.get('/:id', (req, res) => {
       res.json(user);
     })
     .catch((err) => res.send(err));
-// }).catch((err) => res.json(err));
-// return res.json({ user: user.toAuthJSON() });
 });
 
 module.exports = router;

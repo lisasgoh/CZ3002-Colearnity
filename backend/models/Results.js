@@ -1,3 +1,4 @@
+/*
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
@@ -25,3 +26,4 @@ const resultSchema = new Schema({
 const Results = mongoose.model('Results', resultSchema);
 
 module.exports = Results;
+*/

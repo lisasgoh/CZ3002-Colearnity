@@ -16,7 +16,6 @@ const getTokenFromHeaders = (req) => {
 
 const getTokenFromHeaders = (req) => {
   if (req.headers.token) {
-    console.log(req.headers.token);
     return req.headers.token;
   }
   return null;

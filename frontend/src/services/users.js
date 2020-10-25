@@ -6,6 +6,19 @@ const getUser = () => {
   return request.then((response) => response.data);
 };
 
+const getUserHomePage = () => {
+  const request = axios({
+    method: "get",
+    url: `${baseUrl}/home`,
+    headers: {
+      'Content-Type': 'application/json', 
+      "token": localStorage.getItem("token") 
+    },
+    withCredentials: true,
+  });
+  return request.then((response) => response.data);
+};
+
 const getUserById = (id) => {
   const request = axios.get(`${baseUrl}/${id}`);
   return request.then((response) => response.data);
@@ -17,15 +30,25 @@ const create = (newObject) => {
   return request.then((response) => response.data);
 };
 
-const login = (userData) => {
-  // const auth_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A';
-  console.log(userData);
+const login = (email, password) => {
+  const user = {
+    "user": {
+      "email": email,
+      "password": password
+    }
+  }
+  console.log(user);
   const request = axios({
     method: "post",
     url: `${baseUrl}/login`,
-    data: userData,
+    data: user,
+    withCredentials: true,
   });
-  return request.then((response) => response.data);
+  return request.then((response) => 
+  {
+    const token = response.data.user.token;
+    localStorage.setItem('token', token);
+  });
 };
 
 /*const update = (id, newObject) => {
@@ -37,4 +60,4 @@ const deleteObj = id => {
     return axios.delete(`${baseUrl}/${id}`);
 }*/
 
-export default { getUser, getUserById, create, login };
+export default { getUser, getUserById, getUserHomePage, create, login };
