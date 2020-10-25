@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const { Schema } = mongoose;
 
+/*
 const GradeSchema = new mongoose.Schema({
   _quiz: {
     type: Schema.Types.ObjectId,
@@ -18,7 +19,7 @@ const GradeSchema = new mongoose.Schema({
   marks: {
     type: Number,
   },
-});
+}); */
 
 const UsersSchema = new Schema({
   hash: String,
@@ -50,19 +51,19 @@ const UsersSchema = new Schema({
       unique: true,
     },
   ],
-  _grades: [GradeSchema],
+  // _grades: [GradeSchema],
   _posts: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Post',
     },
   ],
-  /* _quizzes: [
+  _attempts: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Quiz',
+      ref: 'QuizAttempt',
     },
-  ], */
+  ],
 });
 
 UsersSchema.methods.setPassword = function (password) {
@@ -103,9 +104,5 @@ UsersSchema.methods.toAuthJSON = function () {
 };
 
 const Users = mongoose.model('Users', UsersSchema);
-const Grade = mongoose.model('Grade', GradeSchema);
 
-module.exports = {
-  Users,
-  Grade,
-};
+module.exports = Users;

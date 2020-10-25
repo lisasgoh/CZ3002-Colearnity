@@ -16,6 +16,14 @@ const quizAttemptSchema = new Schema({
       type: Number, // list of answers submitted by the user
     },
   ],
+  results: [
+    {
+      type: Number, // score earned by each answer
+    },
+  ],
+  marks: {
+    type: Number,
+  },
 });
 
 const QuizAttempt = mongoose.model('QuizAttempt', quizAttemptSchema);

@@ -1,46 +1,55 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
-/* eslint-disable no-shadow */
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
 const Quiz = require('../models/Quiz');
 const Forum = require('../models/Forum');
-const Result = require('../models/Results');
-const { Users } = require('../models/Users');
-const { Grade } = require('../models/Users');
+const Users = require('../models/Users');
+const QuizAttempt = require('../models/QuizAttempt');
 
 const quizRouter = express.Router();
 
 // create new quiz
 // Update user
 quizRouter.post('/', (req, res) => {
+  console.log('HIEEE');
   // console.log(req.user);
   // console.log(req.isAuthenticated());
   const { questions } = req.body;
-  questions.map((question, index) => {
+  console.log(questions);
+  const quizQuestions = questions.map((question, index) => {
     const opts = question.options;
-    const newOpts = opts.map((opt) => {
+    const newOpts = opts.map((opt, optIndex) => {
       const newOpt = {
-        optionNumber: opt.optionNumber,
+        optionNumber: optIndex + 1,
         answerBody: opt.answerBody,
         isCorrectAnswer: opt.isCorrectAnswer,
       };
+      console.log(newOpt);
       return newOpt;
     });
     const newQn = {
-      questionNumber: index,
+      questionNumber: index + 1,
       title: question.title,
-      point: question.point,
+      points: question.points,
       options: newOpts,
+      correct: 0,
+      wrong: 0,
     };
+    console.log(newQn);
     return newQn;
   });
+  console.log(quizQuestions);
   const quiz = new Quiz({
     title: req.body.title,
     description: req.body.description,
     _teacher: req.user.id,
     _forum: req.query.forum_id,
-    question: questions,
+    questions: quizQuestions,
+    _attempts: [],
+    results: [],
   });
+  console.log(quiz);
   quiz.save((err, doc) => {
     if (err) { res.send(err); }
     Forum.findByIdAndUpdate(req.query.forum_id,
@@ -48,9 +57,13 @@ quizRouter.post('/', (req, res) => {
       { new: true })
       .then(() => {
         Users.findByIdAndUpdate(req.user.id,
-          { $push: { _quizzes: doc._id } });
+          { $push: { _quizzes: doc._id } })
+          .then((user) => {
+            console.log(user);
+            res.json(user);
+          });
       })
-      .catch((err) => res.send(err));
+      .catch((error) => res.send(error));
   });
 });
 
@@ -70,50 +83,59 @@ quizRouter.get('/:id', (req, res) => {
 // update quiz result
 // update quiz details
 /// check whehter user attempted before
+// [0 , 1] => first option chose for first qn, second option chose for 2nd question
 quizRouter.post('/:id', (req, res) => {
-  const { attempt } = req.body;
-  const attempts = JSON.parse(attempt);
-  /* const quizAttempt = new QuizAttempt({
-    _user: req.user.id,
-    _quiz: req.params.id,
-    attempt: attempts,
-  }); */
-  console.log(attempts);
+  console.log(req.isAuthenticated());
+  console.log(req.user);
+  let { attempt } = req.body;
+  attempt = JSON.parse(attempt);
+  console.log(attempt);
   Quiz.findById(req.params.id).then((quiz) => {
+    console.log(quiz);
     let marks = 0;
-    const grades = attempts.map((choice, index) => {
+    const results = attempt.map((choice, index) => {
       if (quiz.questions[index].options[choice].isCorrectAnswer === true) {
-        // const { points } = quiz.questions[index];
-        marks += 1;
-        return 1;
+        const { points } = quiz.questions[index];
+        quiz.questions[index].correct += 1;
+        marks += points;
+        return points;
       }
+      quiz.questions[index].wrong += 1;
       return 0;
     });
-    console.log(grades);
-    const grade = new Grade({
+    console.log(results);
+    console.log(marks);
+    console.log(req.params.id);
+    console.log(attempt);
+    console.log(req.user.id);
+    const quizAttempt = new QuizAttempt({
       _quiz: req.params.id,
-      grades,
+      _user: req.user.id,
+      attempt,
+      results,
       marks,
     });
-    console.log(grade);
-    Users.findByIdAndUpdate(req.user.id,
-      { $push: { _grades: grade } })
-      .then((user) => {
-        console.log(user);
-        Result.findOneAndUpdate({ _quiz: req.params.id },
-          { $push: { results: marks } })
-          .then((result) => {
-            console.log(`REUSLT${result}`);
-            res.json(result);
-          })
-          .catch((err) => res.send(err));
-      })
-      /* quizAttempt.save()
-          .then((attempt) => res.json(attempt))
-          .catch((err) => res.send(err)); */
-      .catch((err) => res.send(err));
-  })
-    .catch((err) => res.send(err));
+    console.log(quizAttempt);
+    // const result = quiz.results;
+    quizAttempt.save().then((savedAttempt) => {
+      console.log('HERERE');
+      console.log(savedAttempt);
+      console.log(quiz);
+      quiz._attempts.push(savedAttempt);
+      console.log('PUHSEHDD');
+      console.log(quiz);
+      quiz.results.push(marks);
+      console.log(quiz);
+      return quiz.save();
+    }).then(() => {
+      Users.findByIdAndUpdate(req.user.id,
+        { $push: { _attempts: quizAttempt } })
+        .then((user) => {
+          console.log(user);
+          res.json(quizAttempt);
+        });
+    }).catch((err) => res.send(err));
+  }).catch((err) => res.send(err));
 });
 
 // get quiz under forum given a forum id

@@ -23,7 +23,7 @@ const resultRouter = require('./routes/result');
 const searchRouter = require('./routes/search');
 const filterRouter = require('./routes/filter');
 
-const { Users } = require('./models/Users');
+const Users = require('./models/Users');
 require('./config/passport');
 
 mongoose.promise = global.Promise;

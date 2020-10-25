@@ -28,22 +28,8 @@ const questionSchema = new Schema({
   points: {
     type: Number,
   },
-});
-
-const questionResultSchema = new Schema({
   correct: Number,
   wrong: Number,
-  qn_number: Number,
-});
-
-const resultSchema = new Schema({
-  results: [
-    {
-      type: Number, // list of quiz scores
-    },
-  ],
-  // attempts: [quizAttemptSchema],
-  question_results: [questionResultSchema], // count of correct/ wrong attempts for each question
 });
 
 const quizSchema = new Schema({
@@ -65,7 +51,17 @@ const quizSchema = new Schema({
     ref: 'Forum',
   },
   questions: [questionSchema],
-  results: resultSchema,
+  results: [
+    {
+      type: Number, // list of quiz scores
+    },
+  ],
+  _attempts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'QuizAttempt',
+    },
+  ],
 });
 const Quiz = mongoose.model('Quiz', quizSchema);
 
