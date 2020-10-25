@@ -1,5 +1,5 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
 const Quiz = require('../models/Quiz');
@@ -12,7 +12,6 @@ const quizRouter = express.Router();
 // create new quiz
 // Update user
 quizRouter.post('/', (req, res) => {
-  console.log('HIEEE');
   // console.log(req.user);
   // console.log(req.isAuthenticated());
   const { questions } = req.body;
@@ -25,7 +24,6 @@ quizRouter.post('/', (req, res) => {
         answerBody: opt.answerBody,
         isCorrectAnswer: opt.isCorrectAnswer,
       };
-      console.log(newOpt);
       return newOpt;
     });
     const newQn = {
@@ -36,10 +34,8 @@ quizRouter.post('/', (req, res) => {
       correct: 0,
       wrong: 0,
     };
-    console.log(newQn);
     return newQn;
   });
-  console.log(quizQuestions);
   const quiz = new Quiz({
     title: req.body.title,
     description: req.body.description,
@@ -85,13 +81,10 @@ quizRouter.get('/:id', (req, res) => {
 /// check whehter user attempted before
 // [0 , 1] => first option chose for first qn, second option chose for 2nd question
 quizRouter.post('/:id', (req, res) => {
-  console.log(req.isAuthenticated());
-  console.log(req.user);
   let { attempt } = req.body;
   attempt = JSON.parse(attempt);
   console.log(attempt);
   Quiz.findById(req.params.id).then((quiz) => {
-    console.log(quiz);
     let marks = 0;
     const results = attempt.map((choice, index) => {
       if (quiz.questions[index].options[choice].isCorrectAnswer === true) {
@@ -103,11 +96,6 @@ quizRouter.post('/:id', (req, res) => {
       quiz.questions[index].wrong += 1;
       return 0;
     });
-    console.log(results);
-    console.log(marks);
-    console.log(req.params.id);
-    console.log(attempt);
-    console.log(req.user.id);
     const quizAttempt = new QuizAttempt({
       _quiz: req.params.id,
       _user: req.user.id,
@@ -118,20 +106,14 @@ quizRouter.post('/:id', (req, res) => {
     console.log(quizAttempt);
     // const result = quiz.results;
     quizAttempt.save().then((savedAttempt) => {
-      console.log('HERERE');
-      console.log(savedAttempt);
-      console.log(quiz);
       quiz._attempts.push(savedAttempt);
-      console.log('PUHSEHDD');
-      console.log(quiz);
       quiz.results.push(marks);
       console.log(quiz);
       return quiz.save();
     }).then(() => {
       Users.findByIdAndUpdate(req.user.id,
         { $push: { _attempts: quizAttempt } })
-        .then((user) => {
-          console.log(user);
+        .then(() => {
           res.json(quizAttempt);
         });
     }).catch((err) => res.send(err));
