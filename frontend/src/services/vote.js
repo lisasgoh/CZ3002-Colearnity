@@ -7,7 +7,7 @@ const voteComment = (newObject, comment_id) => {
   const request = axios({
     method: "post",
     url: `${baseUrl}?comment_id=${comment_id}`,
-    headers: { authorization: `Token ${auth_token}` },
+    headers: { token: auth_token },
     data: newObject,
   });
   console.log(request.then((response) => response.data));
@@ -20,7 +20,7 @@ const votePost = (newObject, post_id) => {
   const request = axios({
     method: "post",
     url: `${baseUrl}?post_id=${post_id}`,
-    headers: { authorization: `Token ${auth_token}` },
+    headers: { token: auth_token },
     data: newObject,
   });
   console.log(request.then((response) => response.data));

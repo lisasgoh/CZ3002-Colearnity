@@ -16,6 +16,9 @@ const optionSchema = new Schema({
 });
 
 const questionSchema = new Schema({
+  questionNumber: {
+    type: Number,
+  },
   title: {
     type: String,
     required: true,
@@ -25,6 +28,8 @@ const questionSchema = new Schema({
   points: {
     type: Number,
   },
+  correct: Number,
+  wrong: Number,
 });
 
 const quizSchema = new Schema({
@@ -46,6 +51,17 @@ const quizSchema = new Schema({
     ref: 'Forum',
   },
   questions: [questionSchema],
+  results: [
+    {
+      type: Number, // list of quiz scores
+    },
+  ],
+  _attempts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'QuizAttempt',
+    },
+  ],
 });
 const Quiz = mongoose.model('Quiz', quizSchema);
 

@@ -12,7 +12,7 @@ const createSubForum = (newObject, forum_id) => {
   const request = axios({
     method: "post",
     url: `${baseUrl}?forum_id=${forum_id}`,
-    headers: { authorization: `Token ${auth_token}` },
+    headers: { token: auth_token },
     data: newObject,
   });
   return request.then((response) => response.data);
@@ -24,7 +24,7 @@ const createMainForum = (newObject) => {
   const request = axios({
     method: "post",
     url: baseUrl,
-    headers: { authorization: `Token ${auth_token}` },
+    headers: { token: auth_token },
     data: newObject,
   });
   console.log(request.then((response) => response.data));
@@ -37,7 +37,7 @@ const toggleSubscribe = (id) => {
   const request = axios({
     method: "post",
     url: `${baseUrl}/${id}`,
-    headers: { authorization: `Token ${auth_token}` },
+    headers: { token: auth_token },
   });
   console.log(request.then((response) => response.data));
   return request.then((response) => response.data);

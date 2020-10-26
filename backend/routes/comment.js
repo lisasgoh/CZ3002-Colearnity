@@ -1,6 +1,6 @@
+/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-shadow */
-/* eslint-disable no-unused-vars */
 const express = require('express');
 const Comment = require('../models/Comment');
 const Post = require('../models/Post');
@@ -62,17 +62,17 @@ commentRouter.put('/:id', (req, res) => {
 // delete comments
 // delete from posts
 commentRouter.delete('/:id', (req, res) => {
-  Comment.findByIdAndRemove(req.params.id).then((comment) => {
+  Comment.findByIdAndRemove(req.params.id).then(() => {
     Post.findByIdAndUpdate(
       req.query.post_id,
       { $pull: { _comments: req.params.id } },
     )
-      .then((post) => {
+      .then(() => {
         Users.findByIdAndUpdate(
           req.user.id,
           { $pull: { _comments: req.params.id } },
         )
-          .then((user) => {
+          .then(() => {
             res.send('Success: Comment Deleted');
           })
           .catch((err) => res.send(err));

@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 const express = require('express');
 const Post = require('../models/Post');
 const Forum = require('../models/Forum');
@@ -107,7 +106,7 @@ postRouter.put('/:id', (req, res) => {
 // delete post from forum
 // delete post from user
 postRouter.delete('/:id', (req, res) => {
-  Post.findByIdAndRemove(req.params.id).then((post) => {
+  Post.findByIdAndRemove(req.params.id).then(() => {
     Forum.findByIdAndUpdate(
       req.query.forum_id,
       { $pull: { _posts: { _id: req.params.id } } },
@@ -116,7 +115,7 @@ postRouter.delete('/:id', (req, res) => {
         req.user.id,
         { $pull: { _posts: { _id: req.params.id } } },
       )
-        .then((deletedPost) => {
+        .then(() => {
           res.send('Success: Post Deleted');
         })
         .catch((err) => res.json(err));

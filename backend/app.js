@@ -23,7 +23,7 @@ const resultRouter = require('./routes/result');
 const searchRouter = require('./routes/search');
 const filterRouter = require('./routes/filter');
 
-const User = require('./models/Users');
+const Users = require('./models/Users');
 require('./config/passport');
 
 mongoose.promise = global.Promise;
@@ -51,7 +51,11 @@ mongoose
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(cors());
+app.use(cors({
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  origin: 'http://localhost:3001',
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -75,7 +79,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   console.log(`deserialize: ${id}`);
-  User.findById(id, (err, user) => {
+  Users.findById(id, (err, user) => {
     done(err, user);
   });
 });

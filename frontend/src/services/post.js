@@ -19,7 +19,7 @@ const create = (newObject, forum_id) => {
   const request = axios({
     method: "post",
     url: `${baseUrl}?forum_id=${forum_id}`,
-    headers: { authorization: `Token ${auth_token}` },
+    headers: { token: auth_token },
     data: newObject,
   });
   console.log(request.then((response) => response.data));

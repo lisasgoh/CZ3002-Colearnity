@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
@@ -45,14 +46,6 @@ router.post('/login', auth.optional, (req, res) => {
   const {
     body: { user },
   } = req;
-  /*
-  if (!user) {
-    return res.status(401).json({
-      errors: {
-        email: 'is required',
-      },
-    });
-  } */
   if (!user.email) {
     return res.status(422).json({
       errors: {
@@ -99,23 +92,23 @@ router.get('/current', auth.required, (req, res) => {
     select: {
       _id: 1, title: 1, description: 1, votes: 1,
     },
+    populate: {
+      path: '_poster',
+      model: 'Users',
+      select: {
+        _id: 1, username: 1,
+      },
+    },
   }];
-
   return Users.findById(req.user.id).populate(populateQuery).exec((err, user) => {
     if (err) res.send(err);
     res.json(user);
   });
-  // }).catch((err) => res.json(err));
-  // return res.json({ user: user.toAuthJSON() });
 });
-router.get('/home', (req, res) => {
-  console.log(req.isAuthenticated());
-  console.log(req.user.id);
-  /*  const {
-    payload: { id },
-  } = req;
-*/
-  console.log('DFSDrereerwrereeFS');
+router.get('/home', auth.required, (req, res) => {
+  console.log('HERERERER');
+  // console.log(req.headers);
+  console.log(req.user);
   const populateQuery = {
     path: '_forums',
     model: 'Forum',
@@ -125,6 +118,13 @@ router.get('/home', (req, res) => {
       model: 'Post',
       select: {
         _id: 1, title: 1, description: 1, votes: 1,
+      },
+      populate: {
+        path: '_poster',
+        model: 'Users',
+        select: {
+          _id: 1, username: 1,
+        },
       },
     },
   };
@@ -136,14 +136,13 @@ router.get('/home', (req, res) => {
       res.json(user);
     })
     .catch((err) => res.send(err));
-  // }).catch((err) => res.json(err));
-  // return res.json({ user: user.toAuthJSON() });
 });
 
 // Testing
 /* router.get('/:id', (req, res) => {
   console.log('DFDSFShgghfddfD');
-  Users.findById(req.params.id).populate({ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } })
+  Users.findById(req.params.id)
+    .populate({ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } })
     .populate({
       path: '_posts',
       model: 'Post',
@@ -161,7 +160,6 @@ router.get('/home', (req, res) => {
   } = req;
 */
 router.get('/:id', (req, res) => {
-  console.log('DFSDrereerwrereeFS');
   const populateQuery = {
     path: '_forums',
     model: 'Forum',
@@ -171,6 +169,13 @@ router.get('/:id', (req, res) => {
       model: 'Post',
       select: {
         _id: 1, title: 1, description: 1, votes: 1,
+      },
+      populate: {
+        path: '_poster',
+        model: 'Users',
+        select: {
+          _id: 1, username: 1,
+        },
       },
     },
   };
@@ -182,8 +187,6 @@ router.get('/:id', (req, res) => {
       res.json(user);
     })
     .catch((err) => res.send(err));
-// }).catch((err) => res.json(err));
-// return res.json({ user: user.toAuthJSON() });
 });
 
 module.exports = router;

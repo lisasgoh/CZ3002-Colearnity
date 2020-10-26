@@ -1,3 +1,4 @@
+/*
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
@@ -7,20 +8,6 @@ const questionResultSchema = new Schema({
   wrong: Number,
   qn_number: Number,
 });
-
-/*
-const quizAttemptSchema = new Schema({
-  _user: {
-    type: Schema.Types.ObjectId,
-    ref: 'Users',
-  },
-  attempt: [
-    {
-      type: Number, // list of answers submitted by the user
-    },
-  ],
-});
-*/
 
 const resultSchema = new Schema({
   _quiz: {
@@ -39,3 +26,4 @@ const resultSchema = new Schema({
 const Results = mongoose.model('Results', resultSchema);
 
 module.exports = Results;
+*/
