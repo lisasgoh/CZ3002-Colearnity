@@ -3,8 +3,21 @@ import  Post  from "../../components/Post/Post";
 import "./StudentProfilePage.css";
 import ProfilePic from "../../assets/profile_placeholder.png";
 import ProfileCard from "./ProfileCard";
+const axios = require('axios');
 
 class StudentProfilePage extends Component {
+    componentDidMount(){
+            axios.get('http://localhost:3000/api/users/5f81b1e5cf80aa72333ac5bf', {
+                params: {
+                  ID: 12345
+                }
+              })
+              .then(function (response) {
+                console.log(response);
+              });
+    }
+
+
     render(){
         const ColoredLine = ({ color }) => (
             <hr
@@ -16,12 +29,17 @@ class StudentProfilePage extends Component {
                 }}
             />
         );
+
+        this.state={
+            name:"Testing name",
+        }
+
         return(
             <div className="container">
                <img className="profilepic"
                     src={ProfilePic} 
                     alt="Logo"/>
-                <h1>Student Name</h1>
+                <h1>{this.state.name}</h1>
                 <ColoredLine color="grey" />
 
                 <div className="row_container">
