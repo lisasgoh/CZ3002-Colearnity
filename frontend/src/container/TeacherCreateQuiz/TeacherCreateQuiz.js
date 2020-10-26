@@ -6,10 +6,11 @@ import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import Icon from "@material-ui/core/Icon";
 import "./TeacherCreateQuiz.css";
-
 import API from "../../utils/API";
+import createQuizService from "../../services/quiz";
 
 class TeacherCreateQuiz extends Component {
+  
   constructor(props) {
     super(props);
 
@@ -17,7 +18,26 @@ class TeacherCreateQuiz extends Component {
       subforumTitle: null,
       subforumDesc: null,
       quizzes: null,
+      quizTitle: null,
+      questions:[],
+      index:2,
+      quizIndex:[{id:1},{id:2}],
+      qnTitle:"",
+      option1:"",
+      option2:"",
+      option3:"",
+      option4:"",
+      optionChosen:"",
     };
+  }
+
+  inputHandler=(event)=> {
+    this.setState({
+      ...this.state,
+      ...{
+        [event.target.name]: event.target.value,
+      },
+    });
   }
 
   componentDidMount() {
@@ -35,9 +55,74 @@ class TeacherCreateQuiz extends Component {
     });
   }
 
+  addQuestion=()=>{
+    this.setState({
+      quizIndex:[...this.state.quizIndex, {id:++this.state.index}]
+    });
+  }
+  
+  addQnList=()=>{
+    this.setState({
+        questions:[...this.state.questions,{
+          "title": this.state.qnTitle,
+          "options":[{
+            "optionNumber":1,
+            "answerBody":this.state.option1,
+            "isCorrectAnswer":"Option 1".localeCompare(this.state.optionChosen)===0,
+          },{
+            "optionNumber":2,
+            "answerBody":this.state.option2,
+            "isCorrectAnswer":"Option 2".localeCompare(this.state.optionChosen)===0,
+          },{
+            "optionNumber":3,
+            "answerBody":this.state.option3,
+            "isCorrectAnswer":"Option 3".localeCompare(this.state.optionChosen)===0,
+          },{
+            "optionNumber":4,
+            "answerBody":this.state.option4,
+            "isCorrectAnswer":"Option 4".localeCompare(this.state.optionChosen)===0,
+          },]
+        }]
+    });
+  }
+
+  logQn=()=>{
+    console.log(this.state.questions);
+  }
+
+  menuOpt=(evt)=>{
+    this.setState({
+        optionChosen: evt.target.value,
+    });
+  }
+    setQuizTitle=(evnt)=>{
+      this.setState({
+        quizTitle: evnt.target.value,
+    });
+  }
+
+  handleSubmit = async(event)=> {
+    const {
+      quizTitle, questions
+    } = this.state
+    console.log("WE DONE IT" +quizTitle);
+    event.preventDefault();
+    try {
+      await createQuizService.postQuiz(quizTitle,questions,"5f8521b48e9dffee9f62e06a");
+    } catch (e) {
+      alert("IS IT THIS?" + e.message);
+    }
+  }
+  
+
   render() {
+    var index = 2;
     const { subforumTitle, subforumDesc, quizzes } = this.state;
     let combined = ["icon", "fa fa-plus-circle"].join(" ");
+
+
+
+
     return (
       <div className="teachercreatequiz">
         <div className="leftsection">
@@ -78,12 +163,16 @@ class TeacherCreateQuiz extends Component {
           </div>
 
           <p>Quiz Title</p>
-          <TextField label="Enter Quiz Title" variant="outlined" />
-
-          <NewQuizQn qnNum="1" />
-          <NewQuizQn qnNum="2" />
-          <Button color="primary">Add New Question</Button>
-          <Button color="primary">Submit New Quiz</Button>
+          <TextField label="Enter Quiz Title" variant="outlined" onChange={this.setQuizTitle} />
+          {
+            this.state.quizIndex.map((quizQn, index)=>{
+              return (
+                <NewQuizQn qnNum={quizQn.id} click={this.inputHandler} addToQnList={this.addQnList} logQn={this.logQn} logMenuOpt ={this.menuOpt}/>
+              )
+            })
+          }
+          <Button color="primary" onClick={this.addQuestion}>Add New Question</Button>
+          <Button color="primary" onClick={this.handleSubmit}>Submit New Quiz</Button>
         </div>
       </div>
     );
