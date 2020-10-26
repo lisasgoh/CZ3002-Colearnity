@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-shadow */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-param-reassign */
@@ -14,50 +15,68 @@ const forumRouter = express.Router();
 // if req.query.forum is valid id
 forumRouter.post('/', (req, res) => {
   // console.log("HI");
-  console.log(req.user);
+  // console.log(req.user);
   console.log(req.isAuthenticated());
   const forum = new Forum({
     name: req.body.name,
     description: req.body.description,
     _teacher: req.user.id,
     is_sub: req.body.is_sub,
+    _parentforum: req.query.forum_id,
   });
-  if (req.body.is_sub === true) { // add parent forum id and subforums list
-    forum._parentforum = req.query.forum_id;
-    Forum.findById(req.query.forum_id).then((forum) => {
-      forum._subforums.unshift(req.query.forum_id);
-      return forum.save();
+  if (req.body.is_sub === 'true') { // add parent forum id and subforums list
+    console.log('IS SUBFORUM');
+    forum.save().then((forum) => {
+      console.log(forum);
+      Forum.findByIdAndUpdate(req.query.forum_id,
+        { $push: { _subforums: forum._id } })
+        .then((parentForum) => {
+          console.log(parentForum);
+          Users.findByIdAndUpdate(req.user.id,
+            { $push: { _created_forums: forum._id } })
+            .then((user) => {
+              console.log(user);
+              res.json(forum);
+            });
+          // res.json(forum);
+        })
+        .catch((err) => res.send(err));
     });
-  }
-  return forum.save()
-    .then(() => {
+  } else {
+    forum.save().then((forum) => {
       res.json(forum);
     })
-    .catch((err) => {
-      res.send(err);
-    });
+      .catch((err) => res.send(err));
+  }
 });
 
 // TODO : un/Subscribe to forum
+// Only can sub to main forum, not sub forum
 forumRouter.post('/:id', (req, res) => {
   console.log('HI');
-  console.log(req.user);
+  // console.log(req.user);
   console.log(req.isAuthenticated());
-  Users.findById(req.user.id)
-    .then((user) => {
-      if (user._forums.includes(req.params.id)) {
-        user._forums.remove(req.params.id);
-      } else {
-        user._forums.unshift(req.params.id);
-      }
-      return user.save();
-    })
-    .then((user) => {
-      res.json(user);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
+  Forum.findById(req.params.id).then((forum) => {
+    if (forum.is_sub === true) {
+      res.status(401);
+    }
+  }).then(() => {
+    Users.findById(req.user.id)
+      .then((user) => {
+        if (user._forums.includes(req.params.id)) {
+          user._forums.remove(req.params.id);
+        } else {
+          user._forums.unshift(req.params.id);
+        }
+        return user.save();
+      })
+      .then((user) => {
+        res.json(user);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  });
 });
 
 // get forum details todo -> populate fields --> consider sorting
@@ -115,13 +134,17 @@ forumRouter.put('/:id', (req, res) => {
 });
 
 // delete forum
-// TODO: delete all posts
-// delete from users (cascade delete)
+// delete from users (cascade delete) (parent references -> )
 forumRouter.delete('/:id', (req, res) => {
   Forum.findByIdAndRemove(req.params.id).then(() => {
     Users.update(
       {},
-      { $pull: { _forums: { _id: req.params.id } } },
+      {
+        $pull: {
+          _forums: { _id: req.params.id },
+          _created_forums: { _id: req.params.id },
+        },
+      },
       { multi: true },
       (err) => {
         if (err) res.send(err);

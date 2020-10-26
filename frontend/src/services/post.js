@@ -14,13 +14,16 @@ const getForumPosts = (forum_id) => {
   return request.then((response) => response.data);
 };
 const create = (newObject, forum_id) => {
-  const auth_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A";
+  // const auth_token =
+   //  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A";
   const request = axios({
     method: "post",
     url: `${baseUrl}?forum_id=${forum_id}`,
-    headers: { token: auth_token },
+    headers: {
+      'Content-Type': 'application/json',
+      "token": localStorage.getItem("token")  },
     data: newObject,
+    withCredentials: true,
   });
   console.log(request.then((response) => response.data));
   return request.then((response) => response.data);

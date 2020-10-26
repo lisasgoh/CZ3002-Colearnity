@@ -4,7 +4,6 @@
 const express = require('express');
 const Comment = require('../models/Comment');
 const Post = require('../models/Post');
-const Users = require('../models/Users');
 
 const commentRouter = express.Router();
 
@@ -61,7 +60,7 @@ commentRouter.put('/:id', (req, res) => {
 
 // delete comments
 // delete from posts
-commentRouter.delete('/:id', (req, res) => {
+/* commentRouter.delete('/:id', (req, res) => {
   Comment.findByIdAndRemove(req.params.id).then(() => {
     Post.findByIdAndUpdate(
       req.query.post_id,
@@ -78,6 +77,12 @@ commentRouter.delete('/:id', (req, res) => {
           .catch((err) => res.send(err));
       }).catch((err) => res.send(err));
   }).catch((err) => res.send(err));
+}); */
+commentRouter.delete('/:id', (req, res) => {
+  Comment.findByIdAndDelete(req.params.id)
+    .then((deletedComment) => {
+      res.json(deletedComment);
+    }).catch((err) => res.send(err));
 });
 
 module.exports = commentRouter;

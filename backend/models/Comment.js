@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const Vote = require('./Vote');
+const Post = require('./Post');
 
 const commentSchema = new Schema(
   {
@@ -37,11 +38,27 @@ const populateComments = function (next) {
 commentSchema.pre('find', populateComments);
 commentSchema.pre('findById', populateComments);
 
-commentSchema.pre('remove', function (next) {
-  Vote.remove({ _comment: this._id }).exec();
+const cascadeDelete = async function (next) {
+  const comment = await this.model.findOne(this.getQuery());
+  console.log(`Removing ${comment._id}`);
+  Vote.deleteOne({ _comment: comment._id }).exec();
   next();
-});
+};
 
+const deleteFromParent = async function (next) {
+  const comment = await this.model.findOne(this.getQuery());
+  console.log(`Removing ${comment._id}`);
+  Post.updateOne(
+    { _comments: comment._id },
+    { $pull: { _comments: comment._id } },
+  ).exec();
+  next();
+};
+
+commentSchema.pre('remove', cascadeDelete);
+commentSchema.pre('findOneAndDelete', cascadeDelete);
+commentSchema.pre('remove', deleteFromParent);
+commentSchema.pre('findOneAndDelete', deleteFromParent);
 const Comment = mongoose.model('Comment', commentSchema);
 
 module.exports = Comment;

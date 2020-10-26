@@ -51,6 +51,13 @@ const UsersSchema = new Schema({
       unique: true,
     },
   ],
+  _created_forums: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Forum',
+      unique: true,
+    },
+  ],
   // _grades: [GradeSchema],
   _posts: [
     {

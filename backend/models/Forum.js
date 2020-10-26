@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const Post = require('./Post');
+const Quiz = require('./Quiz');
 
 const forumSchema = new Schema({
   name: {
@@ -48,11 +49,13 @@ const forumSchema = new Schema({
 
 });
 
-forumSchema.pre('findByIdAndRemove', function (next) {
+const Forum = mongoose.model('Forum', forumSchema);
+
+forumSchema.pre('remove', function (next) {
+  Forum.remove({ _parentforum: this.id }).exec();
   Post.remove({ _forum: this.id }).exec();
+  Quiz.remove({ _forum: this.id }).exec();
   next();
 });
-
-const Forum = mongoose.model('Forum', forumSchema);
 
 module.exports = Forum;

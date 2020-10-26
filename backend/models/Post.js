@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 const Comment = require('./Comment');
+const Forum = require('./Forum');
 const Vote = require('./Vote');
+const Users = require('./Users');
 
 const TagSchema = new mongoose.Schema({
   tag: {
@@ -16,7 +18,6 @@ const postSchema = new Schema(
     title: {
       type: String,
       required: true,
-      maxlength: 25,
     },
     description: {
       type: String,
@@ -76,11 +77,30 @@ postSchema.pre("findOne", populateComments);
 
 postSchema.pre("find", populateForum);
 postSchema.pre("findOne", populateForum); */
-postSchema.pre('findByIdAndRemove', function (next) {
+const cascadeDelete = function (next) {
   Comment.remove({ _post: this.id }).exec();
   Vote.remove({ _post: this.id }).exec();
   next();
-});
+};
+
+const deleteFromParent = function (next) {
+  Forum.update(
+    {},
+    { $pull: { _posts: { _id: this.id } } },
+  ).then(() => {
+    Users.update(
+      {},
+      { $pull: { _posts: { _id: this.id } } },
+    );
+  });
+  next();
+};
+
+postSchema.pre('findByIdAndRemove', cascadeDelete);
+postSchema.pre('remove', cascadeDelete);
+
+postSchema.pre('findByIdAndRemove', deleteFromParent);
+postSchema.pre('remove', deleteFromParent);
 
 const Post = mongoose.model('Post', postSchema);
 

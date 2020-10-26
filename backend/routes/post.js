@@ -105,7 +105,7 @@ postRouter.put('/:id', (req, res) => {
 // delete post
 // delete post from forum
 // delete post from user
-postRouter.delete('/:id', (req, res) => {
+/* postRouter.delete('/:id', (req, res) => {
   Post.findByIdAndRemove(req.params.id).then(() => {
     Forum.findByIdAndUpdate(
       req.query.forum_id,
@@ -121,6 +121,11 @@ postRouter.delete('/:id', (req, res) => {
         .catch((err) => res.json(err));
     }).catch((err) => res.json(err));
   }).catch((err) => res.json(err));
+}); */
+postRouter.delete('/:id', (req, res) => {
+  Post.findByIdAndRemove(req.params.id)
+    .then((removedPost) => res.json(removedPost))
+    .catch((err) => res.send(err));
 });
 
 module.exports = postRouter;
