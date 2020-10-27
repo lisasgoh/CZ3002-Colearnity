@@ -15,11 +15,12 @@ commentRouter.get('/:id', (req, res) => {
   });
 });
 
+/*
 // get all comments (test)
 commentRouter.get('/', (req, res) => {
-  Comment.find({}).then((comments) => res.json(comments));
+  Comment.find({ _post: req.query.post_id }).then((comments) => res.json(comments));
 });
-
+*/
 // create new comment
 // TODO: test whether text is null?
 commentRouter.post('/', (req, res) => {

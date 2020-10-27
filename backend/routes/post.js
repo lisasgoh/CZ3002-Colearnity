@@ -36,9 +36,9 @@ postRouter.get('/', (req, res) => {
 // TODO: add to forum & user db
 postRouter.post('/', (req, res) => {
   console.log('FDSFSDFDSfSD');
-  console.log(req.body);
-  console.log(req.query);
-  console.log(req.user);
+  // console.log(req.body);
+  // console.log(req.query);
+  // console.log(req.user);
   // const temp = '5f7f525d56b9835b245e8aaf';
   // check if user is part of forum
   const post = new Post({
@@ -89,7 +89,7 @@ postRouter.post('/', (req, res) => {
         user._posts.unshift(post);
         console.log(user);
         return user.save();
-      }).then((user) => res.json(user))
+      }).then(() => res.json(post))
         .catch((error) => res.json(error))));
 });
 
@@ -122,8 +122,10 @@ postRouter.put('/:id', (req, res) => {
     }).catch((err) => res.json(err));
   }).catch((err) => res.json(err));
 }); */
+// TO DO : only delete when user is owner of post
 postRouter.delete('/:id', (req, res) => {
-  Post.findByIdAndRemove(req.params.id)
+  console.log('Delete post!');
+  Post.findByIdAndDelete(req.params.id)
     .then((removedPost) => res.json(removedPost))
     .catch((err) => res.send(err));
 });
