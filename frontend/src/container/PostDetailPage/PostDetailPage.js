@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Post from "../../components/Post/Post";
 import Button from "@material-ui/core/Button";
+import TextField from '@material-ui/core/TextField';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
@@ -11,7 +13,15 @@ import AltComments from "./../../components/AltComments/AltComments";
 
 import postService from "./../../services/post";
 
-export class PostDetailPage extends Component {
+const useStyles = (theme) => ({
+  textField: {
+    top: '20px',
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+});
+
+class PostDetailPage extends Component {
   constructor(props) {
     super(props);
     // const id = this.props.match.params.id;
@@ -45,6 +55,7 @@ export class PostDetailPage extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <div className="postdetailpage">
         <div className="leftsection">
@@ -75,6 +86,12 @@ export class PostDetailPage extends Component {
             title={this.state.postTitle}
             content={this.state.postDesc}
           />
+          <TextField
+            variant="outlined"
+            className = { classes.textField }
+            label=" New Comment"
+            value={this.props.reply}
+          />
           <div className="topbar">
             <h2>Replies</h2>
           </div>
@@ -93,4 +110,4 @@ export class PostDetailPage extends Component {
   }
 }
 
-export default PostDetailPage;
+export default withStyles(useStyles) (PostDetailPage);
