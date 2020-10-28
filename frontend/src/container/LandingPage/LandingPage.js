@@ -5,76 +5,24 @@ import "./LandingPage.css";
 
 class LandingPage extends Component {
     render(){
-        return(
-                <div className="landing">
-                    <div className="ls-btn">
-                        <Link to="/login">
-                            <Button>Login</Button>
-                        </Link>
+    return(
+            <div className="landing">
+                <div className="landingtext">
+                    <div className="landingtitle">Colearnity</div>
+                    <div className="landingdesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                        pretium orci eget lobortis porttitor. Praesent consectetur lacus eu
+                        egestas blandit. Mauris ultrices consequat diam sit amet ornare.
+                        Etiam elementum felis in nisl condimentum scelerisque. Integer
+                        scelerisque turpis at ipsum aliquam elementum. Praesent non posuere
+                        sem, eget varius purus.
                     </div>
                     <div className="ls-btn">
                         <Link to="/signup">
-                            <Button>Sign Up</Button>
-                        </Link>
-                    </div>
-                    <div className="ls-btn">
-                        <Link to="/forumpage">
-                            <Button>Forum Page</Button>
-                        </Link>
-                    </div>
-                    <div className="ls-btn">
-                        <Link to="/subforumpage">
-                            <Button>Suforum Page</Button>
-                        </Link>
-                    </div>
-
-                    <div className="ls-btn">
-                        <Link to="/createpost">
-                            <Button>Create Post</Button>
-                        </Link>
-                    </div>
-
-                    <div className="ls-btn">
-                        <Link to="/reviewquizpage">
-                            <Button>Review Quiz Page</Button>
-                        </Link>
-                    </div>
-                    <div className="ls-btn">
-                        <Link to="/takequizpage">
-                            <Button>Take Quiz Page</Button>
-                        </Link>
-                    </div>
-                    <div className="ls-btn">
-                        <Link to="/teacherforumpage">
-                            <Button>Teacher Forum Page</Button>
-                        </Link>
-                    </div>
-                    <div className="ls-btn">
-                        <Link to="/teachersubforumpage">
-                            <Button>Teacher Sub Forum Page</Button>
-                        </Link>
-                    </div>
-                    <div className="ls-btn">
-                        <Link to="/postdetailpage">
-                            <Button>Post Detail Page</Button>
-                        </Link>
-                    </div>
-                    <div className="ls-btn">
-                        <Link to="/teachercreatequiz">
-                            <Button>Teacher Create Quiz</Button>
-                        </Link>
-                    </div>
-                    <div className="ls-btn">
-                        <Link to="/replypage">
-                            <Button>Reply Page</Button>
-                        </Link>
-                    </div>
-                    <div className="ls-btn">
-                        <Link to="/createforum">
-                            <Button>Create Forum</Button>
+                            <Button>Get Started</Button>
                         </Link>
                     </div>
                 </div>
+            </div>
         );
     }
 
