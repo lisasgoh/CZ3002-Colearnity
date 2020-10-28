@@ -44,14 +44,15 @@ class PostDetailPage extends Component {
   componentDidMount() {
     postService.getIndivPost(`${this.state.id}`).then((post) => {
       // console.log(forumData);
-      console.log(post);
+      console.log(post.votes);
       this.setState({
         ...this.state,
         ...{
+          postVotes: post.votes,
           postTitle: post.title,
           postDesc: post.description,
           postComments: post._comments,
-          postVotes: post.votes,
+          
           poster: post._poster.username,
           postTime: post.createdAt,
         },

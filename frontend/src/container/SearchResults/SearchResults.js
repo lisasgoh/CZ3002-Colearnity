@@ -4,10 +4,13 @@ import ForumButton from "../../components/ForumButtons/ForumButton";
 import Filter from "../../components/Filter/Filter";
 import "./SearchResults.css";
 
-class SearchResults extends Component {
-  render() {
-    const { classes } = this.props;
+const SearchResults =(props)=>{
+
+    
+  console.log(props.location.state);
+    //const { classes } = this.props;
     return (
+      
       <div className="searchresults">
         <div className="leftsection">
           <h2>Related Forums</h2>
@@ -32,20 +35,14 @@ class SearchResults extends Component {
 
         <div className="rightsection">
           <div className="topbar">
-            <h2>Recent Posts for searchQuery (not sure how to dynamic)</h2>
-
+            <h2>Recent Posts for "{props.location.state}"</h2>
             <Filter />
           </div>
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
-          <Post />
+          
         </div>
       </div>
     );
-  }
+  
 }
 
 export default SearchResults;

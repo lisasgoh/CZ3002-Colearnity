@@ -23,6 +23,7 @@ export default function Post(props) {
   const [likesDisplay, setLikesDisplay] = useState(props.numLikes);
 
   const setLikesHandler =()=>{
+    console.log(likesDisplay);
     setLiked(!liked);
     console.log("SET LIKED? " + liked);
     if (!liked){
@@ -100,7 +101,7 @@ export default function Post(props) {
         >
           Like
         </Button>
-        <span> {likesDisplay} Likes</span>
+        <span> {likesDisplay} Votes</span>
       </div>
 
       <div className="tags">
