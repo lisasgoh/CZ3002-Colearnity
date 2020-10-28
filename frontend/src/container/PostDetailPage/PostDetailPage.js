@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import Post from "../../components/Post/Post";
+import "./PostDetailPage.css";
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import { Link } from "react-router-dom";
-import "./PostDetailPage.css";
 import Comments from "./../../components/Comments/Comments";
 import AltComments from "./../../components/AltComments/AltComments";
-
 import postService from "./../../services/post";
 
 const useStyles = (theme) => ({
@@ -19,7 +20,10 @@ const useStyles = (theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
-  
+  submitBtn: {
+    top: '40px',
+    textAlign: 'right',
+  }
 });
 
 class PostDetailPage extends Component {
@@ -87,13 +91,17 @@ class PostDetailPage extends Component {
             title={this.state.postTitle}
             content={this.state.postDesc}
           />
+
           <TextField
             variant="outlined"
             className = { classes.textField }
             label=" New Comment"
             value={this.props.reply}
           />
-          <Button variant="contained">Submit</Button>
+          <Grid container justify="flex-end">
+            <Button variant="contained" className = { classes.submitBtn }>Submit</Button>
+          </Grid>
+
           <div className="topbar">
             <h2>Replies</h2>
           </div>
