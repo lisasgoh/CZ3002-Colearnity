@@ -53,6 +53,8 @@ const useStyles = makeStyles((theme) => ({
                 <TextField label="Enter Option 3 Answer" variant="outlined" name="option3" onChange={props.click}/>
                 <p>Option 4</p>
                 <TextField label="Enter Option 4 Answer" variant="outlined" name="option4" onChange={props.click}/>
+                <p>Points</p>
+                <TextField label="Marks Weightage" variant="outlined" name="quizMarks" onChange={props.click}/>
                 
                 <p>Correct Answer</p>
                 {/* <TextField label="Enter Correct Answer" variant="outlined" /> */}

@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AltComments(props) {
   const classes = useStyles();
   const [liked, setLiked] = useState(false); //props.liked
-  const [numLikes, setNumLikes] = useState(20);
+  const [numLikes, setNumLikes] = useState(0);
 
   return (
     <Card className={classes.root}>
@@ -87,7 +87,7 @@ export default function AltComments(props) {
         >
           Like
         </Button>
-        <span> {props.numLikes} likes</span>
+        <span> {numLikes} likes</span>
       </div>
 
       </CardActions>

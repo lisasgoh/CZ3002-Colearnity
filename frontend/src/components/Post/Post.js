@@ -9,6 +9,7 @@ import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import Chip from "@material-ui/core/Chip";
 import "./Post.css";
+import { Link } from "react-router-dom";
 // import Typography from "@material-ui/core/Typography";
 
 // const useStyles = makeStyles({
@@ -19,6 +20,18 @@ import "./Post.css";
 
 export default function Post(props) {
   const [liked, setLiked] = useState(false); //props.liked
+  const [likesDisplay, setLikesDisplay] = useState(props.numLikes);
+
+  const setLikesHandler =()=>{
+    setLiked(!liked);
+    console.log("SET LIKED? " + liked);
+    if (!liked){
+      setLikesDisplay(likesDisplay+1);
+    }else{
+      setLikesDisplay(likesDisplay-1);
+    }
+
+  }
 
   const StyledChip = withStyles({
     root: {
@@ -61,6 +74,11 @@ export default function Post(props) {
       </p>
 
       <div className="actionbar">
+      <Link
+                to={{
+                  pathname: `/postdetailpage/${props.postInput}`,
+                }}
+              >
         <Button
           // variant="contained"
           color="primary"
@@ -69,7 +87,7 @@ export default function Post(props) {
           startIcon={<ReplyRoundedIcon />}
         >
           Reply
-        </Button>
+        </Button></Link>
         <Button
           // variant="contained"
           color="primary"
@@ -78,11 +96,11 @@ export default function Post(props) {
           startIcon={
             liked ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />
           }
-          onClick={() => setLiked(!liked)}
+          onClick={setLikesHandler}
         >
           Like
         </Button>
-        <span> {props.numLikes} Likes</span>
+        <span> {likesDisplay} Likes</span>
       </div>
 
       <div className="tags">

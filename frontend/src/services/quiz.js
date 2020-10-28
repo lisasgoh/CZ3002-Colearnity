@@ -24,23 +24,20 @@ const postQuiz = (quizTitle, questions, forum_id) => {
     "title": quizTitle,
     "questions": questions
   }
-  var myJSON = JSON.stringify(postQuizData);
-
 
   console.log(forum_id);
-    const request = axios({
+  const request = axios({
     method: "post",
     url: `${baseUrl}?forum_id=${forum_id}`,
-    headers: { token: auth_token,  "Content-Type" : "application/json"},
+    headers: {
+      'Content-Type': 'application/json', 
+      "token": localStorage.getItem("token") 
+    },
     data: postQuizData,
+    withCredentials: true,
   });
-
-  
-  const response = axios.post(`${baseUrl}?forum_id=${forum_id}`,myJSON,{headers:{"Content-Type" : "application/json"}})
-                        .then((response) => response.data);
-  return response;
-  //console.log(request.then((response) => response.data));
-  return request.then((response) => response.data).catch((err)=>console.log("ERROR: " + err));
+  console.log(request.then((response) => response.data));
+  return request.then((response) => response.data);
 }
 
 const deleteObj = (id) => {

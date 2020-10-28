@@ -107,19 +107,15 @@ class ForumPage extends Component {
           </div>
           {posts &&
             posts.map((post) => (
-              <Link
-                to={{
-                  pathname: `/postdetailpage/${post._id}`,
-                }}
-              >
                 <Post
+                  postInput = {post._id}
                   title={post.title}
                   username={post._poster.username}
                   content={post.description}
                   numLikes={post.votes}
                   tags={post.tags}
                 />
-              </Link>
+            
             ))}
         </div>
       </div>

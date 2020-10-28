@@ -28,6 +28,7 @@ class TeacherCreateQuiz extends Component {
       option3:"",
       option4:"",
       optionChosen:"",
+      quizMarks:1,
     };
   }
 
@@ -65,6 +66,7 @@ class TeacherCreateQuiz extends Component {
     this.setState({
         questions:[...this.state.questions,{
           "title": this.state.qnTitle,
+          "points":this.state.quizMarks,
           "options":[{
             "optionNumber":1,
             "answerBody":this.state.option1,

@@ -86,6 +86,7 @@ class PostDetailPage extends Component {
             username={this.state.poster}
             title={this.state.postTitle}
             content={this.state.postDesc}
+            numLikes={this.state.postVotes}
           />
           <TextField
             variant="outlined"

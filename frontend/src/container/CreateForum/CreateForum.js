@@ -5,7 +5,17 @@ import NewForum from "../../components/NewForum/NewForum";
 import "./CreateForum.css";
 
 class CreateForum extends Component {
+
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        
+      };
+    }
     render() {
+
+      
         let combined = ["icon", "fa fa-plus-circle"].join(" ");
         return (
           <div className="createforum">
