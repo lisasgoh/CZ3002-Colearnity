@@ -20,13 +20,15 @@ import PostDetailPage from "./container/PostDetailPage/PostDetailPage";
 import TeacherCreateQuiz from "./container/TeacherCreateQuiz/TeacherCreateQuiz";
 import ReplyPage from "./container/ReplyPage/ReplyPage";
 import CreateForum from "./container/CreateForum/CreateForum";
+import Testpage from "./container/Testpage";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
         <Navbar />
-        <Route path="/" exact component={LandingPage} />
+        <Route path="/" exact component={Testpage} />
+        <Route path="/landingpage" exact component={LandingPage} />
         <Route path="/login" exact component={LoginPage} />
         <Route path="/signup" exact component={SignupPage} />
         <Route path="/homepage" exact component={StudentHomePage} />
