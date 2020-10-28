@@ -35,6 +35,8 @@ const useStyles = makeStyles((theme) => ({
 
     const handleChange = (event) => {
         setSelected(event.target.value);
+        props.logMenuOpt(event);
+        
     };
 
     return (
@@ -56,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
                 {/* <TextField label="Enter Correct Answer" variant="outlined" /> */}
             </form>
             <FormControl variant="outlined" className={classes.formControl}>
-                <Select value={selected} onChange={props.logMenuOpt}>
+                <Select value={selected} onChange={handleChange}>
                     <MenuItem value="">
                         <em>Select Correct Answer</em>
                     </MenuItem>
@@ -66,8 +68,8 @@ const useStyles = makeStyles((theme) => ({
                     <MenuItem value={'Option 4'}>Option 4</MenuItem>
                 </Select>
             </FormControl>
-            <Button onClick={props.addToQnList}/>
-            <Button onClick={props.logQn}/>
+            <Button onClick={props.addToQnList}>Confirm Add Question</Button>
+            
             <Divider variant="middle" />
         </div>
     )

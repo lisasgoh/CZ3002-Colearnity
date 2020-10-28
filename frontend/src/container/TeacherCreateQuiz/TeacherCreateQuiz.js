@@ -95,6 +95,7 @@ class TeacherCreateQuiz extends Component {
         optionChosen: evt.target.value,
     });
   }
+
     setQuizTitle=(evnt)=>{
       this.setState({
         quizTitle: evnt.target.value,
@@ -108,7 +109,8 @@ class TeacherCreateQuiz extends Component {
     console.log("WE DONE IT" +quizTitle);
     event.preventDefault();
     try {
-      await createQuizService.postQuiz(quizTitle,questions,"5f8521b48e9dffee9f62e06a");
+      //await createQuizService.postQuiz(quizTitle,questions,"5f8521b48e9dffee9f62e06a");
+      await createQuizService.postQuiz(quizTitle,questions,"5f7f81aeacc7375f68ca66e5");
     } catch (e) {
       alert("IS IT THIS?" + e.message);
     }
@@ -116,12 +118,8 @@ class TeacherCreateQuiz extends Component {
   
 
   render() {
-    var index = 2;
     const { subforumTitle, subforumDesc, quizzes } = this.state;
     let combined = ["icon", "fa fa-plus-circle"].join(" ");
-
-
-
 
     return (
       <div className="teachercreatequiz">
@@ -167,7 +165,7 @@ class TeacherCreateQuiz extends Component {
           {
             this.state.quizIndex.map((quizQn, index)=>{
               return (
-                <NewQuizQn qnNum={quizQn.id} click={this.inputHandler} addToQnList={this.addQnList} logQn={this.logQn} logMenuOpt ={this.menuOpt}/>
+                <NewQuizQn qnNum={quizQn.id} click={this.inputHandler} addToQnList={this.addQnList}  logMenuOpt ={this.menuOpt}/>
               )
             })
           }
