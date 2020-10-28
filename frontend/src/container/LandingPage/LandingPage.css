@@ -4,16 +4,42 @@
     padding: 0;
   }
   
-  .landing {
-    height: 150px;
+.test {
+    /* height: 150px; */
     margin-top: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
+}
   
-  .ls-btn {
+.ls-btn {
     margin: 5px;
-  }
+}
+
+.landing {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    background: linear-gradient(90deg, #FFFEDF 0%, #fffcab 100%);
+    height: 70ch;
+    padding: 10ch;
+}
+.landingtext {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+.landingtitle {
+  font-size: 60px;
+  /* font-family: 'Courier New', Courier, monospace; */
+  font-weight: bold;
+}
+
+.landingdesc {
+  width: 40ch;
+  margin-bottom: 20px;
+}
   
