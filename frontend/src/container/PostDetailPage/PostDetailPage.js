@@ -19,6 +19,7 @@ const useStyles = (theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  
 });
 
 class PostDetailPage extends Component {
@@ -92,6 +93,7 @@ class PostDetailPage extends Component {
             label=" New Comment"
             value={this.props.reply}
           />
+          <Button variant="contained">Submit</Button>
           <div className="topbar">
             <h2>Replies</h2>
           </div>
