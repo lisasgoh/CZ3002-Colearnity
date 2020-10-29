@@ -62,9 +62,9 @@ class SignupPage extends Component {
       <div className="main">
         <div className="signup-form">
           <form onSubmit={this.handleSubmit}>
-            <Link to="/">
+            {/* <Link to="/">
               <NavigateBeforeIcon />
-            </Link>
+            </Link> */}
 
             <h3>Sign Up</h3>
             <p> </p>

@@ -1,9 +1,10 @@
 .main {
-    margin-top: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100vh;
+    background: linear-gradient(90deg, #FFFEDF 0%, #fffcab 100%);
 }
 
 .ls-btn {
@@ -26,7 +27,7 @@
 .signup-form {
     width: 300px;
     height: 640px;
-    margin-bottom: 100px;
+    margin-top: 10ch;
     background-color: #f5f5f5;
     border-radius: 5px;
     border: 1px solid lightgray;
