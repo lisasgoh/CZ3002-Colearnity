@@ -21,15 +21,16 @@ import { Link } from "react-router-dom";
 export default function Post(props) {
   const [liked, setLiked] = useState(false); //props.liked
   const [likesDisplay, setLikesDisplay] = useState(props.numLikes);
-
+  //setLikesDisplay(props.numLikes);
   const setLikesHandler =()=>{
+  
     console.log(likesDisplay);
     setLiked(!liked);
     console.log("SET LIKED? " + liked);
     if (!liked){
-      setLikesDisplay(likesDisplay+1);
+      setLikesDisplay(props.numLikes+1);
     }else{
-      setLikesDisplay(likesDisplay-1);
+      setLikesDisplay(props.numLikes);
     }
 
   }
@@ -49,6 +50,7 @@ export default function Post(props) {
   })(Chip);
 
   return (
+    
     <div className="post">
       <div className="postheader">
         <div className="posterdetails">
@@ -101,7 +103,7 @@ export default function Post(props) {
         >
           Like
         </Button>
-        <span> {likesDisplay} Votes</span>
+        <span> {liked? props.numLikes+1:props.numLikes} Votes</span>
       </div>
 
       <div className="tags">
