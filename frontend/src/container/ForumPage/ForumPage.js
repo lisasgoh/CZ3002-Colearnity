@@ -105,17 +105,17 @@ class ForumPage extends Component {
             <h2>Recent Posts</h2>
             <FilterListRoundedIcon />
           </div>
+
           {posts &&
             posts.map((post) => (
-                <Post
-                  postInput = {post._id}
-                  title={post.title}
-                  username={post._poster.username}
-                  content={post.description}
-                  numLikes={post.votes}
-                  tags={post.tags}
-                />
-            
+              <Post
+                id={post._id}
+                username={post._poster.username}
+                content={post.description}
+                numLikes={post.votes}
+                tags={post.tags}
+                title={post.title}
+              />
             ))}
         </div>
       </div>

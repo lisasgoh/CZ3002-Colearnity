@@ -42,6 +42,7 @@ class SubforumPage extends Component {
   render() {
     const { subforumTitle, subforumDesc, quizzes, posts } = this.state;
 
+    console.log(posts);
     return (
       <div className="subforumpage">
         <div className="leftsection">
@@ -91,18 +92,14 @@ class SubforumPage extends Component {
           </div>
           {posts &&
             posts.map((post) => (
-              <Link
-                to={{
-                  pathname: `/postdetailpage/${post._id}`,
-                }}
-              >
-                <Post
-                  username={post._poster.username}
-                  content={post.description}
-                  numLikes={post.votes}
-                  tags={post.tags}
-                />
-              </Link>
+              <Post
+                id={post._id}
+                username={post._poster.username}
+                content={post.description}
+                numLikes={post.votes}
+                tags={post.tags}
+                title={post.title}
+              />
             ))}
         </div>
       </div>

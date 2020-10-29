@@ -19,21 +19,29 @@ import { Link } from "react-router-dom";
 // });
 
 export default function Post(props) {
+  let {
+    postInput,
+    id,
+    title,
+    username,
+    editingaccess,
+    content,
+    numLikes,
+    tags,
+  } = props;
   const [liked, setLiked] = useState(false); //props.liked
-  const [likesDisplay, setLikesDisplay] = useState(props.numLikes);
+  const [likesDisplay, setLikesDisplay] = useState(numLikes);
   //setLikesDisplay(props.numLikes);
-  const setLikesHandler =()=>{
-  
+  const setLikesHandler = () => {
     console.log(likesDisplay);
     setLiked(!liked);
     console.log("SET LIKED? " + liked);
-    if (!liked){
-      setLikesDisplay(props.numLikes+1);
-    }else{
-      setLikesDisplay(props.numLikes);
+    if (!liked) {
+      setLikesDisplay(numLikes + 1);
+    } else {
+      setLikesDisplay(numLikes);
     }
-
-  }
+  };
 
   const StyledChip = withStyles({
     root: {
@@ -50,47 +58,50 @@ export default function Post(props) {
   })(Chip);
 
   return (
-    
     <div className="post">
-      <div className="postheader">
-        <div className="posterdetails">
-          <FaceRoundedIcon />
-          <h6>{props.username}</h6>
+      <Link
+        to={{
+          pathname: `/postdetailpage/${id}`,
+        }}
+        style={{ color: "black", textDecoration: "none" }}
+      >
+        <div className="postheader">
+          <div className="posterdetails">
+            <FaceRoundedIcon />
+            <h6>{username}</h6>
+          </div>
+
+          {editingaccess ? (
+            <div className="posteractivity">
+              <EditRoundedIcon />
+              <DeleteRoundedIcon />
+            </div>
+          ) : (
+            ""
+          )}
         </div>
 
-        {props.editingaccess ? (
-          <div className="posteractivity">
-            <EditRoundedIcon />
-            <DeleteRoundedIcon />
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
+        <div className="posttitle">{title}</div>
 
-      <div className="posttitle">
-        {props.title}
-      </div>
-
-      <p>
-        {props.content}
-      </p>
+        <p>{content}</p>
+      </Link>
 
       <div className="actionbar">
-      <Link
-                to={{
-                  pathname: `/postdetailpage/${props.postInput}`,
-                }}
-              >
-        <Button
-          // variant="contained"
-          color="primary"
-          size="small"
-          // className={classes.button}
-          startIcon={<ReplyRoundedIcon />}
+        <Link
+          to={{
+            pathname: `/postdetailpage/${postInput}`,
+          }}
         >
-          Reply
-        </Button></Link>
+          <Button
+            // variant="contained"
+            color="primary"
+            size="small"
+            // className={classes.button}
+            startIcon={<ReplyRoundedIcon />}
+          >
+            Reply
+          </Button>
+        </Link>
         <Button
           // variant="contained"
           color="primary"
@@ -103,7 +114,7 @@ export default function Post(props) {
         >
           Like
         </Button>
-        <span> {liked? props.numLikes+1:props.numLikes} Votes</span>
+        <span> {liked ? numLikes + 1 : numLikes} Votes</span>
       </div>
 
       <div className="tags">
