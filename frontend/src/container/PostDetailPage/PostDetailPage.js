@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import Post from "../../components/Post/Post";
 import "./PostDetailPage.css";
 import Button from "@material-ui/core/Button";
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
 import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
@@ -13,17 +13,19 @@ import { Link } from "react-router-dom";
 import Comments from "./../../components/Comments/Comments";
 import AltComments from "./../../components/AltComments/AltComments";
 import postService from "./../../services/post";
+import commentService from "./../../services/comment";
+import { useHistory } from "react-router-dom";
 
 const useStyles = (theme) => ({
   textField: {
-    top: '20px',
-    display: 'flex',
-    flexWrap: 'wrap',
+    top: "20px",
+    display: "flex",
+    flexWrap: "wrap",
   },
   submitBtn: {
-    top: '40px',
-    textAlign: 'right',
-  }
+    top: "40px",
+    textAlign: "right",
+  },
 });
 
 class PostDetailPage extends Component {
@@ -39,8 +41,38 @@ class PostDetailPage extends Component {
       postVotes: null,
       poster: null,
       postTime: null,
+      newreply: "",
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
+
+  handleInputChange(event) {
+    this.setState({
+      ...this.state,
+      ...{
+        [event.target.name]: event.target.value,
+      },
+    });
+  }
+
+  handleSubmit(event) {
+    console.log("Form was submitted");
+    event.preventDefault();
+    console.log(this.state);
+    const comment = {
+      text: this.state.newreply,
+    };
+    try {
+      commentService.create(comment, this.state.id).then((comment) => {
+        console.log(comment);
+        this.props.history.go(0);
+      });
+    } catch (e) {
+      alert(e.message);
+    }
+  }
+
   componentDidMount() {
     postService.getIndivPost(`${this.state.id}`).then((post) => {
       // console.log(forumData);
@@ -61,6 +93,7 @@ class PostDetailPage extends Component {
   }
 
   render() {
+    console.log(this.state.newreply);
     const { classes } = this.props;
     return (
       <div className="postdetailpage">
@@ -94,15 +127,31 @@ class PostDetailPage extends Component {
             numLikes={this.state.postVotes}
           />
 
-          <TextField
-            variant="outlined"
-            className = { classes.textField }
-            label=" New Comment"
-            value={this.props.reply}
-          />
-          <Grid container justify="flex-end">
-            <Button variant="contained" className = { classes.submitBtn }>Submit</Button>
-          </Grid>
+          <form onSubmit={this.handleSubmit}>
+            <FormGroup controlId="comment">
+              <FormControl
+                className={classes.textField}
+                label=" New Comment"
+                placeholder="Comment..."
+                name="newreply"
+                value={this.state.newreply}
+                onChange={this.handleInputChange}
+              />
+            </FormGroup>
+            <Button variant="contained" type="submit" value="Submit">
+              Submit
+            </Button>
+          </form>
+          {/* <Grid container justify="flex-end"> */}
+          {/* <Button
+            type="submit"
+            value="Submit"
+            variant="contained"
+            className={classes.submitBtn}
+          >
+            Submit
+          </Button> */}
+          {/* </Grid> */}
 
           <div className="topbar">
             <h2>Replies</h2>
@@ -122,4 +171,4 @@ class PostDetailPage extends Component {
   }
 }
 
-export default withStyles(useStyles) (PostDetailPage);
+export default withStyles(useStyles)(PostDetailPage);
