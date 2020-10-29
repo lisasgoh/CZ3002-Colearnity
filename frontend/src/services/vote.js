@@ -14,14 +14,19 @@ const voteComment = (newObject, comment_id) => {
   return request.then((response) => response.data);
 };
 
-const votePost = (newObject, post_id) => {
+const votePost = (voteDiff, post_id) => {
   const auth_token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A";
+
+  const voteData = {
+    vote_dir: voteDiff,
+  };
+
   const request = axios({
     method: "post",
     url: `${baseUrl}?post_id=${post_id}`,
     headers: { token: auth_token },
-    data: newObject,
+    data: voteData,
   });
   console.log(request.then((response) => response.data));
   return request.then((response) => response.data);

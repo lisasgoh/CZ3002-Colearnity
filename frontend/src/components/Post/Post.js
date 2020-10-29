@@ -2,22 +2,20 @@ import React, { useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import ReplyRoundedIcon from "@material-ui/icons/ReplyRounded";
-import FavoriteBorderRoundedIcon from "@material-ui/icons/FavoriteBorderRounded";
-import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
+import IconButton from "@material-ui/core/IconButton";
 import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
+import ThumbUpAltRoundedIcon from "@material-ui/icons/ThumbUpAltRounded";
+import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
+import ThumbDownAltRoundedIcon from "@material-ui/icons/ThumbDownAltRounded";
 import Chip from "@material-ui/core/Chip";
 import "./Post.css";
 import { Link } from "react-router-dom";
 // import Typography from "@material-ui/core/Typography";
 
-// const useStyles = makeStyles({
-//   root: {
-//     maxWidth: 345,
-//   },
-// });
-
+import voteService from "./../../services/vote";
 export default function Post(props) {
   let {
     postInput,
@@ -30,16 +28,49 @@ export default function Post(props) {
     tags,
   } = props;
   const [liked, setLiked] = useState(false); //props.liked
+  const [disliked, setDisliked] = useState(false);
   const [likesDisplay, setLikesDisplay] = useState(numLikes);
-  //setLikesDisplay(props.numLikes);
-  const setLikesHandler = () => {
-    console.log(likesDisplay);
-    setLiked(!liked);
-    console.log("SET LIKED? " + liked);
+  const setLikeHandler = () => {
+    let difference = 0;
     if (!liked) {
-      setLikesDisplay(numLikes + 1);
+      if (disliked) {
+        setDisliked(false);
+        difference += 1;
+      }
+      setLiked(!liked);
+      difference += 1;
     } else {
-      setLikesDisplay(numLikes);
+      setLiked(!liked);
+      difference -= 1;
+    }
+
+    setLikesDisplay(likesDisplay + difference);
+    // voteService.votePost(difference, id);
+    if (difference > 0) {
+      voteService.votePost(+1, id);
+    } else {
+      voteService.votePost(-1, id);
+    }
+  };
+  const setDislikeHandler = () => {
+    let difference = 0;
+    if (!disliked) {
+      if (liked) {
+        setLiked(false);
+        difference -= 1;
+      }
+      setDisliked(!disliked);
+      difference -= 1;
+    } else {
+      setDisliked(!disliked);
+      difference += 1;
+    }
+    setLikesDisplay(likesDisplay + difference);
+    // voteService.votePost(difference, id);
+    if (difference > 0) {
+      voteService.votePost(+1, id);
+    } else {
+      voteService.votePost(-1, id);
     }
   };
 
@@ -102,7 +133,7 @@ export default function Post(props) {
             Reply
           </Button>
         </Link>
-        <Button
+        {/* <Button
           // variant="contained"
           color="primary"
           size="small"
@@ -111,10 +142,29 @@ export default function Post(props) {
             liked ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />
           }
           onClick={setLikesHandler}
+        /> */}
+        <IconButton
+          aria-label="upvote"
+          color="primary"
+          size="small"
+          onClick={setLikeHandler}
         >
-          Like
-        </Button>
-        <span> {liked ? numLikes + 1 : numLikes} Votes</span>
+          {liked ? <ThumbUpAltRoundedIcon /> : <ThumbUpAltOutlinedIcon />}
+        </IconButton>
+        <IconButton
+          aria-label="downvote"
+          color="primary"
+          size="small"
+          onClick={setDislikeHandler}
+        >
+          {disliked ? (
+            <ThumbDownAltRoundedIcon />
+          ) : (
+            <ThumbDownAltOutlinedIcon />
+          )}
+        </IconButton>
+
+        <span> {likesDisplay} Votes</span>
       </div>
 
       <div className="tags">
