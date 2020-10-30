@@ -124,6 +124,13 @@ router.get('/current', auth.required, (req, res) => {
       select: {
         _id: 1, marks: 1, total: 1,
       },
+      populate: {
+        path: '_quiz',
+        model: 'Quiz',
+        select: {
+          _id: 1, title: 1,
+        },
+      },
     }];
     Users.findById(req.user.id)
       .populate(populateQuery)
