@@ -10,6 +10,7 @@ import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ThumbUpAltRoundedIcon from "@material-ui/icons/ThumbUpAltRounded";
 import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import ThumbDownAltRoundedIcon from "@material-ui/icons/ThumbDownAltRounded";
+import DeletePostPopup from "./../Popup/Popup";
 import Chip from "@material-ui/core/Chip";
 import "./Post.css";
 import { Link } from "react-router-dom";
@@ -26,7 +27,10 @@ export default function Post(props) {
     content,
     numLikes,
     tags,
+    isAdmin,
   } = props;
+
+  //FOR LIKES
   const [liked, setLiked] = useState(false); //props.liked
   const [disliked, setDisliked] = useState(false);
   const [likesDisplay, setLikesDisplay] = useState(numLikes);
@@ -74,6 +78,7 @@ export default function Post(props) {
     }
   };
 
+  //FOR TAGS
   const StyledChip = withStyles({
     root: {
       backgroundColor: "deeppink",
@@ -87,6 +92,16 @@ export default function Post(props) {
       },
     },
   })(Chip);
+
+  //FOR DELETES
+  const [modalShow, setModal] = useState(false);
+  const modalHandlerFalse = () => {
+    setModal(false);
+  };
+
+  const modalHandlerTrue = () => {
+    setModal(true);
+  };
 
   return (
     <div className="post">
@@ -133,16 +148,7 @@ export default function Post(props) {
             Reply
           </Button>
         </Link>
-        {/* <Button
-          // variant="contained"
-          color="primary"
-          size="small"
-          // className={classes.button}
-          startIcon={
-            liked ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />
-          }
-          onClick={setLikesHandler}
-        /> */}
+
         <IconButton
           aria-label="upvote"
           color="primary"
@@ -165,6 +171,19 @@ export default function Post(props) {
         </IconButton>
 
         <span> {likesDisplay} Votes</span>
+        {isAdmin ? (
+          <Button
+            color="primary"
+            size="small"
+            startIcon={<DeleteRoundedIcon />}
+            onClick={modalHandlerTrue}
+          >
+            Delete
+          </Button>
+        ) : (
+          ""
+        )}
+        <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} />
       </div>
 
       <div className="tags">
@@ -184,17 +203,17 @@ export default function Post(props) {
           component="a"
           href="https://www.google.com"
         />
-        {/* 
-        {props.tags.map((tag) => (
-          <StyledChip
-            size="small"
-            label={tag.name}
-            //   onClick={handleClick}
-            clickable
-            component="a"
-            href="https://www.google.com"
-          />
-        ))} */}
+        {tags &&
+          tags.map((tag) => (
+            <StyledChip
+              size="small"
+              label={tag.name}
+              //   onClick={handleClick}
+              clickable
+              component="a"
+              href="https://www.google.com"
+            />
+          ))}
       </div>
     </div>
   );

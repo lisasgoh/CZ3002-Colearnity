@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import "./StudentHomePage.css";
 import Post from "../../components/Post/Post";
 import ForumButton from "../../components/ForumButtons/ForumButton";
 import Filter from "../../components/Filter/Filter";
-import "./StudentHomePage.css";
+import Divider from "@material-ui/core/Divider";
 import { Link } from "react-router-dom";
 import TeacherPost from "../../components/Post/TeacherPost";
 
@@ -16,7 +17,8 @@ class StudentHomePage extends Component {
 
     this.state = {
       forums: [],
-      posts: [], //posts are from all forums, not user posts - consider how to populate
+      createdForums: [],
+      posts: [],
       isStudent: null,
     };
   }
@@ -25,6 +27,7 @@ class StudentHomePage extends Component {
     usersService.getUserHomePage().then((userData) => {
       console.log(userData);
       var i, j;
+      //populates posts with posts from all forums (super inefficient, find a better solution if can)
       for (i = 0; i < userData._forums.length; i++) {
         for (j = 0; j < userData._forums[i]._posts.length; j++) {
           this.state.posts.push(userData._forums[i]._posts[j]);
@@ -35,6 +38,7 @@ class StudentHomePage extends Component {
         ...this.state,
         ...{
           forums: userData._forums,
+          createdForums: userData._created_forums,
           // posts: userData._forums.filter((forum) => forum._posts),
           isStudent: userData.is_student,
         },
@@ -51,9 +55,8 @@ class StudentHomePage extends Component {
   }, []) */
 
   render() {
-    const { forums, posts, isStudent } = this.state;
-    console.log(forums);
-    console.log(posts);
+    const { forums, createdForums, posts, isStudent } = this.state;
+    console.log(createdForums);
     return (
       <div className="studenthomepage">
         <div className="leftsection">
@@ -69,7 +72,8 @@ class StudentHomePage extends Component {
                   <ForumButton forumTitle={forum.name} />
                 </Link>
               ))}
-            {/* <ForumButton
+          </div>
+          {/* <ForumButton
               color="papayawhip"
               hovercolor="peachpuff"
               forumTitle="CZ3002 ASE"
@@ -84,6 +88,19 @@ class StudentHomePage extends Component {
               hovercolor="darkslateblue"
               forumTitle="CZ1007 Data Structures"
             /> */}
+          <Divider variant="middle" />
+          <h2 className="createdHeading">Forums Created</h2>
+          <div className="createdforums">
+            {createdForums &&
+              createdForums.map((forum) => (
+                <Link
+                  to={{
+                    pathname: `/forumpage/${forum._id}`,
+                  }}
+                >
+                  <ForumButton forumTitle={forum.name} />
+                </Link>
+              ))}
           </div>
         </div>
 
@@ -93,15 +110,15 @@ class StudentHomePage extends Component {
 
             <Filter />
           </div>
-          {/* THIS IS WRONG TO CHANGE IMPT CHANGE THIS */}
           {posts &&
             posts.map((post) => (
               <Post
-                title={post.title}
+                id={post._id}
                 username={post._poster.username}
                 content={post.description}
                 numLikes={post.votes}
                 tags={post.tags}
+                title={post.title}
               />
             ))}
           <Post editingaccess={true} />

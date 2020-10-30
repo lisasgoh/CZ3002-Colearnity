@@ -7,7 +7,6 @@ import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import { Link } from "react-router-dom";
 import "./ForumPage.css";
 
-// import API from "../../utils/API";
 import forumService from "./../../services/forum";
 
 class ForumPage extends Component {
@@ -21,6 +20,7 @@ class ForumPage extends Component {
       subforums: null,
       posts: null,
       forumMembership: null,
+      isAdmin: null,
     };
   }
 
@@ -39,6 +39,7 @@ class ForumPage extends Component {
           subforums: forum._subforums,
           posts: forum._posts,
           forumMembership: forum.isSubscribed,
+          isAdmin: false, //forum.isAdmin,
         },
       });
     });
@@ -46,6 +47,8 @@ class ForumPage extends Component {
 
   handleMembershipChange = (event) => {
     this.setState({ forumMembership: !this.state.forumMembership });
+    console.log(this.state.id);
+    forumService.toggleSubscribe(this.state.id);
 
     // const forum = {
     //   isSubscribed: this.state.forumMembership,
@@ -64,22 +67,28 @@ class ForumPage extends Component {
       subforums,
       posts,
       forumMembership,
+      isAdmin,
     } = this.state;
-
+    console.log(forumMembership);
     return (
       <div className="forumpage">
         <div className="leftsection">
           <h2>{forumTitle}</h2>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="small"
-            onClick={this.handleMembershipChange}
-          >
-            {forumMembership ? "Leave Forum" : "Join Forum"}
-          </Button>
+          {isAdmin ? (
+            <Button variant="contained" color="secondary" size="small">
+              owner
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              onClick={this.handleMembershipChange}
+            >
+              {forumMembership ? "Leave Forum" : "Join Forum"}
+            </Button>
+          )}
           <p>{forumDesc}</p>
-
           <h3>Subforums</h3>
           <div className="subforums">
             <SubforumButton subforumTitle="CZ3002 ASE" />
@@ -115,6 +124,7 @@ class ForumPage extends Component {
                 numLikes={post.votes}
                 tags={post.tags}
                 title={post.title}
+                isAdmin={isAdmin}
               />
             ))}
         </div>
