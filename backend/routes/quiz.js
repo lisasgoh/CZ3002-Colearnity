@@ -1,17 +1,17 @@
 /* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
-const express = require("express");
-const Quiz = require("../models/Quiz");
-const Forum = require("../models/Forum");
-const Users = require("../models/Users");
-const QuizAttempt = require("../models/QuizAttempt");
+const express = require('express');
+const Quiz = require('../models/Quiz');
+const Forum = require('../models/Forum');
+const Users = require('../models/Users');
+const QuizAttempt = require('../models/QuizAttempt');
 
 const quizRouter = express.Router();
 
 // create new quiz
 // Update user
-quizRouter.post("/", (req, res) => {
+quizRouter.post('/', (req, res) => {
   // console.log(req.user);
   // console.log(req.isAuthenticated());
   const { questions } = req.body;
@@ -53,7 +53,7 @@ quizRouter.post("/", (req, res) => {
     Forum.findByIdAndUpdate(
       req.query.forum_id,
       { $push: { _quizzes: doc._id } },
-      { new: true }
+      { new: true },
     )
       .then(() => {
         Users.findByIdAndUpdate(req.user.id, {
@@ -68,14 +68,14 @@ quizRouter.post("/", (req, res) => {
 });
 
 // get quiz by id
-quizRouter.get("/:id", (req, res) => {
+quizRouter.get('/:id', (req, res) => {
   Quiz.findById(req.params.id)
     .populate({
-      path: "_teacher",
-      model: "Users",
+      path: '_teacher',
+      model: 'Users',
       select: { _id: 1, username: 1 },
     })
-    .populate({ path: "_forum", model: "Forum", select: { _id: 1, title: 1 } })
+    .populate({ path: '_forum', model: 'Forum', select: { _id: 1, title: 1 } })
     .then((quiz) => {
       res.json(quiz);
     })
@@ -88,33 +88,39 @@ quizRouter.get("/:id", (req, res) => {
 // update quiz details
 /// check whehter user attempted before
 // [0 , 1] => first option chose for first qn, second option chose for 2nd question
-quizRouter.post("/:id", (req, res) => {
-  let { attempt } = req.body;
-  attempt = JSON.parse(attempt);
+quizRouter.post('/:id', (req, res) => {
+  const { attempt } = req.body;
   console.log(attempt);
   Quiz.findById(req.params.id)
     .then((quiz) => {
+      console.log(quiz);
       let marks = 0;
       const results = attempt.map((choice, index) => {
-        if (
-          quiz.questions[index].options[choice - 1].isCorrectAnswer === true
-        ) {
-          const { points } = quiz.questions[index];
+        console.log(`Chosen option${choice - 1}`);
+        if (quiz.questions[index].options[choice - 1].isCorrectAnswer === true) {
+          // const { points } = quiz.questions[index];
+          console.log('Correct answer');
+          const points = 1;
           quiz.questions[index].correct += 1;
           marks += points;
           return points;
         }
+        console.log('Wrong answer');
         quiz.questions[index].wrong += 1;
         return 0;
       });
+      console.log(`Results${results}`);
+      console.log(`Attempt${attempt}`);
+      console.log(`Marks${marks}`);
+      console.log(`userid${req.user.id}`);
       const quizAttempt = new QuizAttempt({
         _quiz: req.params.id,
-        _user: "5f7f525d56b9835b245e8aaf", //req.user.id,
+        _user: req.user.id,
         attempt,
         results,
         marks,
       });
-      console.log(quizAttempt);
+      console.log(`Quiz Attempt: ${quizAttempt}`);
       // const result = quiz.results;
       quizAttempt
         .save()
@@ -125,8 +131,8 @@ quizRouter.post("/:id", (req, res) => {
           return quiz.save();
         })
         .then(() => {
-          Users.findByIdAndUpdate("5f7f525d56b9835b245e8aaf", {
-            //req.user.id,
+          Users.findByIdAndUpdate(req.user.id, {
+            // req.user.id,
             $push: { _attempts: quizAttempt },
           }).then(() => {
             res.json(quizAttempt);
@@ -138,7 +144,7 @@ quizRouter.post("/:id", (req, res) => {
 });
 
 // get quiz under forum given a forum id
-quizRouter.get("/filter", (req, res) => {
+quizRouter.get('/filter', (req, res) => {
   const id = req.query.forum_id;
   Quiz.find({ _forum: id }, (err, quiz) => {
     if (err) res.send(err);
@@ -147,7 +153,7 @@ quizRouter.get("/filter", (req, res) => {
 });
 
 // Only for teachers
-quizRouter.delete("/:id", (req, res) => {
+quizRouter.delete('/:id', (req, res) => {
   Quiz.findByIdAndRemove(req.params.id)
     .then(() => {
       Forum.findByIdAndUpdate(req.query.forum_id, {
@@ -158,7 +164,7 @@ quizRouter.delete("/:id", (req, res) => {
             $pull: { _quizzes: req.params.id },
           })
             .then(() => {
-              res.send("Success: Quiz Deleted");
+              res.send('Success: Quiz Deleted');
             })
             .catch((err) => res.send(err));
         })
