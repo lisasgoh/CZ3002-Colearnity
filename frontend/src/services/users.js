@@ -2,7 +2,15 @@ import axios from "axios";
 const baseUrl = "http://localhost:3000/api/users";
 
 const getUser = () => {
-  const request = axios.get(`${baseUrl}/current`);
+  const request = axios({
+    method: "get",
+    url: `${baseUrl}/current`,
+    headers: {
+      'Content-Type': 'application/json', 
+      "token": localStorage.getItem("token") 
+    },
+    withCredentials: true,
+  });
   return request.then((response) => response.data);
 };
 
