@@ -54,7 +54,7 @@ app.set('view engine', 'pug');
 app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
-  origin: 'http://localhost:3001',
+  origin: ['http://localhost:3001', 'https://colearnity.postman.co/'],
 }));
 app.use(logger('dev'));
 app.use(express.json());

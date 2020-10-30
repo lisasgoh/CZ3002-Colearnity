@@ -7,25 +7,18 @@ const getQuiz = (id) => {
 };
 
 const doQuiz = (answerArray, id) => {
-  const auth_token =
-    "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A";
-
-  const quizAttempt = {
+  const newObject = {
     attempt: answerArray,
-  };
-
-  console.log(quizAttempt);
-  console.log(JSON.stringify(quizAttempt));
-  console.log(localStorage.getItem("token"));
+  }
+  console.log(JSON.stringify(newObject))
   const request = axios({
     method: "post",
     url: `${baseUrl}/${id}`,
     headers: {
       "Content-Type": "application/json",
       token: localStorage.getItem("token"),
-      // token: auth_token,
     },
-    data: JSON.stringify(quizAttempt),
+    data: JSON.stringify(newObject),
     withCredentials: true,
   });
   console.log(request);

@@ -31,6 +31,7 @@ export default function Post(props) {
   } = props;
 
   //FOR LIKES
+  console.log(props);
   const [liked, setLiked] = useState(false); //props.liked
   const [disliked, setDisliked] = useState(false);
   const [likesDisplay, setLikesDisplay] = useState(numLikes);

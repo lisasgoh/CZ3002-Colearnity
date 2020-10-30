@@ -78,19 +78,32 @@ postSchema.pre("findOne", populateComments);
 
 postSchema.pre("find", populateForum);
 postSchema.pre("findOne", populateForum); */
+
+// document middleware
+const cascadeRemove = function (next) {
+  console.log(`Remove post middleware called${this._id}`);
+  mongoose.model('Comment').find({ _post: this._id })
+    .then((comments) => {
+      comments.forEach((comment) => comment.remove());
+    }).then(() => {
+      Vote.remove({ _post: this._id }).then(() => next());
+    });
+};
+
+// query middleware
 const cascadeDelete = function (next) {
   this.model.findOne(this.getQuery()).then((post) => {
     console.log('Post cascadeDelete middleware');
     console.log(`Removing ${post._id}`);
-    mongoose.model('Comment').find({ _post: post._id }).then((comments) => {
-      console.log('HIII');
-      console.log(comments);
-      comments.forEach((comment) => {
-        comment.remove();
+    mongoose.model('Comment').find({ _post: post._id })
+      .then((comments) => {
+        console.log(comments);
+        comments.forEach((comment) => {
+          comment.remove();
+        });
+      }).then(() => {
+        Vote.remove({ _post: post._id }).then(() => next());
       });
-    }).then(() => {
-      Vote.remove({ _post: post._id }).then(() => next());
-    });
   });
 };
 
@@ -110,11 +123,9 @@ const deleteFromParent = async function (next) {
   });
 };
 
+postSchema.pre('remove', cascadeRemove);
 postSchema.pre('findOneAndDelete', cascadeDelete);
-postSchema.pre('remove', cascadeDelete);
-
 postSchema.pre('findOneAndDelete', deleteFromParent);
-postSchema.pre('remove', deleteFromParent);
 
 const Post = mongoose.model('Post', postSchema);
 
