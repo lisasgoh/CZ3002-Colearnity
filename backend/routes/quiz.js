@@ -95,12 +95,14 @@ quizRouter.post('/:id', (req, res) => {
     .then((quiz) => {
       console.log(quiz);
       let marks = 0;
+      let total = 0;
       const results = attempt.map((choice, index) => {
         console.log(`Chosen option${choice - 1}`);
+        const points = 1;
+        // const { points } = quiz.questions[index];
+        total += points;
         if (quiz.questions[index].options[choice - 1].isCorrectAnswer === true) {
-          // const { points } = quiz.questions[index];
           console.log('Correct answer');
-          const points = 1;
           quiz.questions[index].correct += 1;
           marks += points;
           return points;
@@ -113,12 +115,14 @@ quizRouter.post('/:id', (req, res) => {
       console.log(`Attempt${attempt}`);
       console.log(`Marks${marks}`);
       console.log(`userid${req.user.id}`);
+      console.log(`total${total}`);
       const quizAttempt = new QuizAttempt({
         _quiz: req.params.id,
         _user: req.user.id,
         attempt,
         results,
         marks,
+        total,
       });
       console.log(`Quiz Attempt: ${quizAttempt}`);
       // const result = quiz.results;

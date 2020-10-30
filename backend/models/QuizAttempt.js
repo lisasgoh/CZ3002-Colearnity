@@ -24,7 +24,11 @@ const quizAttemptSchema = new Schema({
   marks: {
     type: Number,
   },
-});
+  total: {
+    type: Number,
+  },
+},
+{ timestamps: true });
 
 const QuizAttempt = mongoose.model('QuizAttempt', quizAttemptSchema);
 

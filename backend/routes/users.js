@@ -3,9 +3,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 const passport = require('passport');
+const mongoose = require('mongoose');
 const router = require('express').Router();
 const auth = require('./auth');
 const Users = require('../models/Users');
+const QuizAttempt = require('../models/QuizAttempt');
 
 // POST new user route (optional, everyone has access)
 router.post('/', auth.optional, (req, res) => {
@@ -85,24 +87,51 @@ router.post('/login', auth.optional, (req, res) => {
 // GET current route (required, only authenticated users have access)
 router.get('/current', auth.required, (req, res) => {
   console.log(req.isAuthenticated());
-
-  const populateQuery = [{ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } }, {
-    path: '_posts',
-    model: 'Post',
-    select: {
-      _id: 1, title: 1, description: 1, votes: 1,
-    },
-    populate: {
-      path: '_poster',
-      model: 'Users',
+  QuizAttempt.aggregate(
+    [
+      { $match: { _user: new mongoose.Types.ObjectId(req.user.id) } },
+      { $sort: { _user: 1, createdAt: -1 } },
+      {
+        $group: {
+          _id: '$_quiz',
+          quizAttemptId: { $first: '$_id' },
+          createdAt: { $first: '$createdAt' },
+        },
+      },
+    ],
+  ).then((quizAttemptIds) => {
+    const quizAttemptIdArray = quizAttemptIds
+      .map((obj) => new mongoose.Types.ObjectId(obj.quizAttemptId));
+    console.log(quizAttemptIdArray);
+    const populateQuery = [{
+      path: '_posts',
+      model: 'Post',
       select: {
-        _id: 1, username: 1,
+        _id: 1, title: 1, description: 1, votes: 1,
+      },
+      populate: {
+        path: '_poster',
+        model: 'Users',
+        select: {
+          _id: 1, username: 1,
+        },
       },
     },
-  }];
-  return Users.findById(req.user.id).populate(populateQuery).exec((err, user) => {
-    if (err) res.send(err);
-    res.json(user);
+    {
+      path: '_attempts',
+      match: { _id: { $in: quizAttemptIdArray } },
+      model: 'QuizAttempt',
+      select: {
+        _id: 1, marks: 1, total: 1,
+      },
+    }];
+    Users.findById(req.user.id)
+      .populate(populateQuery)
+      .then((user) => {
+        console.log(user);
+        res.json(user);
+      })
+      .catch((err) => res.send(err));
   });
 });
 router.get('/home', auth.required, (req, res) => {
