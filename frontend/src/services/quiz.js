@@ -11,6 +11,11 @@ const doQuiz = (newObject, id) => {
       method: "post",
       url: `${baseUrl}/${id}`,
       data: newObject,
+      headers: {
+        'Content-Type': 'application/json', 
+        "token": localStorage.getItem("token") 
+      },
+      withCredentials: true,
   });
   return request.then((response) => response.data);
 };

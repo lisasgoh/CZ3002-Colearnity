@@ -38,18 +38,20 @@ const populateComments = function (next) {
 // commentSchema.pre('find', populateComments);
 // commentSchema.pre('findById', populateComments);
 
+// document middleware
+const cascadeRemove = function (next) {
+  console.log(`Remove comment middleware called${this._id}`);
+  Vote.remove({ _comment: this._id }).exec();
+  next();
+};
+
+// query middleware
 const cascadeDelete = async function (next) {
   const comment = await this.model.findOne(this.getQuery());
   console.log(`Removing Comment cascadeDelete ${comment._id}`);
   Vote.remove({ _comment: comment._id }).exec();
   next();
 };
-/*
-const cascadeDeleteRemove = function (next) {
-  console.log(`Removing Comment cascadeDelete ${this._id}`);
-  this.model('Vote').remove({ _comment: this._id }).exec();
-  next();
-}; */
 
 const deleteFromParent = async function (next) {
   const comment = await this.model.findOne(this.getQuery());
@@ -61,23 +63,8 @@ const deleteFromParent = async function (next) {
   next();
 };
 
-/*
-const deleteFromParentRemove = function (next) {
-  console.log(`Removing Comment deleteFromParent ${this._id}`);
-  Post.updateOne(
-    { _comments: this._id },
-    { $pull: { _comments: this._id } },
-  ).exec();
-  next();
-}; */
-
-commentSchema.pre('remove', function (next) {
-  console.log(`Remove comment middleware called${this._id}`);
-  Vote.remove({ _comment: this._id }).exec();
-  next();
-});
+commentSchema.pre('remove', cascadeRemove);
 commentSchema.pre('findOneAndDelete', cascadeDelete);
-// commentSchema.pre('remove', deleteFromParentRemove);
 commentSchema.pre('findOneAndDelete', deleteFromParent);
 const Comment = mongoose.model('Comment', commentSchema);
 

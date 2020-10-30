@@ -27,6 +27,7 @@ export default function Post(props) {
     numLikes,
     tags,
   } = props;
+  console.log(props);
   const [liked, setLiked] = useState(false); //props.liked
   const [disliked, setDisliked] = useState(false);
   const [likesDisplay, setLikesDisplay] = useState(numLikes);
