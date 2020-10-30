@@ -6,6 +6,18 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 
 export default function SimpleCard(props) {
+  const {
+    quizTitle,
+    completed,
+    id,
+    grade,
+    completionDate,
+    dueDate,
+    isAdmin,
+    completionPercentage,
+    avgGrade,
+  } = props;
+
   const useStyles = makeStyles({
     root: {
       // minWidth: 200,
@@ -13,9 +25,9 @@ export default function SimpleCard(props) {
       borderRadius: "6px",
       padding: "6px",
       margin: "10px 10px",
-      backgroundColor: props.completed ? "powderblue" : "salmon",
+      backgroundColor: completed ? "powderblue" : "salmon",
       "&:hover": {
-        backgroundColor: props.completed ? "lightblue" : "darksalmon",
+        backgroundColor: completed ? "lightblue" : "darksalmon",
       },
       " & h6": {
         fontSize: "1.1em",
@@ -42,61 +54,33 @@ export default function SimpleCard(props) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <h6>{props.quizTitle}</h6>
-        {props.completed ? (
-          <p>Completed: {props.completionDate}</p>
+        <h6>{quizTitle}</h6>
+        {isAdmin ? (
+          <>
+            <p>% of Students Completed: {completionPercentage}</p>
+            <p>Average Grade: {avgGrade}</p>
+          </>
         ) : (
-          <p>Due: {props.dueDate}</p>
+          <>
+            {completed ? <p>Completed: {completionDate}</p> : ""}
+            <p>Due: {dueDate}</p>
+            {completed ? <p>Grade: {grade}</p> : <p />}
+          </>
         )}
-        {props.completed ? <p>Grade: {props.grade}</p> : <p />}
       </CardContent>
       <CardActions>
-        {props.completed ? (
-          <Button size="small">Review Quiz Attempt</Button>
+        {isAdmin ? (
+          <Button size="small">Review Results</Button>
         ) : (
-          <Button size="small">Attempt Quiz</Button>
+          <>
+            {completed ? (
+              <Button size="small">Review Quiz Attempt</Button>
+            ) : (
+              <Button size="small">Attempt Quiz</Button>
+            )}
+          </>
         )}
       </CardActions>
     </Card>
   );
 }
-
-// import React from "react";
-// import { withStyles } from "@material-ui/core/styles";
-// import Button from "@material-ui/core/Button";
-
-// //subforum buttons have default colours
-// export default function QuizButton(props) {
-//   const QuizButton = withStyles({
-//     root: {
-//       backgroundColor: "orange", //props.colour
-//       marginRight: "0.9em",
-//       borderRadius: "6px",
-//       padding: "30px 15px",
-//       fontWeight: "bolder",
-//       width: "150px",
-//       height: "100px",
-//       margin: "10px 10px",
-//       fontSize: "1.1em",
-//       textTransform: "none",
-//       "&:hover": {
-//         backgroundColor: "darkorange",
-//         color: "black",
-//       },
-//     },
-//   })(Button);
-
-//   return (
-//     <div>
-//       <QuizButton
-//         variant="contained"
-//         size="small"
-//         clickable
-//         // className={classes.button}
-//       >
-//         {props.subforumTitle}
-//         {}
-//       </QuizButton>
-//     </div>
-//   );
-// }

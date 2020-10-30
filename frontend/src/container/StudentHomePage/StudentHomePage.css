@@ -9,11 +9,16 @@
   background-color: #eaeaea;
 }
 
-.studenthomepage .forums {
+.studenthomepage .forums,
+.studenthomepage .createdforums {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  margin-top: 5%;
+  margin: 5% 0 30px 0;
+}
+
+.studenthomepage .createdHeading {
+  margin-top: 30px;
 }
 
 .studenthomepage .rightsection {
@@ -35,4 +40,3 @@
 .studenthomepage .rightsection h2 {
   display: inline-block;
 }
-
