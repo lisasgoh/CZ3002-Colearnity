@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
@@ -7,6 +9,7 @@ const mongoose = require('mongoose');
 const router = require('express').Router();
 const auth = require('./auth');
 const Users = require('../models/Users');
+const Vote = require('../models/Vote');
 const QuizAttempt = require('../models/QuizAttempt');
 
 // POST new user route (optional, everyone has access)
@@ -144,7 +147,7 @@ router.get('/current', auth.required, (req, res) => {
 router.get('/home', auth.required, (req, res) => {
   console.log('HERERERER');
   // console.log(req.headers);
-  console.log(req.user);
+  // console.log(req.user);
   const populateQuery = {
     path: '_forums',
     model: 'Forum',
@@ -155,23 +158,49 @@ router.get('/home', auth.required, (req, res) => {
       select: {
         _id: 1, title: 1, description: 1, votes: 1,
       },
-      populate: {
+      populate: [{
         path: '_poster',
         model: 'Users',
         select: {
           _id: 1, username: 1,
         },
-      },
+      }, {
+        path: '_forum',
+        model: 'Forum',
+        select: {
+          _id: 1, name: 1,
+        },
+      }],
     },
   };
-
   return Users.findById(req.user.id)
     .populate(populateQuery)
     .then((user) => {
-      console.log(user);
-      res.json(user);
-    })
-    .catch((err) => res.send(err));
+      // console.log(`HERERE${user}`);
+      const homePagePosts = user._forums.reduce((result, item) => result.concat(item._posts), []);
+      // console.log(homePagePosts);
+      const promises = homePagePosts.map((post) => {
+        const postObj = post.toObject();
+        // console.log(`Post obj${postObj._id}`);
+        return Vote.findOne({ _post: postObj._id, _voter: req.user.id })
+          .then((vote) => {
+            // console.log(vote);
+            if (vote == null) {
+              postObj.userVote = 0;
+            } else {
+              postObj.userVote = vote.dir;
+            }
+            return postObj;
+          });
+      });
+      Promise.all(promises).then((userPostsWithVote) => {
+        console.log(`votesss${JSON.stringify(userPostsWithVote)}`);
+        const userObj = user.toObject();
+        userObj.homePagePosts = userPostsWithVote;
+        console.log(`Final user${JSON.stringify(userObj)}`);
+        res.json(userObj);
+      });
+    }).catch((err) => res.send(err));
 });
 
 // Testing

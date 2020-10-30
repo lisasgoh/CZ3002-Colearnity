@@ -22,8 +22,12 @@ const GradeSchema = new mongoose.Schema({
 }); */
 
 const UsersSchema = new Schema({
-  hash: String,
-  salt: String,
+  hash: {
+    type: String,
+  },
+  salt: {
+    type: String,
+  },
   username: {
     type: String,
     required: true,
