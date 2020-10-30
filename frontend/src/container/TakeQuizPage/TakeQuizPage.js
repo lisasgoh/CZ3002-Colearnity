@@ -30,23 +30,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getSteps() {
-  return ["Question 1", "Question 2", "Question 3", "Question 4"];
+const quizValues = [];
+// function getSteps() {
+//   return ["Question 1", "Question 2", "Question 3", "Question 4"];
+// }
+
+function callbackQuiz(value) {
+  console.log(value);
+  console.log("index: " + value[0] + " & value: " + value[1]);
+  quizValues[value[0] - 1] = value[1];
+  console.log("quizvalues: " + quizValues);
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <QuizQns qnNum="1" qnWeightage="10" />;
-    case 1:
-      return <QuizQns qnNum="2" qnWeightage="10" />;
-    case 2:
-      return <QuizQns qnNum="3" qnWeightage="10" />;
-    case 3:
-      return <QuizQns qnNum="4" qnWeightage="10" />;
-    default:
-      return "Unknown step";
-  }
+function getStepContent(question, value, index) {
+  console.log(question);
+
+  return (
+    <QuizQns
+      qn={question.title}
+      qnNum={question.questionNumber}
+      qnWeightage={question.points}
+      options={question.options}
+      disabled={false}
+      initialValue={value}
+      parentCallback={callbackQuiz}
+    />
+  );
 }
 
 export default function TakeQuizPage() {
@@ -55,25 +64,30 @@ export default function TakeQuizPage() {
   //     this.setActiveStep = { activeStep: '0' };
   // }
 
-  const { quizID } = useLocation();
+  // const { quizID } = useLocation();
+  const [quizID, setID] = useState(null);
+  // console.log("QUIZID IMPORT: " + quizID);
   const [quizTitle, setTitle] = useState(null);
   const [quizDesc, setDesc] = useState(null);
   const [quizQns, setQns] = useState([]);
-  console.log(quizID); //should be only quizID
 
   useEffect(() => {
-    quizService.getQuiz(`${quizID}`).then((quizData) => {
+    quizService.getQuiz("5f993b19ff08a627f4be9fe9").then((quizData) => {
       console.log(quizData);
-      setTitle(quizData.name);
+      setID(quizData._id);
+      setTitle(quizData.title);
       setDesc(quizData.description);
       setQns(quizData.questions);
     });
   }, []);
 
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState({});
-  const steps = getSteps();
+  const [activeStep, setActiveStep] = useState(0);
+  const [completed, setCompleted] = useState({});
+  const steps = quizQns.map(
+    (qn, index) =>
+      "Question " + (index + 1) + " (" + qn.points + " points" + ")"
+  ); //array of qnNums CHANGE HERE
 
   const totalSteps = () => {
     return steps.length;
@@ -102,7 +116,15 @@ export default function TakeQuizPage() {
   };
 
   const handleBack = () => {
+    console.log("HANDLING BACK");
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleSubmit = () => {
+    console.log(
+      "HANDLING SUBMIT.quizValues: " + quizValues + "quizID: " + quizID
+    );
+    quizService.doQuiz(quizValues, quizID);
   };
 
   const handleStep = (step) => () => {
@@ -119,7 +141,7 @@ export default function TakeQuizPage() {
   return (
     <div className="takequizpage">
       <div className="leftsection">
-        <h2>Software Quality Management</h2>
+        <h2></h2>
         <Divider variant="middle" />
 
         {/* <h3>Quiz Progress</h3> */}
@@ -127,7 +149,7 @@ export default function TakeQuizPage() {
 
       <div className="rightsection">
         <div className="topbar">
-          <h2>Quiz 3</h2>
+          <h2>{quizTitle}</h2>
         </div>
         <div className={classes.root}>
           <Stepper nonLinear activeStep={activeStep} orientation="vertical">
@@ -140,7 +162,7 @@ export default function TakeQuizPage() {
                   {label}
                 </StepButton>
                 <StepContent>
-                  <Typography>{getStepContent(index)}</Typography>
+                  {getStepContent(quizQns[index], quizValues[index], index)}
                   <div className={classes.actionsContainer}>
                     <div>
                       <Button
@@ -153,7 +175,11 @@ export default function TakeQuizPage() {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleNext}
+                        onClick={
+                          activeStep === steps.length - 1
+                            ? handleSubmit
+                            : handleNext
+                        }
                         className={classes.button}
                       >
                         {activeStep === steps.length - 1 ? "Submit" : "Next"}
