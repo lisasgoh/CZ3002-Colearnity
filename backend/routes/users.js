@@ -173,10 +173,10 @@ router.get('/home', auth.required, (req, res) => {
       }],
     },
   };
-  return Users.findById(req.user.id)
+  return Users.findById(req.user.id).select(['-_grades', '-_posts', '-_attempts', '-_quizzes', '-salt', '-hash'])
     .populate(populateQuery)
     .then((user) => {
-      // console.log(`HERERE${user}`);
+      console.log(`HERERE${user}`);
       const homePagePosts = user._forums.reduce((result, item) => result.concat(item._posts), []);
       // console.log(homePagePosts);
       const promises = homePagePosts.map((post) => {
@@ -197,10 +197,11 @@ router.get('/home', auth.required, (req, res) => {
         console.log(`votesss${JSON.stringify(userPostsWithVote)}`);
         const userObj = user.toObject();
         userObj.homePagePosts = userPostsWithVote;
-        console.log(`Final user${JSON.stringify(userObj)}`);
+        console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
         res.json(userObj);
       });
-    }).catch((err) => res.send(err));
+    })
+    .catch((err) => res.send(err));
 });
 
 // Testing
