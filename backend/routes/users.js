@@ -148,7 +148,7 @@ router.get('/home', auth.required, (req, res) => {
   console.log('HERERERER');
   // console.log(req.headers);
   // console.log(req.user);
-  const populateQuery = {
+  const populateQuery = [{
     path: '_forums',
     model: 'Forum',
     select: { _id: 1, name: 1 },
@@ -172,7 +172,11 @@ router.get('/home', auth.required, (req, res) => {
         },
       }],
     },
-  };
+  }, {
+    path: '_created_forums',
+    model: 'Forum',
+    select: { _id: 1, name: 1 },
+  }];
   return Users.findById(req.user.id).select(['-_grades', '-_posts', '-_attempts', '-_quizzes', '-salt', '-hash'])
     .populate(populateQuery)
     .then((user) => {
