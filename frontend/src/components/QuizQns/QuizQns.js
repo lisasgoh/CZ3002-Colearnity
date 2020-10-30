@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Radio,
   RadioGroup,
@@ -8,45 +8,49 @@ import {
 import "./QuizQns.css";
 
 export default function QuizQns(props) {
+  const {
+    initialValue,
+    qn,
+    qnNum,
+    qnWeightage,
+    options,
+    disabled,
+    parentCallback,
+  } = props;
 
-  const [value, setValue] = React.useState("Option 1");
+  const [value, setValue] = useState(initialValue);
 
   const handleChange = (event) => {
     setValue(event.target.value);
+    console.log("before sending: " + qnNum + " " + event.target.value);
+    parentCallback([qnNum, event.target.value]);
   };
+
+  // const sendData = () => {
+  //   parentCallback({ index: qnNum - 1, value: value });
+  // };
 
   return (
     <div className="question">
-      <div className="qnsheader">
-        <h6>Question {props.qnNum}</h6>
-        <h6>{props.qnWeightage} marks</h6>
-      </div>
+      {/* <div className="qnsheader">
+        <h6>Question {qnNum}</h6>
+        <h6>{qnWeightage} marks</h6>
+      </div> */}
 
-      <p>Which is not a divisor of 36?</p>
+      <p>{qn}</p>
 
       <div className="options">
-        <FormControl component="fieldset" disabled={props.disabled}>
-          <RadioGroup value={props.value} onChange={handleChange}>
-            <FormControlLabel
-              value="option 1"
-              control={<Radio color="primary" />}
-              label="Option 1"
-            />
-            <FormControlLabel
-              value="option 2"
-              control={<Radio color="primary" />}
-              label="Option 2"
-            />
-            <FormControlLabel
-              value="Option 3"
-              control={<Radio color="primary" />}
-              label="Option 3"
-            />
-            <FormControlLabel
-              value="Option 4"
-              control={<Radio color="primary" />}
-              label="Option 4"
-            />
+        <FormControl component="fieldset" disabled={disabled}>
+          <RadioGroup value={value} onChange={handleChange}>
+            {options &&
+              options.map((option, index) => (
+                <FormControlLabel
+                  key={index}
+                  value={option.optionNumber.toString()}
+                  control={<Radio color="primary" />}
+                  label={option.answerBody}
+                />
+              ))}
           </RadioGroup>
         </FormControl>
       </div>
