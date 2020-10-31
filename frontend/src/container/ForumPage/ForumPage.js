@@ -93,9 +93,9 @@ class ForumPage extends Component {
           <p>{forumDesc}</p>
           <h3>Subforums</h3>
           <div className="subforums">
-            <SubforumButton subforumTitle="CZ3002 ASE" />
+            {/* <SubforumButton subforumTitle="CZ3002 ASE" />
             <SubforumButton subforumTitle="CZ3001 ACOA" />
-            <SubforumButton subforumTitle="CZ1007 Data Structures" />
+            <SubforumButton subforumTitle="CZ1007 Data Structures" /> */}
             {subforums &&
               subforums.map((subforum) => (
                 <Link to={{ pathname: `/subforumpage/${subforum._id}` }}>
