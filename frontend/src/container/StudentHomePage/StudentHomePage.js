@@ -28,18 +28,18 @@ class StudentHomePage extends Component {
       console.log(userData);
       var i, j;
       //populates posts with posts from all forums (super inefficient, find a better solution if can)
-      for (i = 0; i < userData._forums.length; i++) {
-        for (j = 0; j < userData._forums[i]._posts.length; j++) {
-          this.state.posts.push(userData._forums[i]._posts[j]);
-        }
-      }
+      // for (i = 0; i < userData._forums.length; i++) {
+      //   for (j = 0; j < userData._forums[i]._posts.length; j++) {
+      //     this.state.posts.push(userData._forums[i]._posts[j]);
+      //   }
+      // }
       console.log(this.state.posts);
       this.setState({
         ...this.state,
         ...{
           forums: userData._forums,
           createdForums: userData._created_forums,
-          // posts: userData._forums.filter((forum) => forum._posts),
+          posts: userData.homePagePosts,
           isStudent: userData.is_student,
         },
       });
@@ -119,6 +119,7 @@ class StudentHomePage extends Component {
                 numLikes={post.votes}
                 tags={post.tags}
                 title={post.title}
+                userVote={post.userVote}
                 isPoster={post._poster._id == localStorage.getItem("userID")}
               />
             ))}

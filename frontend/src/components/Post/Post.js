@@ -29,12 +29,12 @@ export default function Post(props) {
     tags,
     isAdmin,
     isPoster,
+    userVote,
   } = props;
 
   //FOR LIKES
-  console.log(props);
-  const [liked, setLiked] = useState(false); //props.liked
-  const [disliked, setDisliked] = useState(false);
+  const [liked, setLiked] = useState(userVote > 0); //props.liked
+  const [disliked, setDisliked] = useState(userVote < 0);
   const [likesDisplay, setLikesDisplay] = useState(numLikes);
   const setLikeHandler = () => {
     let difference = 0;
