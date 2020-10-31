@@ -23,6 +23,11 @@ class LandingPage extends Component {
                             <Button>Get Started</Button>
                         </Link>
                     </div>
+                    <div className="ls-btn">
+                        <Link to="/login">
+                            <Button>Login</Button>
+                        </Link>
+                    </div>
                 </div>
             </div>
         );
