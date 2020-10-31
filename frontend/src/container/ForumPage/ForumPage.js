@@ -112,7 +112,7 @@ class ForumPage extends Component {
 
         <div className="rightsection">
           <div className="topbar">
-            <Link to={{ pathname: "/createpost", data: forumID }}>
+            <Link to={{ pathname: "/createpost", state: { forum_id: forumID } }}>
               <AddCircleOutlineRoundedIcon />
             </Link>
             <h2>Recent Posts</h2>

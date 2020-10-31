@@ -35,7 +35,6 @@ postRouter.get('/', (req, res) => {
 // create post
 // TODO: add to forum & user db
 postRouter.post('/', (req, res) => {
-  console.log('FDSFSDFDSfSD');
   // console.log(req.body);
   // console.log(req.query);
   // console.log(req.user);
@@ -49,24 +48,25 @@ postRouter.post('/', (req, res) => {
     _comments: [],
     _forum: req.query.forum_id,
   });
-  console.log('DFDSFSdsdsddDFDSFDS');
   post
     .save()
-    .then(() => Forum.findById(req.query.forum_id)
+    .then(() => Forum.findByIdAndUpdate(req.query.forum_id,
+      { $push: { _posts: { $each: [post._id], $position: 0 } } },
+      { new: true })
       .then((forum) => {
-        console.log('DFDSFSDFDSFDS');
-        forum._posts.unshift(post);
         console.log(forum);
-        return forum.save();
-      }).then(() => Users.findById(req.user.id).then((user) => {
-        user._posts.unshift(post);
-        console.log(user);
-        return user.save();
-      }))
-      .then((user) => res.json(user))
+        Users.findByIdAndUpdate(req.user.id,
+          { $push: { _posts: { $each: [post._id], $position: 0 } } },
+          { new: true })
+          .then((user) => {
+            console.log(user);
+            res.json(post);
+          });
+      })
       .catch((error) => res.json(error)));
 });
 
+/*
 postRouter.post('/', (req, res) => {
   const { body } = req;
   // check if user is part of forum
@@ -92,6 +92,7 @@ postRouter.post('/', (req, res) => {
       }).then(() => res.json(post))
         .catch((error) => res.json(error))));
 });
+*/
 
 // update post title/description
 postRouter.put('/:id', (req, res) => {
