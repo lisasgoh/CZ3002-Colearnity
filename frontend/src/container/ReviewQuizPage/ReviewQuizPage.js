@@ -7,7 +7,7 @@ import Divider from "@material-ui/core/Divider";
 import { Link } from "react-router-dom";
 import "./ReviewQuizPage.css";
 
-import quizService from "./../../services/quiz";
+import quizAttemptService from "./../../services/quizattempt";
 
 export default function TakeQuizPage() {
   const { quizID } = useLocation();
@@ -17,7 +17,7 @@ export default function TakeQuizPage() {
   console.log(quizID); //should be only quizID
 
   useEffect(() => {
-    quizService.getQuiz(`${quizID}`).then((quizData) => {
+    quizAttemptService.getAttempt(`${quizID}`).then((attemptData) => {
       console.log(quizData);
       setTitle(quizData.name);
       setDesc(quizData.description);
