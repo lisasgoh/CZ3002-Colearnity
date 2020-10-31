@@ -123,6 +123,7 @@ class SubforumPage extends Component {
                 tags={post.tags}
                 title={post.title}
                 isAdmin={isAdmin}
+                isPoster={post._poster._id == localStorage.getItem("userID")}
               />
             ))}
         </div>

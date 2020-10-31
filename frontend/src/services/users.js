@@ -6,8 +6,8 @@ const getUser = () => {
     method: "get",
     url: `${baseUrl}/current`,
     headers: {
-      'Content-Type': 'application/json', 
-      "token": localStorage.getItem("token") 
+      "Content-Type": "application/json",
+      token: localStorage.getItem("token"),
     },
     withCredentials: true,
   });
@@ -19,8 +19,8 @@ const getUserHomePage = () => {
     method: "get",
     url: `${baseUrl}/home`,
     headers: {
-      'Content-Type': 'application/json', 
-      "token": localStorage.getItem("token") 
+      "Content-Type": "application/json",
+      token: localStorage.getItem("token"),
     },
     withCredentials: true,
   });
@@ -40,11 +40,11 @@ const create = (newObject) => {
 
 const login = (email, password) => {
   const user = {
-    "user": {
-      "email": email,
-      "password": password
-    }
-  }
+    user: {
+      email: email,
+      password: password,
+    },
+  };
   console.log(user);
   const request = axios({
     method: "post",
@@ -52,10 +52,11 @@ const login = (email, password) => {
     data: user,
     withCredentials: true,
   });
-  return request.then((response) => 
-  {
+  return request.then((response) => {
     const token = response.data.user.token;
-    localStorage.setItem('token', token);
+    localStorage.setItem("token", token);
+    const userID = response.data.user._id;
+    localStorage.setItem("userID", userID);
   });
 };
 

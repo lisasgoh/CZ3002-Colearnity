@@ -119,6 +119,7 @@ class StudentHomePage extends Component {
                 numLikes={post.votes}
                 tags={post.tags}
                 title={post.title}
+                isPoster={post._poster._id == localStorage.getItem("userID")}
               />
             ))}
           <Post editingaccess={true} />

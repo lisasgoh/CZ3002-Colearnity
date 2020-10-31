@@ -28,6 +28,7 @@ export default function Post(props) {
     numLikes,
     tags,
     isAdmin,
+    isPoster,
   } = props;
 
   //FOR LIKES
@@ -172,7 +173,7 @@ export default function Post(props) {
         </IconButton>
 
         <span> {likesDisplay} Votes</span>
-        {isAdmin ? (
+        {isAdmin || isPoster ? (
           <Button
             color="primary"
             size="small"

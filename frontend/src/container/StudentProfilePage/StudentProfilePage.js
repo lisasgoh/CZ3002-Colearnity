@@ -1,50 +1,86 @@
-import React, { Component } from 'react';
-import  Post  from "../../components/Post/Post";
+import React, { Component } from "react";
+import Post from "../../components/Post/Post";
 import "./StudentProfilePage.css";
 import ProfilePic from "../../assets/profile_placeholder.png";
 import ProfileCard from "./ProfileCard";
 
-class StudentProfilePage extends Component {
-    render(){
-        const ColoredLine = ({ color }) => (
-            <hr
-                style={{
-                    color: color,
-                    backgroundColor: color,
-                    height: 1,
-                    width: "100%"
-                }}
-            />
-        );
-        return(
-            <div className="container">
-               <img className="profilepic"
-                    src={ProfilePic} 
-                    alt="Logo"/>
-                <h1>Student Name</h1>
-                <ColoredLine color="grey" />
+import usersService from "../../services/users";
 
-                <div className="row_container">
-                    <div className="profile_post">
-                    <p1 className="profile_post_header"><b>My Posts</b></p1>
-                        <Post/>
-                        <Post/>
-                    </div>
-                    <div className="profile_grades">
-                    <p1 className="profile_post_header"><b>Grades</b></p1>
-                        <ProfileCard marks="7/10" title="Advanced Software Engineering"/>
-                        <ProfileCard marks="8/10" title="Advanced Computer Architecture"/>
-                        <ProfileCard marks="10/10" title="Software Engineering"/>
-                        <ProfileCard marks="2/10" title="Data Structures"/>
-                    </div>
-                </div>
-                
-                   
-                
-            </div>
-            
-        );
-    }
+class StudentProfilePage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: null,
+      posts: [], //posts are from all forums, not user posts - consider how to populate
+      grades: [],
+    };
+  }
+
+  componentDidMount() {
+    usersService.getUser().then((userData) => {
+      console.log(userData);
+      this.setState({
+        ...this.state,
+        ...{
+          username: userData.username,
+          posts: userData._posts,
+          grades: userData._grades,
+        },
+      });
+    });
+  }
+
+  render() {
+    const { username, posts, grades } = this.state;
+
+    const ColoredLine = ({ color }) => (
+      <hr
+        style={{
+          color: color,
+          backgroundColor: color,
+          height: 1,
+          width: "100%",
+        }}
+      />
+    );
+
+    return (
+      <div className="container">
+        <img className="profilepic" src={ProfilePic} alt="Logo" />
+        <h1>{username}</h1>
+        <ColoredLine color="grey" />
+
+        <div className="row_container">
+          <div className="profile_post">
+            <p1 className="profile_post_header">
+              <b>My Posts</b>
+            </p1>
+            {posts &&
+              posts.map((post, index) => (
+                <Post
+                  title={post.title}
+                  username={username} //all posts should be made by user on profile page
+                  content={post.description}
+                  numLikes={post.votes}
+                  tags={post.tags}
+                  isPoster={post._poster._id == localStorage.getItem("userID")}
+                />
+              ))}
+          </div>
+          <div className="profile_grades">
+            <p1 className="profile_post_header">
+              <b>Grades</b>
+            </p1>
+            {grades &&
+              grades.map((grade, index) => (
+                <ProfileCard marks={grade.marks} title={grade._quiz} />
+              ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default StudentProfilePage;
