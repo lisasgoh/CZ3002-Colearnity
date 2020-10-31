@@ -8,8 +8,6 @@ import Icon from '@material-ui/core/Icon';
 import { Link } from "react-router-dom";
 import TeacherPost from "../../components/Post/TeacherPost";
 
-// import users from "../../utils/API";
-
 import usersService from "../../services/users";
 
 class StudentHomePage extends Component {
@@ -27,13 +25,6 @@ class StudentHomePage extends Component {
   componentDidMount() {
     usersService.getUserHomePage().then((userData) => {
       console.log(userData);
-      var i, j;
-      //populates posts with posts from all forums (super inefficient, find a better solution if can)
-      // for (i = 0; i < userData._forums.length; i++) {
-      //   for (j = 0; j < userData._forums[i]._posts.length; j++) {
-      //     this.state.posts.push(userData._forums[i]._posts[j]);
-      //   }
-      // }
       console.log(this.state.posts);
       this.setState({
         ...this.state,
@@ -75,21 +66,6 @@ class StudentHomePage extends Component {
                 </Link>
               ))}
           </div>
-          {/* <ForumButton
-              color="papayawhip"
-              hovercolor="peachpuff"
-              forumTitle="CZ3002 ASE"
-            />
-            <ForumButton
-              color="lightcyan"
-              hovercolor="darkcyan"
-              forumTitle="CZ3001 ACOA"
-            />
-            <ForumButton
-              color="lavender"
-              hovercolor="darkslateblue"
-              forumTitle="CZ1007 Data Structures"
-            /> */}
           <Divider variant="middle" />
           <h2 className="createdHeading">Forums Created</h2>
           <div className="createdforums">
