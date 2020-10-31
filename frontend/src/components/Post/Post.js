@@ -19,7 +19,6 @@ import { Link } from "react-router-dom";
 import voteService from "./../../services/vote";
 export default function Post(props) {
   let {
-    postInput,
     id,
     title,
     username,
@@ -137,7 +136,7 @@ export default function Post(props) {
       <div className="actionbar">
         <Link
           to={{
-            pathname: `/postdetailpage/${postInput}`,
+            pathname: `/postdetailpage/${id}`,
           }}
         >
           <Button
