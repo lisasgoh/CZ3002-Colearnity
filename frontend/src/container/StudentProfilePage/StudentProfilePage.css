@@ -1,47 +1,45 @@
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.profilepic{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
+.profilepic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
 }
 
-.row_container{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+.row_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
-.profile_post{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    align-self: start;
-    width: 70%;
-    margin-right: 5%;
-    
+.profile_post {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: start;
+  width: 70%;
+  margin-right: 5%;
 }
 
-.profile_grades{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    align-self: start;
-    width: 30%;
-    
+.profile_grades {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: start;
+  width: 30%;
 }
 
-.profile_post_header{
-    display: flex;
-    align-self: center;
-    margin-bottom: 1em;
+.profile_post_header {
+  display: flex;
+  align-self: center;
+  margin-bottom: 1em;
 }

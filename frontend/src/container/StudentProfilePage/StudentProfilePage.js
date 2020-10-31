@@ -25,7 +25,7 @@ class StudentProfilePage extends Component {
         ...{
           username: userData.username,
           posts: userData._posts,
-          grades: userData._grades,
+          grades: userData._attempts,
         },
       });
     });
@@ -74,7 +74,11 @@ class StudentProfilePage extends Component {
             </p1>
             {grades &&
               grades.map((grade, index) => (
-                <ProfileCard marks={grade.marks} title={grade._quiz} />
+                <ProfileCard
+                  scoredMarks={grade.marks}
+                  totalMarks={grade.total}
+                  quizTitle={grade._quiz.title}
+                />
               ))}
           </div>
         </div>
