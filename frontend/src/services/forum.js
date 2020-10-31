@@ -7,24 +7,28 @@ const getForum = (id) => {
 };
 
 const createSubForum = (newObject, forum_id) => {
-  const auth_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A";
   const request = axios({
     method: "post",
     url: `${baseUrl}?forum_id=${forum_id}`,
-    headers: { token: auth_token },
+    headers: {
+      'Content-Type': 'application/json', 
+      "token": localStorage.getItem("token") 
+    },
+    withCredentials: true,
     data: newObject,
   });
   return request.then((response) => response.data);
 };
 
 const createMainForum = (newObject) => {
-  const auth_token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxpc2EzNjQwNUBnbWFpbC5jb20iLCJpZCI6IjVmN2Y1MjVkNTZiOTgzNWIyNDVlOGFhZiIsImV4cCI6MTYwNzYxNzQ4NywiaWF0IjoxNjAyNDMzNDg3fQ.xniUrdSGgfPDBXX6AJ-NmRKWkQHk5sPA4HZbTZ16C0A";
   const request = axios({
     method: "post",
     url: baseUrl,
-    headers: { token: auth_token },
+    headers: {
+      'Content-Type': 'application/json', 
+      "token": localStorage.getItem("token") 
+    },
+    withCredentials: true,
     data: newObject,
   });
   console.log(request.then((response) => response.data));

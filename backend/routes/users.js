@@ -135,7 +135,7 @@ router.get('/current', auth.required, (req, res) => {
         },
       },
     }];
-    Users.findById(req.user.id)
+    Users.findById(req.user.id).select(['-_forums', '-_created_forums', '-salt', '-hash'])
       .populate(populateQuery)
       .then((user) => {
         console.log(user);

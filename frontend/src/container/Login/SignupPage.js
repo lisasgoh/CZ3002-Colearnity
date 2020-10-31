@@ -41,18 +41,10 @@ class SignupPage extends Component {
 
     usersService
       .create(this.state)
-      .then((newUser) => console.log(newUser))
+      .then(() => {
+        this.props.history.push("/login");
+      })
       .catch((error) => console.log(error));
-
-    // const post = {
-    //   title: this.state.title,
-    //   description: this.state.description,
-    //   is_sub: false,
-    //   // postTags: this.state.tags,
-    // };
-    // postService.create(post, forum_id)
-    //   .then((newPost) => console.log(newPost))
-    //   .catch((err => console.log(err)));
   }
 
   render() {
