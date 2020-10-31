@@ -3,6 +3,9 @@ import Post from "../../components/Post/Post";
 import "./StudentProfilePage.css";
 import ProfilePic from "../../assets/profile_placeholder.png";
 import ProfileCard from "./ProfileCard";
+import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid";
+import { Redirect } from 'react-router-dom';
 
 import usersService from "../../services/users";
 
@@ -31,8 +34,22 @@ class StudentProfilePage extends Component {
     });
   }
 
+  state = {
+    navigate: false
+  };
+
+  logout = () => {
+      localStorage.clear("token");
+      this.setState({ navigate: true});
+  };
+
+
   render() {
     const { username, posts, grades } = this.state;
+    const { navigate } = this.state;
+    if (navigate) {
+        return <Redirect to="/" push={true} />;
+    }
 
     const ColoredLine = ({ color }) => (
       <hr
@@ -47,6 +64,11 @@ class StudentProfilePage extends Component {
 
     return (
       <div className="container">
+        <div className="logout">
+          <Grid container justify="flex-end">
+              <Button variant="contained" onClick={this.logout}>Logout</Button>
+          </Grid>
+        </div>
         <img className="profilepic" src={ProfilePic} alt="Logo" />
         <h1>{username}</h1>
         <ColoredLine color="grey" />
