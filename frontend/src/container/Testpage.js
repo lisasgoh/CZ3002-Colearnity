@@ -50,6 +50,11 @@ class Testpage extends Component {
                     </Link>
                 </div>
                 <div className="ls-btn">
+                    <Link to="/teacherhomepage">
+                        <Button>Teacher Home Page</Button>
+                    </Link>
+                </div>
+                <div className="ls-btn">
                     <Link to="/teacherforumpage">
                         <Button>Teacher Forum Page</Button>
                     </Link>

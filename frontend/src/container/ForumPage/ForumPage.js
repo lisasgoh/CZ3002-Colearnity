@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
+import Icon from '@material-ui/core/Icon';
 import { Link } from "react-router-dom";
 import "./ForumPage.css";
 
@@ -70,6 +71,7 @@ class ForumPage extends Component {
       isAdmin,
     } = this.state;
     console.log(forumMembership);
+    let combined = ["icon", "fa fa-plus-circle"].join(" ");
     return (
       <div className="forumpage">
         <div className="leftsection">
@@ -104,6 +106,12 @@ class ForumPage extends Component {
                 </Link>
               ))}
           </div>
+          <Link to={{ pathname: "/createforum", data: forumID }}>
+            <Icon
+                className={combined}
+                style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
+            />
+          </Link>
         </div>
 
         <div className="rightsection">

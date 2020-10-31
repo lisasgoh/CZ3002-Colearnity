@@ -4,6 +4,7 @@ import Post from "../../components/Post/Post";
 import ForumButton from "../../components/ForumButtons/ForumButton";
 import Filter from "../../components/Filter/Filter";
 import Divider from "@material-ui/core/Divider";
+import Icon from '@material-ui/core/Icon';
 import { Link } from "react-router-dom";
 import TeacherPost from "../../components/Post/TeacherPost";
 
@@ -57,6 +58,7 @@ class StudentHomePage extends Component {
   render() {
     const { forums, createdForums, posts, isStudent } = this.state;
     console.log(createdForums);
+    let combined = ["icon", "fa fa-plus-circle"].join(" ");
     return (
       <div className="studenthomepage">
         <div className="leftsection">
@@ -102,6 +104,12 @@ class StudentHomePage extends Component {
                 </Link>
               ))}
           </div>
+          <Link to={{ pathname: "/createforum" }}>
+            <Icon
+                className={combined}
+                style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
+            />
+          </Link>
         </div>
 
         <div className="rightsection">
