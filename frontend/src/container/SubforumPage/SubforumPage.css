@@ -48,3 +48,10 @@
 .subforumpage .rightsection h2 {
   display: inline-block;
 }
+
+.subforumpage .rightsection .vg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5ch;
+}

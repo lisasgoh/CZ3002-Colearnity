@@ -21,6 +21,7 @@ import TeacherCreateQuiz from "./container/TeacherCreateQuiz/TeacherCreateQuiz";
 import CreateForum from "./container/CreateForum/CreateForum";
 import Testpage from "./container/Testpage";
 import SearchResult from "./container/SearchResults/SearchResults";
+import ViewGrades from "./container/SubforumPage/ViewGrades";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/teachercreatequiz" exact component={TeacherCreateQuiz} />
         <Route path="/createforum" exact component={CreateForum} />
         <Route path="/searchresult" exact component={SearchResult} />
+        <Route path="/viewgrades" exact component={ViewGrades} />
       </div>
     </BrowserRouter>
   );

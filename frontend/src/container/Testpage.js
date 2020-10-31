@@ -79,6 +79,11 @@ class Testpage extends Component {
                         <Button>Create Forum</Button>
                     </Link>
                 </div>
+                <div className="ls-btn">
+                    <Link to="/viewgrades">
+                        <Button>View Grades</Button>
+                    </Link>
+                </div>
             </div>
         );
     }
