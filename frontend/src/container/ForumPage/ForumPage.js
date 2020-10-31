@@ -54,10 +54,6 @@ class ForumPage extends Component {
     // const forum = {
     //   isSubscribed: this.state.forumMembership,
     // };
-
-    // API.post("/forum/5f7f81aeacc7375f68ca66e5", { forum }).then((response) => {
-    //   console.log(response.data);
-    // });
   };
 
   render() {
@@ -106,7 +102,7 @@ class ForumPage extends Component {
                 </Link>
               ))}
           </div>
-          <Link to={{ pathname: "/createforum", data: forumID }}>
+          <Link to={{ pathname: "/createforum", state: { forum_id: forumID } }}>
             <Icon
                 className={combined}
                 style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}

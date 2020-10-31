@@ -24,7 +24,7 @@ forumRouter.post('/', (req, res) => {
     is_sub: req.body.is_sub,
     _parentforum: req.query.forum_id,
   });
-  if (req.body.is_sub === 'true') { // add parent forum id and subforums list
+  if (req.body.is_sub === true) { // add parent forum id and subforums list
     console.log('IS SUBFORUM');
     forum.save().then((forum) => {
       console.log(forum);
