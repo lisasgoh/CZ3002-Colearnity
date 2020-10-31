@@ -18,7 +18,7 @@ export default function TakeQuizPage() {
 
   useEffect(() => {
     quizAttemptService.getAttempt(`${quizID}`).then((attemptData) => {
-      console.log(quizData);
+      const quizData = attemptData._quiz;
       setTitle(quizData.name);
       setDesc(quizData.description);
       setQns(quizData.questions);

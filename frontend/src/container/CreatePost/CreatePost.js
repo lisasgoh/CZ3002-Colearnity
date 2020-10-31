@@ -24,53 +24,14 @@ class CreatePost extends Component {
     tags: "CZ3006 ASE",
   };
 
-  // componentDidMount() {
-  //   API.get("/forum/5f7f81aeacc7375f68ca66e5").then((response) => {
-  //     const forumData = response.data;
-  //     console.log(forumData);
-  //     this.setState({
-  //       ...this.state,
-  //       ...{
-  //         forumTitle: forumData.name,
-  //         forumDesc: forumData.description,
-  //         subforums: forumData._subforums,
-  //         posts: forumData._posts,
-  //         forumMembership: forumData.isSubscribed,
-  //       },
-  //     });
-  //   });
-  // }
-
-  //   handleMembershipChange = (event) => {
-  //   this.setState({ forumMembership: !this.state.forumMembership });
-
-  //   // const forum = {
-  //   //   isSubscribed: this.state.forumMembership,
-  //   // };
-
-  //   // API.post("/forum/5f7f81aeacc7375f68ca66e5", { forum }).then((response) => {
-  //   //   console.log(response.data);
-  //   // });
-  // };
-
   handleSubmit = (forum_id, event) => {
     console.log("Submit a post");
     event.preventDefault();
     console.log("Submit a post");
-
-    //   API.post("/posts", params.toString(), {
-    //     headers: {
-    //       authorization: `Token ${auth_token}`
-    //     },
-    //     data: { post }
-    //  })
     console.log(post);
     // console.log(this.props.location);
     // const { forum_id } = this.props.location;
     console.log(forum_id);
-    // const params = new URLSearchParams({
-    //   forum_id: "5f80a05fe739614e280406bd",
-    // });
     console.log(window.location.href);
 
     const post = {

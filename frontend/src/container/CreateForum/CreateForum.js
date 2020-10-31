@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import ForumButton from "../../components/ForumButtons/ForumButton";
-import Icon from "@material-ui/core/Icon";
-import Button from "@material-ui/core/Button";
-import NewForum from "../../components/NewForum/NewForum";
+import { Button } from "../../components/Button/Button";
 import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import "./CreateForum.css";
@@ -12,27 +9,37 @@ import forumService from "./../../services/forum";
 export default function CreateForum() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [is_sub, setIsSub] = useState("false");
   const history = useHistory();
 
   function validateForm() {
+    console.log(name);
+    console.log(desc);
     return name.length > 0 && desc.length > 0;
   }
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
     try {
-      await forumService.createMainForum(name, desc);
-      history.push("/homepage");
+      const forum = {
+        name: name,
+        description: desc,
+        is_sub: false,
+      }
+      forumService.createMainForum(forum).then((forumData) => {
+        console.log(forumData._id);
+        history.push(`/forumpage/${forumData._id}`);
+      });
     } catch (e) {
       alert(e.message);
     }
   }
+  console.log(name);
+  console.log(desc);
 
-  let combined = ["icon", "fa fa-plus-circle"].join(" ");
+  // let combined = ["icon", "fa fa-plus-circle"].join(" ");
   return (
     <div className="createforum">
-      <div className="leftsection">
+      {/* <div className="leftsection">
         <h2 style={{ marginTop: "2em" }}>Forums Created</h2>
         <div className="forums">
           <ForumButton
@@ -55,10 +62,10 @@ export default function CreateForum() {
           className={combined}
           style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
         />
-      </div>
+      </div> */}
 
       <div className="rightsection_createforum">
-        <h1>Create Forum</h1>
+        <h1>Create Main Forum</h1>
         <form onSubmit={handleSubmit}>
           <FormGroup controlId="name" bsSize="large">
             <FormLabel>Forum Name</FormLabel>
@@ -79,7 +86,7 @@ export default function CreateForum() {
               onChange={e => setDesc(e.target.value)}
             />
           </FormGroup>
-          <Button block disabled={!validateForm()} type="submit">Create</Button>
+          <Button disabled={!validateForm()} type="submit">Create</Button>
         </form>
       </div>
     </div>
