@@ -44,7 +44,6 @@ function App() {
         <Route path="/teachersubforumpage" exact component={TeacherSubforumPage} />
         <Route path="/postdetailpage/:id" exact component={PostDetailPage} />
         <Route path="/teachercreatequiz" exact component={TeacherCreateQuiz} />
-        <Route path="/replypage" exact component={ReplyPage} />
         <Route path="/createforum" exact component={CreateForum} />
         <Route path="/searchresult" exact component={SearchResult} />
       </div>

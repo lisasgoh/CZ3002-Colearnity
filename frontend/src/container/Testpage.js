@@ -70,11 +70,6 @@ class Testpage extends Component {
                     </Link>
                 </div>
                 <div className="ls-btn">
-                    <Link to="/replypage">
-                        <Button>Reply Page</Button>
-                    </Link>
-                </div>
-                <div className="ls-btn">
                     <Link to="/createforum">
                         <Button>Create Forum</Button>
                     </Link>
