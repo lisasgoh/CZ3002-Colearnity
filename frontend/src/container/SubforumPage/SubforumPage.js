@@ -24,13 +24,13 @@ class SubforumPage extends Component {
       posts: null,
       isAdmin: null,
       isSub: null,
-      subForumID:null,
+      subForumID: null,
     };
   }
 
   componentDidMount() {
     forumService.getForum(`${this.state.id}`).then((forumData) => {
-      console.log("subforum data:")
+      console.log("subforum data:");
       console.log(forumData);
       this.setState({
         ...this.state,
@@ -40,8 +40,8 @@ class SubforumPage extends Component {
           quizzes: forumData._quizzes,
           posts: forumData._posts,
           isAdmin: forumData._teacher._id == localStorage.getItem("userID"), //forumData.isAdmin,
-          isSub:forumData.is_sub,
-          subForumID: forumData._id
+          isSub: forumData.is_sub,
+          subForumID: forumData._id,
         },
       });
     });
@@ -135,12 +135,13 @@ class SubforumPage extends Component {
                 username={post._poster.username}
                 content={post.description}
                 numLikes={post.votes}
+                userVote={post.userVote}
                 tags={post.tags}
                 title={post.title}
                 isAdmin={isAdmin}
                 isPoster={post._poster._id == localStorage.getItem("userID")}
                 isSub={this.state.isSub}
-                forumID = {this.state.subForumID}
+                forumID={this.state.subForumID}
               />
             ))}
         </div>

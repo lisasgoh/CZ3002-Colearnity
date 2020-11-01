@@ -43,11 +43,15 @@ class PostDetailPage extends Component {
       postVotes: null,
       poster: null,
       postTime: null,
+      tags: null,
+      userVote: null,
       newreply: "",
       isAdmin: this.props.location.isAdmin,
       isPoster: null,
-      forumIDs:null,
-      linkforums: this.props.location.state.isSub ? `/subforumpage/${this.props.location.state.forumID}`:`/forumpage/${this.props.location.state.forumID}`
+      forumIDs: null,
+      linkforums: this.props.location.state.isSub
+        ? `/subforumpage/${this.props.location.state.forumID}`
+        : `/forumpage/${this.props.location.state.forumID}`,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -81,37 +85,47 @@ class PostDetailPage extends Component {
   }
 
   componentDidMount() {
-    console.log("Did it pass data: " + this.props.location.state.isSub + this.props.location.state.forumID);
-    postService.getIndivPost(`${this.state.id}`).then((post) => {
-      // console.log(forumData);
-      console.log(post);
-      this.setState({
-        ...this.state,
-        ...{
-          postVotes: post.votes,
-          postTitle: post.title,
-          postDesc: post.description,
-          postComments: post._comments,
-          poster: post._poster.username,
-          postTime: post.createdAt,
-          isPoster: post._poster._id == localStorage.getItem("userID"),
-          forumIDs: post._forum,
-          
-        },
-        
+    console.log(
+      "Did it pass data: " +
+        this.props.location.state.isSub +
+        this.props.location.state.forumID
+    );
+    postService
+      .getIndivPost(`${this.state.id}`)
+      .then((post) => {
+        // console.log(forumData);
+        console.log(post);
+        this.setState({
+          ...this.state,
+          ...{
+            postVotes: post.votes,
+            postTitle: post.title,
+            postDesc: post.description,
+            postComments: post._comments,
+            poster: post._poster.username,
+            postTime: post.createdAt,
+            isPoster: post._poster._id == localStorage.getItem("userID"),
+            forumIDs: post._forum,
+            userVote: post.userVote,
+          },
+        });
+        return forumService.getForum(post._forum);
+      })
+      .then((forum) => {
+        console.log("Is post from subforum? " + forum.is_sub);
+        this.setState({
+          linkforums: forum.is_sub
+            ? `/subforumpage/${this.props.location.state.forumID}`
+            : `/forumpage/${this.props.location.state.forumID}`,
+        });
       });
-      return forumService.getForum(post._forum);
-    }).then((forum) => {
-      console.log("Is post from subforum? " + forum.is_sub);
-      this.setState({
-          linkforums: forum.is_sub ? `/subforumpage/${this.props.location.state.forumID}`:`/forumpage/${this.props.location.state.forumID}`
-        },
-      );
-    });
   }
 
   render() {
-    console.log(this.props.location.state.isSub + this.props.location.state.forumID);
+    console.log(this.state);
+    console.log(
+      this.props.location.state.isSub + this.props.location.state.forumID
+    );
     console.log(this.state.newreply);
     const { classes } = this.props;
     return (
@@ -120,7 +134,7 @@ class PostDetailPage extends Component {
           <Link to={{ pathname: this.state.linkforums }}>
             <h2>CZ3002 ASE</h2>
           </Link>
-          
+
           <Button variant="contained" color="secondary" size="small">
             Join Forum
           </Button>
@@ -143,11 +157,14 @@ class PostDetailPage extends Component {
 
         <div className="rightsection">
           <Post
+            id={this.state.id}
             username={this.state.poster}
             title={this.state.postTitle}
             content={this.state.postDesc}
             numLikes={this.state.postVotes}
             isPoster={this.state.isPoster}
+            tags={this.state.tags}
+            userVote={this.state.userVote}
           />
 
           <form onSubmit={this.handleSubmit}>
@@ -185,6 +202,7 @@ class PostDetailPage extends Component {
                 id={comment._id}
                 text={comment.text}
                 username={comment._commenter.username}
+                userVote={comment.userVote}
                 numLikes={comment.votes}
                 createdAt={comment.createdAt}
                 isPoster={

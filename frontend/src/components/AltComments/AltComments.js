@@ -70,6 +70,7 @@ export default function AltComments(props) {
   const [disliked, setDisliked] = useState(userVote < 0);
   const [likesDisplay, setLikesDisplay] = useState(numLikes);
   const setLikeHandler = () => {
+    voteService.voteComment(+1, id);
     let difference = 0;
     if (!liked) {
       if (disliked) {
@@ -85,13 +86,14 @@ export default function AltComments(props) {
 
     setLikesDisplay(likesDisplay + difference);
     // voteService.votePost(difference, id);
-    if (difference > 0) {
-      voteService.votePost(+1, id);
-    } else {
-      voteService.votePost(-1, id);
-    }
+    // if (difference > 0) {
+    //   voteService.votePost(+1, id);
+    // } else {
+    //   voteService.votePost(-1, id);
+    // }
   };
   const setDislikeHandler = () => {
+    voteService.voteComment(-1, id);
     let difference = 0;
     if (!disliked) {
       if (liked) {
@@ -106,11 +108,11 @@ export default function AltComments(props) {
     }
     setLikesDisplay(likesDisplay + difference);
     // voteService.votePost(difference, id);
-    if (difference > 0) {
-      voteService.votePost(+1, id);
-    } else {
-      voteService.votePost(-1, id);
-    }
+    // if (difference > 0) {
+    //   voteService.voteComment(+1, id);
+    // } else {
+    //   voteService.votePost(-1, id);
+    // }
   };
 
   //FOR DELETES

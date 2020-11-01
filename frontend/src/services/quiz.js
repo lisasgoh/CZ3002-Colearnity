@@ -51,7 +51,15 @@ const postQuiz = (quizTitle, questions, forum_id) => {
 };
 
 const deleteObj = (id) => {
-  return axios.delete(`${baseUrl}/${id}`);
+  const request = axios({
+    method: "delete",
+    url: `${baseUrl}/${id}`,
+    headers: {
+      "token": localStorage.getItem("token")  
+    },
+    withCredentials: true,
+  });
+  return request.then((response) => response.data);
 };
 
 export default {

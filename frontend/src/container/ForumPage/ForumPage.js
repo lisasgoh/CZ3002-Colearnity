@@ -21,7 +21,7 @@ class ForumPage extends Component {
       posts: null,
       forumMembership: null,
       isAdmin: null,
-      isSubforum:null,
+      isSubforum: null,
     };
   }
 
@@ -42,7 +42,7 @@ class ForumPage extends Component {
           posts: forum._posts,
           forumMembership: forum.isSubscribed,
           isAdmin: forum._teacher._id == localStorage.getItem("userID"), //forum.isAdmin,
-          isSubforum:forum.is_sub
+          isSubforum: forum.is_sub,
         },
       });
     });
@@ -131,6 +131,7 @@ class ForumPage extends Component {
                 username={post._poster.username}
                 content={post.description}
                 numLikes={post.votes}
+                userVote={post.userVote}
                 tags={post.tags}
                 title={post.title}
                 isAdmin={isAdmin}
