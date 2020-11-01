@@ -103,12 +103,13 @@ export default function Post(props) {
   const modalHandlerTrue = () => {
     setModal(true);
   };
-
   return (
+    
     <div className="post">
       <Link
         to={{
           pathname: `/postdetailpage/${id}`,
+          state: {forumID: props.forumID, isSub: props.isSub}
         }}
         style={{ color: "black", textDecoration: "none" }}
       >
@@ -137,6 +138,7 @@ export default function Post(props) {
         <Link
           to={{
             pathname: `/postdetailpage/${id}`,
+            state: {forumID: props.forumID, isSub: props.isSub}
           }}
         >
           <Button

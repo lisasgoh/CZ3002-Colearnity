@@ -15,6 +15,7 @@ import AltComments from "./../../components/AltComments/AltComments";
 import postService from "./../../services/post";
 import commentService from "./../../services/comment";
 import { useHistory } from "react-router-dom";
+import forumService from "./../../services/forum";
 
 const useStyles = (theme) => ({
   textField: {
@@ -45,6 +46,8 @@ class PostDetailPage extends Component {
       newreply: "",
       isAdmin: this.props.location.isAdmin,
       isPoster: null,
+      forumIDs:null,
+      linkforums: this.props.location.state.isSub ? `/subforumpage/${this.props.location.state.forumID}`:`/forumpage/${this.props.location.state.forumID}`
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -78,9 +81,10 @@ class PostDetailPage extends Component {
   }
 
   componentDidMount() {
+    console.log("Did it pass data: " + this.props.location.state.isSub + this.props.location.state.forumID);
     postService.getIndivPost(`${this.state.id}`).then((post) => {
       // console.log(forumData);
-      console.log(post.votes);
+      console.log(post);
       this.setState({
         ...this.state,
         ...{
@@ -91,18 +95,32 @@ class PostDetailPage extends Component {
           poster: post._poster.username,
           postTime: post.createdAt,
           isPoster: post._poster._id == localStorage.getItem("userID"),
+          forumIDs: post._forum,
+          
         },
+        
       });
+      return forumService.getForum(post._forum);
+    }).then((forum) => {
+      console.log("Is post from subforum? " + forum.is_sub);
+      this.setState({
+          linkforums: forum.is_sub ? `/subforumpage/${this.props.location.state.forumID}`:`/forumpage/${this.props.location.state.forumID}`
+        },
+      );
     });
   }
 
   render() {
+    console.log(this.props.location.state.isSub + this.props.location.state.forumID);
     console.log(this.state.newreply);
     const { classes } = this.props;
     return (
       <div className="postdetailpage">
         <div className="leftsection">
-          <h2>CZ3002 ASE</h2>
+          <Link to={{ pathname: this.state.linkforums }}>
+            <h2>CZ3002 ASE</h2>
+          </Link>
+          
           <Button variant="contained" color="secondary" size="small">
             Join Forum
           </Button>

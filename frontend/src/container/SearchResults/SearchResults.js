@@ -30,6 +30,7 @@ export default class SearchResults extends React.Component {
     console.log(postSearch);
     console.log(forumSearch);
   })
+  
   /*
     search_query.searchPost(`${this.props.location.state}`).then((forum) => {
       this.setState({

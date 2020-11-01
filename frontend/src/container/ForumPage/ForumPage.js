@@ -21,6 +21,7 @@ class ForumPage extends Component {
       posts: null,
       forumMembership: null,
       isAdmin: null,
+      isSubforum:null,
     };
   }
 
@@ -30,6 +31,7 @@ class ForumPage extends Component {
     //   .then((response) => console.log(response));
 
     forumService.getForum(`${this.state.id}`).then((forum) => {
+      console.log(forum);
       this.setState({
         ...this.state,
         ...{
@@ -40,6 +42,7 @@ class ForumPage extends Component {
           posts: forum._posts,
           forumMembership: forum.isSubscribed,
           isAdmin: forum._teacher._id == localStorage.getItem("userID"), //forum.isAdmin,
+          isSubforum:forum.is_sub
         },
       });
     });
@@ -132,6 +135,8 @@ class ForumPage extends Component {
                 title={post.title}
                 isAdmin={isAdmin}
                 isPoster={post._poster._id == localStorage.getItem("userID")}
+                isSub={this.state.isSubforum}
+                forumID = {this.state.forumID}
               />
             ))}
         </div>
