@@ -14,6 +14,9 @@ import DeletePostPopup from "./../Popup/Popup";
 import Chip from "@material-ui/core/Chip";
 import "./Post.css";
 import { Link } from "react-router-dom";
+import Update from "./../../services/post";
+import { useHistory } from "react-router-dom";
+
 // import Typography from "@material-ui/core/Typography";
 
 import voteService from "./../../services/vote";
@@ -35,6 +38,7 @@ export default function Post(props) {
   const [liked, setLiked] = useState(userVote > 0); //props.liked
   const [disliked, setDisliked] = useState(userVote < 0);
   const [likesDisplay, setLikesDisplay] = useState(numLikes);
+
   const setLikeHandler = () => {
     let difference = 0;
     if (!liked) {
@@ -95,14 +99,41 @@ export default function Post(props) {
   })(Chip);
 
   //FOR DELETES
-  const [modalShow, setModal] = useState(false);
-  const modalHandlerFalse = () => {
-    setModal(false);
+  const [modalShowDelete, setModalDelete] = useState(false);
+  const [modalShowEdit, setModalEdit] = useState(false);
+  const [postDescription, setPostDescription] = useState("");
+  const history = useHistory();
+
+  const modalHandlerDeleteFalse = () => {
+    setModalDelete(false);
   };
 
-  const modalHandlerTrue = () => {
-    setModal(true);
+  const modalHandlerDeleteTrue = () => {
+    setModalDelete(true);
   };
+
+  const modalHandlerEditFalse = () => {
+    setModalEdit(false);
+  };
+
+  const modalHandlerEditTrue = () => {
+    setModalEdit(true);
+  };
+
+  const setContent =(content)=>{
+    setPostDescription(content.target.value);
+    console.log(content.target.value);
+  }
+
+  const editContent=(desc)=>{
+    console.log("TEST!" + desc +props.postID);
+    Update.update(props.postID, {"description":desc}).then((newPostDesc) => {
+      console.log(newPostDesc);
+    });
+    history.go(0);
+
+  }
+  
   return (
     
     <div className="post">
@@ -179,14 +210,28 @@ export default function Post(props) {
             color="primary"
             size="small"
             startIcon={<DeleteRoundedIcon />}
-            onClick={modalHandlerTrue}
+            onClick={modalHandlerDeleteTrue}
           >
             Delete
           </Button>
         ) : (
           ""
         )}
-        <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} />
+        <DeletePostPopup show={modalShowDelete} onHide={modalHandlerDeleteFalse} isDelete={true}/>
+        {isPoster ? (
+          <Button
+            color="primary"
+            size="small"
+            startIcon={<EditRoundedIcon />}
+            onClick={modalHandlerEditTrue}
+          >
+            Edit
+          </Button>
+        ) : (
+          ""
+        )}
+        <DeletePostPopup show={modalShowEdit} onHide={modalHandlerEditFalse} isDelete={false} setContent = {setContent} editPost={editContent} prevContent = {props.content}/>
+
       </div>
 
       <div className="tags">

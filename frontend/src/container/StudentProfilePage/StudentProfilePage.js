@@ -89,6 +89,7 @@ class StudentProfilePage extends Component {
                   numLikes={post.votes}
                   tags={post.tags}
                   isPoster={post._poster._id == localStorage.getItem("userID")}
+                  postID = {post._id}
                 />
               ))}
           </div>
