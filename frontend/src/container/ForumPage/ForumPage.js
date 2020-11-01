@@ -25,9 +25,9 @@ class ForumPage extends Component {
   }
 
   componentDidMount() {
-    forumService
-      .getForum(`${this.state.id}`)
-      .then((response) => console.log(response));
+    // forumService
+    //   .getForum(`${this.state.id}`)
+    //   .then((response) => console.log(response));
 
     forumService.getForum(`${this.state.id}`).then((forum) => {
       this.setState({

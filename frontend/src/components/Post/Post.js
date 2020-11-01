@@ -103,12 +103,12 @@ export default function Post(props) {
   const modalHandlerTrue = () => {
     setModal(true);
   };
-
   return (
     <div className="post">
       <Link
         to={{
           pathname: `/postdetailpage/${id}`,
+          // state: { isAdmin: { isAdmin }, isPoster: isPoster },
         }}
         style={{ color: "black", textDecoration: "none" }}
       >
@@ -118,14 +118,14 @@ export default function Post(props) {
             <h6>{username}</h6>
           </div>
 
-          {editingaccess ? (
+          {/* {editingaccess ? (
             <div className="posteractivity">
               <EditRoundedIcon />
               <DeleteRoundedIcon />
             </div>
           ) : (
             ""
-          )}
+          )} */}
         </div>
 
         <div className="posttitle">{title}</div>

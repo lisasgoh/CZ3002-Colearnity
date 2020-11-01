@@ -31,7 +31,7 @@ const useStyles = (theme) => ({
 class PostDetailPage extends Component {
   constructor(props) {
     super(props);
-    // const id = this.props.match.params.id;
+    // console.log(props.location.state);
 
     this.state = {
       id: this.props.match.params.id,
@@ -42,7 +42,10 @@ class PostDetailPage extends Component {
       poster: null,
       postTime: null,
       newreply: "",
+      isAdmin: this.props.location.isAdmin,
+      isPoster: null,
     };
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
@@ -76,7 +79,7 @@ class PostDetailPage extends Component {
   componentDidMount() {
     postService.getIndivPost(`${this.state.id}`).then((post) => {
       // console.log(forumData);
-      console.log(post.votes);
+      console.log(post);
       this.setState({
         ...this.state,
         ...{
@@ -84,9 +87,9 @@ class PostDetailPage extends Component {
           postTitle: post.title,
           postDesc: post.description,
           postComments: post._comments,
-          
           poster: post._poster.username,
           postTime: post.createdAt,
+          isPoster: post._poster._id == localStorage.getItem("userID"),
         },
       });
     });
@@ -125,6 +128,7 @@ class PostDetailPage extends Component {
             title={this.state.postTitle}
             content={this.state.postDesc}
             numLikes={this.state.postVotes}
+            isPoster={this.state.isPoster}
           />
 
           <form onSubmit={this.handleSubmit}>
@@ -159,10 +163,14 @@ class PostDetailPage extends Component {
           {this.state.postComments &&
             this.state.postComments.map((comment) => (
               <AltComments
+                id={comment._id}
                 text={comment.text}
                 username={comment._commenter.username}
                 numLikes={comment.votes}
                 createdAt={comment.createdAt}
+                isPoster={
+                  comment._commenter._id == localStorage.getItem("userID")
+                }
               />
             ))}
         </div>
