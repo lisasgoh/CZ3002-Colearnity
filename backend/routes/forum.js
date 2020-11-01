@@ -5,6 +5,7 @@
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
 const Forum = require('../models/Forum');
+const Quiz = require('../models/Quiz');
 const Users = require('../models/Users');
 
 const forumRouter = express.Router();
@@ -137,12 +138,12 @@ forumRouter.put('/:id', (req, res) => {
 // delete from users (cascade delete) (parent references -> )
 forumRouter.delete('/:id', (req, res) => {
   Forum.findByIdAndRemove(req.params.id).then(() => {
-    Users.update(
-      {},
+    Users.updateOne(
+      { _id: req.user.id },
       {
         $pull: {
-          _forums: { _id: req.params.id },
-          _created_forums: { _id: req.params.id },
+          _forums: req.params.id,
+          _created_forums: req.params.id,
         },
       },
       { multi: true },
@@ -150,7 +151,24 @@ forumRouter.delete('/:id', (req, res) => {
         if (err) res.send(err);
         else res.send('Success: Forum Deleted');
       },
-    );
+    ).then(() => {
+      Forum.update({}, {
+        $pull: {
+          _subforums: req.params.id,
+        },
+      },
+      { multi: true },
+      (err) => {
+        if (err) res.send(err);
+        else console.log('Child forum reference deleted from parent forum. ');
+      }).then(() => {
+        Quiz.deleteMany({ _forum: req.params.id },
+          (err) => {
+            if (err) res.send(err);
+            else console.log('Quiz under the forum deleted. ');
+          });
+      }).catch((err) => res.send(err));
+    }).catch((err) => res.send(err));
   }).catch((err) => res.send(err));
 });
 
