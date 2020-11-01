@@ -4,6 +4,7 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 export default function SimpleCard(props) {
   const {
@@ -16,7 +17,12 @@ export default function SimpleCard(props) {
     isAdmin,
     completionPercentage,
     avgGrade,
+    scoredMarks,
+    totalMarks,
+    quizAttempt,
   } = props;
+
+  console.log(props);
 
   const useStyles = makeStyles({
     root: {
@@ -63,21 +69,51 @@ export default function SimpleCard(props) {
           </>
         ) : (
           <>
-            {completed ? <p>Completed: {completionDate}</p> : ""}
-            <p>Due: {dueDate}</p>
-            {completed ? <p>Grade: {grade}</p> : <p />}
+            {completed ? (
+              <p>Completed: {completionDate}</p>
+            ) : (
+              <p>Due: {dueDate}</p>
+            )}
+
+            {completed ? (
+              <p>
+                Grade: {scoredMarks} / {totalMarks}
+              </p>
+            ) : (
+              <p />
+            )}
           </>
         )}
       </CardContent>
       <CardActions>
         {isAdmin ? (
-          <Button size="small">Review Results</Button>
+          <Link
+            to={{
+              pathname: `../viewgrades/${id}`,
+            }}
+          >
+            <Button size="small">Review Results</Button>
+          </Link>
         ) : (
           <>
             {completed ? (
-              <Button size="small">Review Quiz Attempt</Button>
+              <Link
+                to={{
+                  pathname: `../reviewquizpage/${id}`,
+                  state: { quizID: id, attemptID: quizAttempt },
+                }}
+              >
+                <Button size="small">Review Quiz Attempt</Button>{" "}
+              </Link>
             ) : (
-              <Button size="small">Attempt Quiz</Button>
+              <Link
+                to={{
+                  pathname: `../takequizpage/${id}`,
+                  state: { quizID: id },
+                }}
+              >
+                <Button size="small">Attempt Quiz</Button>{" "}
+              </Link>
             )}
           </>
         )}

@@ -9,6 +9,7 @@ import StepButton from "@material-ui/core/StepButton";
 import StepContent from "@material-ui/core/StepContent";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import "./TakeQuizPage.css";
 
@@ -58,23 +59,24 @@ function getStepContent(question, value, index) {
   );
 }
 
-export default function TakeQuizPage() {
+export default function TakeQuizPage(props) {
   // constructor(props) {
   //     super();
   //     this.setActiveStep = { activeStep: '0' };
   // }
-
-  // const { quizID } = useLocation();
-  const [quizID, setID] = useState(null);
+  const [quizID, setID] = useState(props.location.state.quizID);
+  const [subforumID, setSubforumID] = useState(null);
   // console.log("QUIZID IMPORT: " + quizID);
   const [quizTitle, setTitle] = useState(null);
   const [quizDesc, setDesc] = useState(null);
   const [quizQns, setQns] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
-    quizService.getQuiz("5f993b19ff08a627f4be9fe9").then((quizData) => {
+    quizService.getQuiz(quizID).then((quizData) => {
       console.log(quizData);
-      setID(quizData._id);
+      // setID(quizData._id);
+      setSubforumID(quizData._forum._id);
       setTitle(quizData.title);
       setDesc(quizData.description);
       setQns(quizData.questions);
@@ -125,6 +127,8 @@ export default function TakeQuizPage() {
       "HANDLING SUBMIT.quizValues: " + quizValues + "quizID: " + quizID
     );
     quizService.doQuiz(quizValues, quizID);
+    history.push(`../subforumpage/${subforumID}`);
+    // return <Redirect to={`../subforumpage/${forumID}`} />;
   };
 
   const handleStep = (step) => () => {

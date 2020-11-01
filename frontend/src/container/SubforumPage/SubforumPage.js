@@ -63,30 +63,19 @@ class SubforumPage extends Component {
 
           <h3>Quizzes</h3>
           <div className="quizzes">
-            <QuizButton
+            {/* <QuizButton
               quizTitle="Quiz 1"
               completed={true}
               completionDate="11/9/2020"
               grade="10/10"
-            />
+            /> */}
             {quizzes &&
               quizzes.map((quiz) => (
-                <Link
-                  to={{
-                    pathname: isAdmin
-                      ? "/"
-                      : quiz.taken
-                      ? `/forum/reviewquizpage/${quiz._id}`
-                      : `/forum/takequizpage/${quiz._id}`,
-                    quizID: quiz._id,
-                  }}
-                >
-                  <QuizButton
-                    quizTitle={quiz.title}
-                    id={quiz._id}
-                    isAdmin={isAdmin}
-                  />
-                </Link>
+                <QuizButton
+                  quizTitle={quiz.title}
+                  id={quiz._id}
+                  isAdmin={isAdmin}
+                />
               ))}
             <Link
               to={{
