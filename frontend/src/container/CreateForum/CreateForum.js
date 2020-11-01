@@ -57,8 +57,8 @@ export default function CreateForum(props) {
   // let combined = ["icon", "fa fa-plus-circle"].join(" ");
   return (
     <div className="createforum">
-      {/* <div className="leftsection">
-        <h2 style={{ marginTop: "2em" }}>Forums Created</h2>
+      <div className="leftsection">
+        {/* <h2 style={{ marginTop: "2em" }}>Forums Created</h2>
         <div className="forums">
           <ForumButton
             color="papayawhip"
@@ -79,36 +79,39 @@ export default function CreateForum(props) {
         <Icon
           className={combined}
           style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
-        />
-      </div> */}
+        /> */}
+      </div>
 
       <div className="rightsection_createforum">
-        <h1>Create {is_sub===true? 'Sub': 'Main'} Forum</h1>
-        <form onSubmit={handleSubmit}>
-          <FormGroup controlId="name" bsSize="large">
-            <FormLabel>Forum Name</FormLabel>
-            <FormControl
-              autoFocus
-              type="name"
-              placeholder="Enter forum name"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup controlId="desc" bsSize="large">
-            <FormLabel>Description</FormLabel>
-            <FormControl
-              type="desc"
-              placeholder="Enter description"
-              value={desc}
-              onChange={e => setDesc(e.target.value)}
-            />
-          </FormGroup>
-          <Button disabled={!validateForm()} type="submit">Create</Button>
-        </form>
+        <div className="NewForum">
+          <h1>Create {is_sub===true? 'Sub': 'Main'} Forum</h1>
+          <form onSubmit={handleSubmit}>
+            <FormGroup controlId="name" bsSize="large">
+              <FormLabel >Forum Name</FormLabel>
+              <FormControl
+                autoFocus
+                type="text"
+                placeholder="Enter forum name"
+                value={name}
+                style={{minWidth: "400px"}}
+                onChange={e => setName(e.target.value)}
+              />
+            </FormGroup>
+            <FormGroup controlId="desc" bsSize="large">
+              <FormLabel>Description</FormLabel>
+              <FormControl as="textarea" rows={8}
+                autoFocus
+                type="text"
+                placeholder="Enter description"
+                value={desc}
+                style={{minWidth: "400px"}}
+                onChange={e => setDesc(e.target.value)}
+              />
+            </FormGroup>
+            <Button disabled={!validateForm()} type="submit">Create</Button>
+          </form>
+        </div>
       </div>
     </div>
   );
 }
-
-// export default CreateForum;

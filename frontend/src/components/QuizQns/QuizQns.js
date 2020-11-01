@@ -16,6 +16,7 @@ export default function QuizQns(props) {
     options,
     disabled,
     parentCallback,
+    results,
   } = props;
 
   const [value, setValue] = useState(initialValue);
@@ -49,10 +50,23 @@ export default function QuizQns(props) {
                   value={option.optionNumber.toString()}
                   control={<Radio color="primary" />}
                   label={option.answerBody}
+                  style={
+                    disabled && option.isCorrectAnswer
+                      ? { backgroundColor: "lightgreen" }
+                      : {}
+                  }
                 />
               ))}
           </RadioGroup>
         </FormControl>
+
+        {disabled ? (
+          <span>
+            Marks Scored: {results} / {qnWeightage}
+          </span>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

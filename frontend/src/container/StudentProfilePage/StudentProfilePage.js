@@ -3,9 +3,10 @@ import Post from "../../components/Post/Post";
 import "./StudentProfilePage.css";
 import ProfilePic from "../../assets/profile_placeholder.png";
 import ProfileCard from "./ProfileCard";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
+import QuizButton from "../../components/ForumButtons/QuizButton";
 import Grid from "@material-ui/core/Grid";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 
 import usersService from "../../services/users";
 
@@ -35,20 +36,19 @@ class StudentProfilePage extends Component {
   }
 
   state = {
-    navigate: false
+    navigate: false,
   };
 
   logout = () => {
-      localStorage.clear("token");
-      this.setState({ navigate: true});
+    localStorage.clear("token");
+    this.setState({ navigate: true });
   };
-
 
   render() {
     const { username, posts, grades } = this.state;
     const { navigate } = this.state;
     if (navigate) {
-        return <Redirect to="/" push={true} />;
+      return <Redirect to="/" push={true} />;
     }
 
     const ColoredLine = ({ color }) => (
@@ -66,7 +66,9 @@ class StudentProfilePage extends Component {
       <div className="container">
         <div className="logout">
           <Grid container justify="flex-end">
-              <Button variant="contained" onClick={this.logout}>Logout</Button>
+            <Button variant="contained" onClick={this.logout}>
+              Logout
+            </Button>
           </Grid>
         </div>
         <img className="profilepic" src={ProfilePic} alt="Logo" />
@@ -95,6 +97,18 @@ class StudentProfilePage extends Component {
               <b>Grades</b>
             </p1>
             {grades &&
+              grades.map((grade) => (
+                <QuizButton
+                  quizTitle={grade._quiz.title}
+                  id={grade._quiz._id}
+                  scoredMarks={grade.marks}
+                  totalMarks={grade.total}
+                  quizAttempt={grade._id}
+                  isAdmin={false} //grades only for students
+                  completed={true}
+                />
+              ))}
+            {/* {grades &&
               grades.map((grade, index) => (
                 <ProfileCard
                   scoredMarks={grade.marks}
@@ -102,7 +116,7 @@ class StudentProfilePage extends Component {
                   quizTitle={grade._quiz.title}
                   quizAttempt={grade._attempts}
                 />
-              ))}
+              ))} */}
           </div>
         </div>
       </div>

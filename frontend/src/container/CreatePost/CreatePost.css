@@ -32,24 +32,27 @@
 
 .forumpage .rightsection_createpost {
   padding: 50px 3%;
+  padding-left: 10em;
+  padding-right: 10em;
   align-items: center;
   justify-content: center;
 }
 
-.forumpage .rightsection .NewPost {
+.forumpage .rightsection_createpost .NewPost {
   width: 100%;
-  margin: 2em;
+  /* margin: 2em;
   border: 1px solid #eee;
-  box-shadow: 0 2px 3px #ccc;
+  box-shadow: 0 2px 3px #ccc; */
   text-align: center;
-  padding-bottom: 5em;
+  /* padding-bottom: 5em; */
 }
 
 .forumpage .rightsection_createpost .NewPost label {
   display: block;
   margin: 10px;
-  padding-left: 20em;
-  padding-right: 20em;
+  margin-top: 2em;
+  /* padding-left: 20em;
+  padding-right: 20em; */
   text-align: center;
   font-weight: bold;
 }
@@ -64,13 +67,13 @@
   outline: none;
   font: inherit;
   margin: auto;
-  margin-top: 2em;
-  margin-bottom: 2em;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .subforumpage .rightsection_createpost .NewPost button {
   margin: 5px 0;
-  padding: 10px;
+  /* padding: 10px; */
   font: inherit;
   border: 1px solid #fa923f;
   background-color: transparent;
