@@ -65,16 +65,8 @@ class Search extends Component {
   }
 
   getSearchQuery=()=>{
-
-    API.get("/api/search?postKeyword=test").then((response) => console.log(response));
-
-    testQuiz.getQuiz("5f9947deff08a627f4bea004").then((response) => console.log(response));
-    search_query
-      .searchPost(`test`)
-      .then((response) => console.log(response));
-
     search_query.searchPost(`${this.state.querySearch}`).then((forum) => {
-      console.log(forum[0]);
+      console.log(forum);
       this.setState({
         ...this.state,
         ...{
@@ -82,7 +74,6 @@ class Search extends Component {
         },
       });
     });
-
   }
 
   searchHandler=(evt)=>{
@@ -110,16 +101,12 @@ class Search extends Component {
             pathname: "/searchresult",
             state:this.state.querySearch,
           }}>
-              
               <Button
-          
           color="primary"
           size="small"
           onClick={this.getSearchQuery}
           startIcon={<SearchIcon />}
         />
-        
-              
             </Link>
             
             </div>
