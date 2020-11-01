@@ -165,6 +165,7 @@ class PostDetailPage extends Component {
             isPoster={this.state.isPoster}
             tags={this.state.tags}
             userVote={this.state.userVote}
+            
           />
 
           <form onSubmit={this.handleSubmit}>
