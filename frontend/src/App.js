@@ -18,7 +18,7 @@ import TeacherForumPage from "./container/TeacherForumPage/TeacherForumPage";
 import TeacherSubforumPage from "./container/TeacherSubforumPage/TeacherSubforumPage";
 import PostDetailPage from "./container/PostDetailPage/PostDetailPage";
 import TeacherCreateQuiz from "./container/TeacherCreateQuiz/TeacherCreateQuiz";
-import ReplyPage from "./container/ReplyPage/ReplyPage";
+//import ReplyPage from "./container/ReplyPage/ReplyPage";
 import CreateForum from "./container/CreateForum/CreateForum";
 import Testpage from "./container/Testpage";
 import SearchResult from "./container/SearchResults/SearchResults";
