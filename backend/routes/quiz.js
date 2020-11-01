@@ -16,7 +16,9 @@ quizRouter.post('/', (req, res) => {
   // console.log(req.isAuthenticated());
   const { questions } = req.body;
   console.log(questions);
+  let totalPoints = 0;
   const quizQuestions = questions.map((question, index) => {
+    totalPoints += question.points;
     const opts = question.options;
     const newOpts = opts.map((opt, optIndex) => {
       const newOpt = {
@@ -41,6 +43,7 @@ quizRouter.post('/', (req, res) => {
     description: req.body.description,
     _teacher: req.user.id,
     _forum: req.query.forum_id,
+    total_points: totalPoints,
     questions: quizQuestions,
     _attempts: [],
     results: [],
@@ -75,7 +78,7 @@ quizRouter.get('/:id', (req, res) => {
       model: 'Users',
       select: { _id: 1, username: 1 },
     })
-    .populate({ path: '_forum', model: 'Forum', select: { _id: 1, title: 1 } })
+    .populate({ path: '_forum', model: 'Forum', select: { _id: 1, name: 1, description: 1 } })
     .then((quiz) => {
       res.json(quiz);
     })
