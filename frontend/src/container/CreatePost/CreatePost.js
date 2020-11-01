@@ -34,7 +34,6 @@ class CreatePost extends Component {
     // console.log(this.props.location);
     // const { forum_id } = this.props.location;
     console.log(this.state.forum_id);
-    console.log(window.location.href);
 
     const post = {
       title: this.state.title,
@@ -50,9 +49,6 @@ class CreatePost extends Component {
   };
 
   render() {
-    const { data } = this.props.location;
-    console.log("IN RENDER: " + data);
-
     return (
       <div className="forumpage">
         {/* <div className="leftsection_createpost">
