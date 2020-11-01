@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import ReplyRoundedIcon from "@material-ui/icons/ReplyRounded";
@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 // import Typography from "@material-ui/core/Typography";
 
 import voteService from "./../../services/vote";
+
 export default function Post(props) {
   let {
     id,
@@ -31,11 +32,26 @@ export default function Post(props) {
     userVote,
   } = props;
 
+  console.log(props);
+
   //FOR LIKES
   const [liked, setLiked] = useState(userVote > 0); //props.liked
   const [disliked, setDisliked] = useState(userVote < 0);
   const [likesDisplay, setLikesDisplay] = useState(numLikes);
+
+  // useEffect(() => {
+  //   setLiked(userVote > 0);
+  //   setDisliked(userVote < 0);
+  //   setLikesDisplay(numLikes);
+  // }, []);
+  useEffect(() => {
+    setLiked(userVote > 0);
+    setDisliked(userVote < 0);
+    setLikesDisplay(numLikes);
+  }, [userVote, numLikes]);
+
   const setLikeHandler = () => {
+    voteService.votePost(+1, id);
     let difference = 0;
     if (!liked) {
       if (disliked) {
@@ -51,13 +67,14 @@ export default function Post(props) {
 
     setLikesDisplay(likesDisplay + difference);
     // voteService.votePost(difference, id);
-    if (difference > 0) {
-      voteService.votePost(+1, id);
-    } else {
-      voteService.votePost(-1, id);
-    }
+    // if (difference > 0) {
+    //   voteService.votePost(+1, id);
+    // } else {
+    //   voteService.votePost(-1, id);
+    // }
   };
   const setDislikeHandler = () => {
+    voteService.votePost(-1, id);
     let difference = 0;
     if (!disliked) {
       if (liked) {
@@ -72,11 +89,11 @@ export default function Post(props) {
     }
     setLikesDisplay(likesDisplay + difference);
     // voteService.votePost(difference, id);
-    if (difference > 0) {
-      voteService.votePost(+1, id);
-    } else {
-      voteService.votePost(-1, id);
-    }
+    // if (difference > 0) {
+    //   voteService.votePost(+1, id);
+    // } else {
+    //   voteService.votePost(-1, id);
+    // }
   };
 
   //FOR TAGS
@@ -104,12 +121,17 @@ export default function Post(props) {
     setModal(true);
   };
   return (
-    
     <div className="post">
       <Link
         to={{
           pathname: `/postdetailpage/${id}`,
-          state: {forumID: props.forumID, isSub: props.isSub}
+          state: {
+            forumID: props.forumID,
+            isSub: props.isSub,
+            numLikes: likesDisplay,
+            liked: liked,
+            disliked: disliked,
+          },
         }}
         style={{ color: "black", textDecoration: "none" }}
       >
@@ -138,7 +160,7 @@ export default function Post(props) {
         <Link
           to={{
             pathname: `/postdetailpage/${id}`,
-            state: {forumID: props.forumID, isSub: props.isSub}
+            state: { forumID: props.forumID, isSub: props.isSub },
           }}
         >
           <Button
