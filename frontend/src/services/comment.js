@@ -16,6 +16,7 @@ const create = (newObject, post_id) => {
     data: newObject,
   });
   console.log(request.then((response) => response.data));
+  console.log('t est');
   return request.then((response) => response.data);
 };
 
