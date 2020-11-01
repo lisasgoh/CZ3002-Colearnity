@@ -118,14 +118,14 @@ export default function Post(props) {
             <h6>{username}</h6>
           </div>
 
-          {editingaccess ? (
+          {/* {editingaccess ? (
             <div className="posteractivity">
               <EditRoundedIcon />
               <DeleteRoundedIcon />
             </div>
           ) : (
             ""
-          )}
+          )} */}
         </div>
 
         <div className="posttitle">{title}</div>
