@@ -5,7 +5,7 @@ const Forum = require('../models/Forum');
 const searchRouter = express.Router();
 
 // get post(s) based on search keywords post info - /api/search?postKeyWord=(words)
-searchRouter.get('/post', (req, res) => {
+searchRouter.get('/', (req, res) => {
   // console.log("search for keyword(s) received: " +req.query.postKeyword);
   const str = new RegExp(`.*${req.query.postKeyword}.*`, 'i');
   Post.find({
@@ -20,18 +20,18 @@ searchRouter.get('/post', (req, res) => {
   });
 });
 
-// get forum(s) based on search keywords forum info - /api/search?forumKeyword=(words)
-searchRouter.get('/forum', (req, res) => {
+// get post(s) based on search keywords post info - /api/search?forumKeyword=(words)
+searchRouter.get('/', (req, res) => {
   const str = new RegExp(`.*${req.query.forumKeyword}.*`, 'i');
   Forum.find({
     $or: [
       { name: str },
       { description: str },
     ],
-  }, (err, forum) => {
+  }, (err, post) => {
     if (err) {
       res.send(err);
-    } else { res.json(forum); }
+    } else { res.json(post); }
   });
 });
 
