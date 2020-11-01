@@ -23,11 +23,14 @@ class SubforumPage extends Component {
       quizzes: null,
       posts: null,
       isAdmin: null,
+      isSub: null,
+      subForumID:null,
     };
   }
 
   componentDidMount() {
     forumService.getForum(`${this.state.id}`).then((forumData) => {
+      console.log("subforum data:")
       console.log(forumData);
       this.setState({
         ...this.state,
@@ -37,6 +40,8 @@ class SubforumPage extends Component {
           quizzes: forumData._quizzes,
           posts: forumData._posts,
           isAdmin: forumData._teacher._id == localStorage.getItem("userID"), //forumData.isAdmin,
+          isSub:forumData.is_sub,
+          subForumID: forumData._id
         },
       });
     });
@@ -63,19 +68,30 @@ class SubforumPage extends Component {
 
           <h3>Quizzes</h3>
           <div className="quizzes">
-            {/* <QuizButton
+            <QuizButton
               quizTitle="Quiz 1"
               completed={true}
               completionDate="11/9/2020"
               grade="10/10"
-            /> */}
+            />
             {quizzes &&
               quizzes.map((quiz) => (
-                <QuizButton
-                  quizTitle={quiz.title}
-                  id={quiz._id}
-                  isAdmin={isAdmin}
-                />
+                <Link
+                  to={{
+                    pathname: isAdmin
+                      ? "/"
+                      : quiz.taken
+                      ? `/forum/reviewquizpage/${quiz._id}`
+                      : `/forum/takequizpage/${quiz._id}`,
+                    quizID: quiz._id,
+                  }}
+                >
+                  <QuizButton
+                    quizTitle={quiz.title}
+                    id={quiz._id}
+                    isAdmin={isAdmin}
+                  />
+                </Link>
               ))}
             <Link
               to={{
@@ -123,6 +139,8 @@ class SubforumPage extends Component {
                 title={post.title}
                 isAdmin={isAdmin}
                 isPoster={post._poster._id == localStorage.getItem("userID")}
+                isSub={this.state.isSub}
+                forumID = {this.state.subForumID}
               />
             ))}
         </div>
