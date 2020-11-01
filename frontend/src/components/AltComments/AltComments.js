@@ -15,8 +15,12 @@ import ThumbUpAltRoundedIcon from "@material-ui/icons/ThumbUpAltRounded";
 import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import ThumbDownAltRoundedIcon from "@material-ui/icons/ThumbDownAltRounded";
 import Button from "@material-ui/core/Button";
+import EditIcon from '@material-ui/icons/Edit';
 
 import voteService from "./../../services/vote";
+import commentService from "./../../services/comment";
+
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +68,7 @@ export default function AltComments(props) {
     isPoster,
   } = props;
 
-  console.log(props);
+  //console.log(props);
   //FOR LIKES
   const [liked, setLiked] = useState(userVote > 0); //props.liked
   const [disliked, setDisliked] = useState(userVote < 0);
@@ -116,14 +120,41 @@ export default function AltComments(props) {
   };
 
   //FOR DELETES
-  const [modalShow, setModal] = useState(false);
-  const modalHandlerFalse = () => {
-    setModal(false);
+  const [modalShowDelete, setModalDelete] = useState(false);
+  const [modalShowEdit, setModalEdit] = useState(false);
+  const [postDescription, setPostDescription] = useState("");
+  const history = useHistory();
+
+  const modalHandlerDeleteFalse = () => {
+    setModalDelete(false);
   };
 
-  const modalHandlerTrue = () => {
-    setModal(true);
+  const modalHandlerDeleteTrue = () => {
+    setModalDelete(true);
   };
+
+  const modalHandlerEditFalse = () => {
+    setModalEdit(false);
+  };
+
+  const modalHandlerEditTrue = () => {
+    setModalEdit(true);
+  };
+
+  const setContent =(content)=>{
+    setPostDescription(content.target.value);
+    console.log(content.target.value);
+  }
+
+  const editContent=(desc)=>{
+    console.log("TEST!" + desc +props.id);
+    commentService.update(props.id, {"text":desc}).then((newPostDesc) => {
+      console.log(newPostDesc);
+      history.go(0);
+    });
+    //history.go(0);
+
+  }
 
   return (
     <Card className={classes.root}>
@@ -175,14 +206,27 @@ export default function AltComments(props) {
               color="primary"
               size="small"
               startIcon={<DeleteRoundedIcon />}
-              onClick={modalHandlerTrue}
+              onClick={modalHandlerDeleteTrue}
             >
               Delete
             </Button>
           ) : (
             ""
           )}
-          <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} />
+          <DeletePostPopup show={modalShowDelete} onHide={modalHandlerDeleteFalse} isDelete={true}/>
+          {isPoster ? (
+            <Button
+              color="primary"
+              size="small"
+              startIcon={<EditIcon />}
+              onClick={modalHandlerEditTrue}
+            >
+              Edit
+            </Button>
+          ) : (
+            ""
+          )}
+          <DeletePostPopup show={modalShowEdit} onHide={modalHandlerEditFalse} isDelete={false} setContent = {setContent} editPost={editContent} prevContent = {props.text}/>
         </div>
       </CardActions>
     </Card>
