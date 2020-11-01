@@ -1,10 +1,11 @@
+/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const Post = require('./Post');
-const Quiz = require('./Quiz');
+// const Post = require('./Post');
+// const Quiz = require('./Quiz');
 
 const forumSchema = new Schema({
   name: {
@@ -103,7 +104,7 @@ const cascadeRemove = function (next) {
         .then(() => next());
     });
 };
-
+/*
 const deleteFromParent = async function (next) {
   const post = await this.model.findOne(this.getQuery());
   console.log('Post deleteFromParent middleware');
@@ -118,11 +119,11 @@ const deleteFromParent = async function (next) {
       { $pull: { _posts: post._id } },
     ).then(() => next());
   });
-};
+}; */
 
 forumSchema.pre('remove', cascadeRemove);
 forumSchema.pre('findOneAndDelete', cascadeDelete);
-forumSchema.pre('findOneAndDelete', deleteFromParent);
+// forumSchema.pre('findOneAndDelete', deleteFromParent);
 
 const Forum = mongoose.model('Forum', forumSchema);
 

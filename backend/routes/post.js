@@ -1,9 +1,11 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 const express = require('express');
 const Post = require('../models/Post');
 const Forum = require('../models/Forum');
 const Users = require('../models/Users');
+const Vote = require('../models/Vote');
 
 const postRouter = express.Router();
 
@@ -22,7 +24,38 @@ postRouter.get('/:id', (req, res) => {
     })
     .populate({ path: '_poster', model: 'Users', select: { _id: 1, username: 1 } })
     .then((post) => {
-      res.json(post);
+      console.log(post);
+      if (req.user) {
+        const postObj = post.toObject();
+        Vote.findOne({ _post: post._id, _voter: req.user.id })
+          .then((votePost) => {
+            if (votePost == null) {
+              postObj.userVote = 0;
+            } else {
+              postObj.userVote = votePost.dir;
+            }
+            console.log(JSON.stringify(postObj, null, 1));
+            const comments = postObj._comments;
+            const promises = comments
+              .map((comment) => Vote.findOne({ _comment: comment._id, _voter: req.user.id })
+                .then((voteComment) => {
+                  if (voteComment == null) {
+                    comment.userVote = 0;
+                  } else {
+                    comment.userVote = voteComment.dir;
+                  }
+                  return comment;
+                }));
+            Promise.all(promises).then((commentsWithVote) => {
+              console.log(`votesss${JSON.stringify(commentsWithVote)}`);
+              postObj._comments = commentsWithVote;
+              console.log(`Final post${JSON.stringify(postObj, null, 1)}`);
+              res.json(postObj);
+            }).catch((error) => res.json(error));
+          });
+      } else {
+        res.json(post);
+      }
     })
     .catch((error) => res.json(error));
 });

@@ -50,6 +50,9 @@ const quizSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Forum',
   },
+  total_points: {
+    type: Number,
+  },
   questions: [questionSchema],
   results: [
     {

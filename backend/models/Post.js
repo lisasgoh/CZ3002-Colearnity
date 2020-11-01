@@ -119,13 +119,31 @@ const deleteFromParent = async function (next) {
     Users.updateOne(
       { _posts: post._id },
       { $pull: { _posts: post._id } },
-    ).then(() => next());
+    ).then(() => {
+      console.log('Deleted from user');
+      next();
+    });
   });
 };
-
+/*
+const getUserVote = async function (next) {
+  const post = await this.model.findOne(this.getQuery());
+  Vote.findOne({ _post: post._id, _voter: req.user.id })
+    .then((vote) => {
+      // console.log(vote);
+      if (vote == null) {
+        postObj.userVote = 0;
+      } else {
+        postObj.userVote = vote.dir;
+      }
+      return postObj;
+    });
+};
+*/
 postSchema.pre('remove', cascadeRemove);
 postSchema.pre('findOneAndDelete', cascadeDelete);
 postSchema.pre('findOneAndDelete', deleteFromParent);
+// postSchema.post('findOne', getUserVote);
 
 const Post = mongoose.model('Post', postSchema);
 
