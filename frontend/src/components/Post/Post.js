@@ -141,6 +141,7 @@ export default function Post(props) {
   };
 
   const modalHandlerEditTrue = () => {
+    console.log(content+ "PROPS"+props.content);
     setModalEdit(true);
   };
 
@@ -286,7 +287,7 @@ export default function Post(props) {
         ) : (
           ""
         )}
-        <DeletePostPopup show={modalShowEdit} onHide={modalHandlerEditFalse} isDelete={false} setContent = {setContent} editPost={editContent} prevContent = {props.content}/>
+        <DeletePostPopup show={modalShowEdit} onHide={modalHandlerEditFalse} isDelete={false} setContent = {setContent} editPost={editContent} prevContent = {content}/>
 
         {/* <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} /> */}
         <Dialog

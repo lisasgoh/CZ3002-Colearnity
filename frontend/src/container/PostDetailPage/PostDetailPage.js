@@ -158,6 +158,7 @@ class PostDetailPage extends Component {
         <div className="rightsection">
           <Post
             id={this.state.id}
+            postID={this.state.id}
             username={this.state.poster}
             title={this.state.postTitle}
             content={this.state.postDesc}
@@ -165,7 +166,7 @@ class PostDetailPage extends Component {
             isPoster={this.state.isPoster}
             tags={this.state.tags}
             userVote={this.state.userVote}
-            
+
           />
 
           <form onSubmit={this.handleSubmit}>
