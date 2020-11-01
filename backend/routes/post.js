@@ -23,6 +23,7 @@ postRouter.get('/:id', (req, res) => {
       populate: { path: '_commenter', model: 'Users', select: { _id: 1, username: 1 } },
     })
     .populate({ path: '_poster', model: 'Users', select: { _id: 1, username: 1 } })
+    .populate({ path: '_forum', model: 'Forum', select: { _id: 1, name: 1, description: 1 } })
     .then((post) => {
       console.log(post);
       if (req.user) {
