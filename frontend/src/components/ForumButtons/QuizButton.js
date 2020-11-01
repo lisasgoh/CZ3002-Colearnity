@@ -25,9 +25,10 @@ export default function SimpleCard(props) {
       borderRadius: "6px",
       padding: "6px",
       margin: "10px 10px",
-      backgroundColor: completed ? "powderblue" : "salmon",
+      transition: "0.3s",
+      backgroundColor: completed ? "powderblue" : "lightpink",
       "&:hover": {
-        backgroundColor: completed ? "lightblue" : "darksalmon",
+        backgroundColor: completed ? "lightblue" : "hotpink",
       },
       " & h6": {
         fontSize: "1.1em",

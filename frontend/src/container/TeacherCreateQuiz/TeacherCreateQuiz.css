@@ -1,44 +1,53 @@
 .teachercreatequiz {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 2fr 4fr;
+  display: grid;
+  text-align: center;
+  grid-template-columns: 2fr 4fr;
 }
 
 .teachercreatequiz .leftsection {
-    padding: 50px 10%;
-    background-color: #eaeaea;
+  padding: 50px 10%;
+  background-color: #eaeaea;
 }
 
 .teachercreatequiz .leftsection h2 {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .teachercreatequiz .leftsection h3 {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
-.teachercreatequiz .leftsection .createquizbtn {
+.teachercreatequiz .leftsection > p {
+  text-align: left;
+  padding: 20px;
+  background-color: skyblue;
+  border-radius: 6px;
+  margin: 15px 0 35px 0;
+  font-weight: 500;
+}
+
+/* .teachercreatequiz .leftsection .createquizbtn {
     margin-top: 30px;
     transform: scale(2.5);
-}
+} */
 
 .teachercreatequiz .quizzes {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    margin-top: 5%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 5%;
 }
 
 .teachercreatequiz .rightsection {
-    padding: 50px 3%;
-    align-items: center;    
-    justify-content: center;
+  padding: 50px 3%;
+  align-items: center;
+  justify-content: center;
 }
 
 .teachercreatequiz .rightsection .topbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* .teachercreatequiz .rightsection .createquiz {
@@ -49,16 +58,15 @@
 } */
 
 .teachercreatequiz .rightsection h2 {
-    display: inline-block;
+  display: inline-block;
 }
 
 .icon {
-    background-color: transparent;
-    cursor: pointer;
+  background-color: transparent;
+  cursor: pointer;
 }
-  
+
 .icon:hover,
 .icon:active {
-    color: white;
+  color: white;
 }
-  

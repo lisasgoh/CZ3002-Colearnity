@@ -36,14 +36,21 @@ class SubforumPage extends Component {
           subforumDesc: forumData.description,
           quizzes: forumData._quizzes,
           posts: forumData._posts,
-          isAdmin: true, //forumData.isAdmin,
+          isAdmin: forumData._teacher._id == localStorage.getItem("userID"), //forumData.isAdmin,
         },
       });
     });
   }
 
   render() {
-    const { subforumTitle, subforumDesc, quizzes, posts, isAdmin } = this.state;
+    const {
+      id,
+      subforumTitle,
+      subforumDesc,
+      quizzes,
+      posts,
+      isAdmin,
+    } = this.state;
     // let combined = ["icon", "fa fa-plus-circle"].join(" ");
 
     console.log(posts);
@@ -81,17 +88,20 @@ class SubforumPage extends Component {
                   />
                 </Link>
               ))}
-            {isAdmin ? (
-              // <Icon
-              //   className={combined}
-              //   style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
-              // />
-              <AddCircleOutlineRoundedIcon
-                style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
-              />
-            ) : (
-              ""
-            )}
+            <Link
+              to={{
+                pathname: "/teachercreatequiz",
+                state: { subforum_id: id },
+              }}
+            >
+              {isAdmin ? (
+                <AddCircleOutlineRoundedIcon
+                  style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
+                />
+              ) : (
+                ""
+              )}
+            </Link>
 
             {/* <QuizButton
               quizTitle="Quiz 2"

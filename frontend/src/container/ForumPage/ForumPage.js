@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
-import Icon from '@material-ui/core/Icon';
 import { Link } from "react-router-dom";
 import "./ForumPage.css";
 
@@ -40,7 +39,7 @@ class ForumPage extends Component {
           subforums: forum._subforums,
           posts: forum._posts,
           forumMembership: forum.isSubscribed,
-          isAdmin: false, //forum.isAdmin,
+          isAdmin: forum._teacher._id == localStorage.getItem("userID"), //forum.isAdmin,
         },
       });
     });
@@ -66,8 +65,6 @@ class ForumPage extends Component {
       forumMembership,
       isAdmin,
     } = this.state;
-    console.log(forumMembership);
-    let combined = ["icon", "fa fa-plus-circle"].join(" ");
     return (
       <div className="forumpage">
         <div className="leftsection">
@@ -103,16 +100,21 @@ class ForumPage extends Component {
               ))}
           </div>
           <Link to={{ pathname: "/createforum", state: { forum_id: forumID } }}>
-            <Icon
-                className={combined}
+            {isAdmin ? (
+              <AddCircleOutlineRoundedIcon
                 style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
-            />
+              />
+            ) : (
+              ""
+            )}
           </Link>
         </div>
 
         <div className="rightsection">
           <div className="topbar">
-            <Link to={{ pathname: "/createpost", state: { forum_id: forumID } }}>
+            <Link
+              to={{ pathname: "/createpost", state: { forum_id: forumID } }}
+            >
               <AddCircleOutlineRoundedIcon />
             </Link>
             <h2>Recent Posts</h2>
