@@ -6,6 +6,7 @@
 const express = require('express');
 const Forum = require('../models/Forum');
 const Users = require('../models/Users');
+const Vote = require('../models/Vote');
 
 const forumRouter = express.Router();
 
@@ -94,21 +95,46 @@ forumRouter.get('/:id', (req, res) => {
       populate: { path: '_poster', model: 'Users', select: { _id: 1, username: 1 } },
     })
     .then((forum) => {
-      forum = forum.toObject();
-      forum.isSubscribed = false;
-      Users.findById(req.user.id).then((user) => {
-        console.log(user._forums);
-        console.log(req.params.id);
-        if (user._forums.includes(req.params.id)) {
-          console.log('is subscribed');
-          forum.isSubscribed = true;
+      if (req.user) {
+        forum = forum.toObject();
+        forum.isSubscribed = false;
+        Users.findById(req.user.id).then((user) => {
+          console.log(user._forums);
+          console.log(req.params.id);
+          if (user._forums.includes(req.params.id)) {
+            console.log('is subscribed');
+            forum.isSubscribed = true;
+            return forum;
+          }
           return forum;
-        }
-        return forum;
-      }).then((forum) => {
-        console.log(forum);
+        }).then((forum) => {
+          console.log(forum);
+          const forumPosts = forum._posts;
+          const promises = forumPosts.map((post) => {
+            console.log(post._id);
+            console.log(req.user.id);
+            return Vote.findOne({ _post: post._id, _voter: req.user.id })
+              .then((vote) => {
+                console.log(vote);
+                if (vote == null) {
+                  post.userVote = 0;
+                } else {
+                  post.userVote = vote.dir;
+                }
+                console.log(post);
+                return post;
+              });
+          });
+          Promise.all(promises).then((forumPostsWithVote) => {
+            console.log(`votesss${JSON.stringify(forumPostsWithVote)}`);
+            forum._posts = forumPostsWithVote;
+            console.log(`Final forum${JSON.stringify(forum, null, 1)}`);
+            res.json(forum);
+          });
+        }).catch((err) => res.send(err));
+      } else {
         res.json(forum);
-      }).catch((err) => res.send(err));
+      }
     })
     .catch((err) => res.send(err));
 });
