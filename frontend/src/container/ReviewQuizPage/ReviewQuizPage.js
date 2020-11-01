@@ -88,7 +88,7 @@ export default function ReviewQuizPage(props) {
               qn={qn.title}
               initialValue={qnsAttempt.quizAttempt[index].toString()}
               qnNum={qn.questionNumber}
-              qnWeightage="10"
+              qnWeightage={qn.points}
               options={qn.options}
               value="option 2"
               disabled={true}
