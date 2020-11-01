@@ -153,9 +153,9 @@ export default function Post(props) {
     console.log("TEST!" + desc +props.postID);
     Update.update(props.postID, {"description":desc}).then((newPostDesc) => {
       console.log(newPostDesc);
+      history.go(0);
     });
-    history.go(0);
-
+    
   }
   
   // const [modalShow, setModal] = useState(false);
