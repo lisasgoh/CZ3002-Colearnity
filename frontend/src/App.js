@@ -36,17 +36,21 @@ function App() {
         <Route path="/profilepage" exact component={StudentProfilePage} />
         <Route path="/createpost" exact component={CreatePost} />
         <Route path="/forumpage/:id" exact component={ForumPage} />
-        <Route path="/reviewquizpage:id" exact component={ReviewQuizPage} />
+        <Route path="/reviewquizpage/:id" exact component={ReviewQuizPage} />
         <Route path="/takequizpage/:id" exact component={TakeQuizPage} />
         <Route path="/teacherhomepage" exact component={TeacherHomePage} />
         <Route path="/subforumpage/:id" exact component={SubforumPage} />
         <Route path="/teacherforumpage" exact component={TeacherForumPage} />
-        <Route path="/teachersubforumpage" exact component={TeacherSubforumPage} />
+        <Route
+          path="/teachersubforumpage"
+          exact
+          component={TeacherSubforumPage}
+        />
         <Route path="/postdetailpage/:id" exact component={PostDetailPage} />
         <Route path="/teachercreatequiz" exact component={TeacherCreateQuiz} />
         <Route path="/createforum" exact component={CreateForum} />
         <Route path="/searchresult" exact component={SearchResult} />
-        <Route path="/viewgrades" exact component={ViewGrades} />
+        <Route path="/viewgrades/:id" exact component={ViewGrades} />
       </div>
     </BrowserRouter>
   );
