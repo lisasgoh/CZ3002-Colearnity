@@ -87,23 +87,24 @@ export default function CreateForum(props) {
           <h1>Create {is_sub===true? 'Sub': 'Main'} Forum</h1>
           <form onSubmit={handleSubmit} style={{marginTop: "2ch"}}>
             <FormGroup controlId="name" bsSize="large">
-              <FormLabel style={{justifyContent: "start"}}>Forum Name</FormLabel>
+              <FormLabel >Forum Name</FormLabel>
               <FormControl
                 autoFocus
-                type="name"
+                type="text"
                 placeholder="Enter forum name"
                 value={name}
-                style={{width: "400px"}}
+                style={{minWidth: "400px"}}
                 onChange={e => setName(e.target.value)}
               />
             </FormGroup>
             <FormGroup controlId="desc" bsSize="large">
               <FormLabel>Description</FormLabel>
               <FormControl as="textarea" rows={8}
-                type="desc"
+                autoFocus
+                type="text"
                 placeholder="Enter description"
                 value={desc}
-                style={{width: "400px"}}
+                style={{minWidth: "400px"}}
                 onChange={e => setDesc(e.target.value)}
               />
             </FormGroup>

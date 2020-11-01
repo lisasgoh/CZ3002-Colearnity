@@ -36,8 +36,8 @@ class CreatePost extends Component {
   render() {
     return (
       <div className="forumpage">
-        {/* <div className="leftsection_createpost">
-          <h2>CZ3002 ASE</h2>
+        <div className="leftsection_createpost">
+          {/* <h2>CZ3002 ASE</h2>
           <Button variant="contained" color="secondary" size="small">
             Join Forum
           </Button>
@@ -55,8 +55,8 @@ class CreatePost extends Component {
             <SubforumButton subforumTitle="CZ3002 ASE" />
             <SubforumButton subforumTitle="CZ3001 ACOA" />
             <SubforumButton subforumTitle="CZ1007 Data Structures" />
-          </div>
-        </div> */}
+          </div> */}
+        </div>
 
           <div className="rightsection_createpost">
             <div className="NewPost">
@@ -69,17 +69,18 @@ class CreatePost extends Component {
                   type="text"
                   placeholder="Enter post title"
                   value={this.state.title}
+                  style={{minWidth: "400px"}}
                   onChange={e => this.setState({title: e.target.value})}
                 />
               </FormGroup>
               <FormGroup controlId="text" bsSize="large">
                 <FormLabel>Content</FormLabel>
-                <FormControl
-                  rows="10"
+                <FormControl as="textarea" rows={8}
                   autoFocus
                   type="text"
                   placeholder="Enter post content"
                   value={this.state.content}
+                  style={{minWidth: "400px"}}
                   onChange={event => this.setState({content: event.target.value})}
                 />
               </FormGroup>
