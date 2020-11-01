@@ -103,6 +103,7 @@ postRouter.put('/:id', (req, res) => {
     .catch((error) => res.json(error));
 });
 
+/*
 // delete post
 // delete post from forum
 // delete post from user
@@ -132,14 +133,21 @@ postRouter.delete('/:id', (req, res) => {
     }
   }).catch((err) => res.json(err));
 });
+*/
 
-/*
 postRouter.delete('/:id', (req, res) => {
   console.log('Delete post!');
-  Post.findByIdAndDelete(req.params.id)
-    .then((removedPost) => res.json(removedPost))
-    .catch((err) => res.send(err));
+  Post.findById(req.params.id).then((post) => {
+    console.log(post._poster);
+    console.log(req.user.id);
+    if (post._poster.toString().localeCompare(req.user.id.toString()) === 0) {
+      Post.findByIdAndDelete(req.params.id)
+        .then((removedPost) => res.json(removedPost))
+        .catch((err) => res.send(err));
+    } else {
+      res.send('current user not the poster, hence not allowed to delete. ');
+    }
+  });
 });
-*/
 
 module.exports = postRouter;
