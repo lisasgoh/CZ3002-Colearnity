@@ -19,7 +19,12 @@ import ThumbUpAltRoundedIcon from "@material-ui/icons/ThumbUpAltRounded";
 import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import ThumbDownAltRoundedIcon from "@material-ui/icons/ThumbDownAltRounded";
 import "./Post.css";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Update from "./../../services/post";
+import { useHistory } from "react-router-dom";
+import DeletePostPopup from "./../../components/Popup/Popup";
+
+// import Typography from "@material-ui/core/Typography";
 
 import voteService from "./../../services/vote";
 import postService from "./../../services/post";
@@ -118,6 +123,41 @@ export default function Post(props) {
   })(Chip);
 
   //FOR DELETES
+  const [modalShowDelete, setModalDelete] = useState(false);
+  const [modalShowEdit, setModalEdit] = useState(false);
+  const [postDescription, setPostDescription] = useState("");
+  const history = useHistory();
+
+  const modalHandlerDeleteFalse = () => {
+    setModalDelete(false);
+  };
+
+  const modalHandlerDeleteTrue = () => {
+    setModalDelete(true);
+  };
+
+  const modalHandlerEditFalse = () => {
+    setModalEdit(false);
+  };
+
+  const modalHandlerEditTrue = () => {
+    setModalEdit(true);
+  };
+
+  const setContent =(content)=>{
+    setPostDescription(content.target.value);
+    console.log(content.target.value);
+  }
+
+  const editContent=(desc)=>{
+    console.log("TEST!" + desc +props.postID);
+    Update.update(props.postID, {"description":desc}).then((newPostDesc) => {
+      console.log(newPostDesc);
+    });
+    history.go(0);
+
+  }
+  
   // const [modalShow, setModal] = useState(false);
   // const modalHandlerFalse = () => {
   //   setModal(false);
@@ -125,7 +165,6 @@ export default function Post(props) {
   // const modalHandlerTrue = () => {
   //   setModal(true);
   // };
-  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -143,6 +182,7 @@ export default function Post(props) {
     } catch (e) {
       alert(e.message);
     }
+    return true;
   }
 
   return (
@@ -233,6 +273,21 @@ export default function Post(props) {
         ) : (
           ""
         )}
+        <DeletePostPopup show={modalShowDelete} onHide={modalHandlerDeleteFalse} isDelete={true}/>
+        {isPoster ? (
+          <Button
+            color="primary"
+            size="small"
+            startIcon={<EditRoundedIcon />}
+            onClick={modalHandlerEditTrue}
+          >
+            Edit
+          </Button>
+        ) : (
+          ""
+        )}
+        <DeletePostPopup show={modalShowEdit} onHide={modalHandlerEditFalse} isDelete={false} setContent = {setContent} editPost={editContent} prevContent = {props.content}/>
+
         {/* <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} /> */}
         <Dialog
           open={open}
