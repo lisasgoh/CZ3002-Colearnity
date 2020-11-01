@@ -83,6 +83,7 @@ class StudentProfilePage extends Component {
             {posts &&
               posts.map((post, index) => (
                 <Post
+                  id={post._id}
                   title={post.title}
                   username={username} //all posts should be made by user on profile page
                   content={post.description}
