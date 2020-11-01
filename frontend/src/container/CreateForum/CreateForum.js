@@ -85,7 +85,7 @@ export default function CreateForum(props) {
       <div className="rightsection_createforum">
         <div className="NewForum">
           <h1>Create {is_sub===true? 'Sub': 'Main'} Forum</h1>
-          <form onSubmit={handleSubmit} style={{marginTop: "2ch"}}>
+          <form onSubmit={handleSubmit}>
             <FormGroup controlId="name" bsSize="large">
               <FormLabel >Forum Name</FormLabel>
               <FormControl
