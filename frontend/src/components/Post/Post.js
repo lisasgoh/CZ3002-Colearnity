@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+import {
+  Button,
+  Chip,
+  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from "@material-ui/core"
 import ReplyRoundedIcon from "@material-ui/icons/ReplyRounded";
-import IconButton from "@material-ui/core/IconButton";
 import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
@@ -10,13 +18,12 @@ import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ThumbUpAltRoundedIcon from "@material-ui/icons/ThumbUpAltRounded";
 import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import ThumbDownAltRoundedIcon from "@material-ui/icons/ThumbDownAltRounded";
-import DeletePostPopup from "./../Popup/Popup";
-import Chip from "@material-ui/core/Chip";
 import "./Post.css";
-import { Link } from "react-router-dom";
-// import Typography from "@material-ui/core/Typography";
+import { Link, useHistory } from "react-router-dom";
 
 import voteService from "./../../services/vote";
+import postService from "./../../services/post";
+
 export default function Post(props) {
   let {
     id,
@@ -95,16 +102,35 @@ export default function Post(props) {
   })(Chip);
 
   //FOR DELETES
-  const [modalShow, setModal] = useState(false);
-  const modalHandlerFalse = () => {
-    setModal(false);
-  };
+  // const [modalShow, setModal] = useState(false);
+  // const modalHandlerFalse = () => {
+  //   setModal(false);
+  // };
+  // const modalHandlerTrue = () => {
+  //   setModal(true);
+  // };
+  const history = useHistory();
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
 
-  const modalHandlerTrue = () => {
-    setModal(true);
   };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  function handleDelete(event) {
+    event.preventDefault();
+    try {
+      postService.deleteObj(id).then((deletePost) => {
+        console.log(deletePost);
+        history.go(0);
+      });
+    } catch (e) {
+      alert(e.message);
+    }
+  }
+
   return (
-    
     <div className="post">
       <Link
         to={{
@@ -179,14 +205,24 @@ export default function Post(props) {
             color="primary"
             size="small"
             startIcon={<DeleteRoundedIcon />}
-            onClick={modalHandlerTrue}
+            onClick={handleClickOpen}
           >
             Delete
           </Button>
         ) : (
           ""
         )}
-        <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} />
+        {/* <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} /> */}
+        <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth={'sm'}>
+          <DialogTitle>{"Delete Post"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Confirm Delete Post?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDelete} color="primary">Yes</Button>
+            <Button onClick={handleClose} color="primary">No</Button>
+          </DialogActions>
+        </Dialog>
       </div>
 
       <div className="tags">
