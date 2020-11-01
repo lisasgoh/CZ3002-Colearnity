@@ -4,7 +4,7 @@ import Post from "../../components/Post/Post";
 import ForumButton from "../../components/ForumButtons/ForumButton";
 import Filter from "../../components/Filter/Filter";
 import Divider from "@material-ui/core/Divider";
-import Icon from '@material-ui/core/Icon';
+import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import { Link } from "react-router-dom";
 import TeacherPost from "../../components/Post/TeacherPost";
 
@@ -66,26 +66,32 @@ class StudentHomePage extends Component {
                 </Link>
               ))}
           </div>
-          <Divider variant="middle" />
-          <h2 className="createdHeading">Forums Created</h2>
-          <div className="createdforums">
-            {createdForums &&
-              createdForums.map((forum) => (
-                <Link
-                  to={{
-                    pathname: `/forumpage/${forum._id}`,
-                  }}
-                >
-                  <ForumButton forumTitle={forum.name} />
-                </Link>
-              ))}
-          </div>
-          <Link to={{ pathname: "/createforum" }}>
-            <Icon
-                className={combined}
-                style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
-            />
-          </Link>
+          {isStudent ? (
+            ""
+          ) : (
+            <>
+              <Divider variant="middle" />
+              <h2 className="createdHeading">Forums Created</h2>
+              <div className="createdforums">
+                {createdForums &&
+                  createdForums.map((forum) => (
+                    <Link
+                      to={{
+                        pathname: `/forumpage/${forum._id}`,
+                      }}
+                    >
+                      <ForumButton forumTitle={forum.name} />
+                    </Link>
+                  ))}
+              </div>
+              <Link to={{ pathname: "/createforum" }}>
+                <AddCircleOutlineRoundedIcon
+                  style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
+                />
+                )
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="rightsection">
