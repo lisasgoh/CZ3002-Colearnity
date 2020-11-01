@@ -24,7 +24,6 @@ forumRouter.post('/', (req, res) => {
     is_sub: req.body.is_sub,
     _parentforum: req.query.forum_id,
   });
-  // console.log(typeof req.body.is_sub);
   if (req.body.is_sub === true) { // add parent forum id and subforums list
     console.log('IS SUBFORUM');
     forum.save().then((forum) => {
@@ -97,19 +96,19 @@ forumRouter.get('/:id', (req, res) => {
     .then((forum) => {
       forum = forum.toObject();
       forum.isSubscribed = false;
-      if (req.user) {
-        Users.findById(req.user.id).then((user) => {
-          if (user._forums.includes(req.params.id)) {
-            forum.isSubscribed = true;
-            return forum;
-          }
+      Users.findById(req.user.id).then((user) => {
+        console.log(user._forums);
+        console.log(req.params.id);
+        if (user._forums.includes(req.params.id)) {
+          console.log('is subscribed');
+          forum.isSubscribed = true;
           return forum;
-        });
-      } return forum;
-    })
-    .then((finalForum) => {
-      console.log(finalForum);
-      res.json(finalForum);
+        }
+        return forum;
+      }).then((forum) => {
+        console.log(forum);
+        res.json(forum);
+      }).catch((err) => res.send(err));
     })
     .catch((err) => res.send(err));
 });
