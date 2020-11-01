@@ -14,7 +14,7 @@ export default function CreateForum(props) {
 
   useEffect(() => {
     setID(props.location.state.forum_id);
-  }, [])
+  }, []);
 
   function validateForm() {
     console.log(title);
@@ -24,20 +24,6 @@ export default function CreateForum(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-<<<<<<< HEAD
-    console.log(this.state.forum_id);
-
-    const post = {
-      title: this.state.title,
-      description: this.state.content,
-      // postTags: this.state.tags,
-    };
-    postService.create(post, this.state.forum_id).then((newPost) => {
-      console.log(newPost);
-      this.props.history.push(`/postdetailpage/${newPost._id}`);
-    });
-  };
-=======
     try {
       const post = {
         title: title,
@@ -52,7 +38,6 @@ export default function CreateForum(props) {
       alert(e.message);
     }
   }
->>>>>>> fe88b1237be83db9b90fb99ca0c53056ea427997
 
   console.log(title);
   console.log(content);
@@ -63,52 +48,6 @@ export default function CreateForum(props) {
     <div className="forumpage">
       <div className="leftsection_createpost"></div>
 
-<<<<<<< HEAD
-        <div className="rightsection_createpost">
-          <div className="NewPost">
-            <h1>Add a Post</h1>
-            <form onSubmit={this.handleSubmit}>
-              <FormGroup controlId="text" bsSize="large">
-                <FormLabel>Title</FormLabel>
-                <FormControl
-                  autoFocus
-                  type="text"
-                  placeholder="Enter post title"
-                  value={this.state.title}
-                  onChange={(e) => this.setState({ title: e.target.value })}
-                />
-              </FormGroup>
-              <FormGroup controlId="text" bsSize="large">
-                <FormLabel>Content</FormLabel>
-                <FormControl
-                  rows="10"
-                  autoFocus
-                  type="text"
-                  placeholder="Enter post content"
-                  value={this.state.content}
-                  onChange={(event) =>
-                    this.setState({ content: event.target.value })
-                  }
-                />
-              </FormGroup>
-              {/* <label>Tags</label>
-              <select value={this.state.tags} onChange={(event) => this.setState({tags: event.target.value})}>
-                  <option value="CZ3006">CZ3006 ASE</option>
-                  <option value="CZ3001">CZ3001 ACOA</option>
-              </select> */}
-              <Button disabled={!this.validateForm()} type="submit">
-                Create Post
-              </Button>
-            </form>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-export default CreatePost;
-=======
       <div className="rightsection_createpost">
         <div className="NewPost">
           <h1>Add a Post</h1>
@@ -116,23 +55,25 @@ export default CreatePost;
             <FormGroup controlId="text" bsSize="large">
               <FormLabel>Title</FormLabel>
               <FormControl
-                  autoFocus
-                  type="text"
-                  placeholder="Enter post title"
-                  value={title}
-                  style={{minWidth: "400px"}}
-                  onChange={e => setTitle(e.target.value)}
+                autoFocus
+                type="text"
+                placeholder="Enter post title"
+                value={title}
+                style={{ minWidth: "400px" }}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </FormGroup>
             <FormGroup controlId="text" bsSize="large">
               <FormLabel>Content</FormLabel>
-              <FormControl as="textarea" rows={8}
+              <FormControl
+                as="textarea"
+                rows={8}
                 autoFocus
                 type="text"
                 placeholder="Enter post content"
                 value={content}
-                style={{minWidth: "400px"}}
-                onChange={e => setContent(e.target.value)}
+                style={{ minWidth: "400px" }}
+                onChange={(e) => setContent(e.target.value)}
               />
             </FormGroup>
             {/* <label>Tags</label>
@@ -140,11 +81,12 @@ export default CreatePost;
                 <option value="CZ3006">CZ3006 ASE</option>
                 <option value="CZ3001">CZ3001 ACOA</option>
             </select> */}
-            <Button disabled={!validateForm()} type="submit">Add Post</Button>
+            <Button disabled={!validateForm()} type="submit">
+              Add Post
+            </Button>
           </form>
         </div>
       </div>
     </div>
   );
 }
->>>>>>> fe88b1237be83db9b90fb99ca0c53056ea427997

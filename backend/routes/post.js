@@ -106,29 +106,40 @@ postRouter.put('/:id', (req, res) => {
 // delete post
 // delete post from forum
 // delete post from user
-/* postRouter.delete('/:id', (req, res) => {
-  Post.findByIdAndRemove(req.params.id).then(() => {
-    Forum.findByIdAndUpdate(
-      req.query.forum_id,
-      { $pull: { _posts: { _id: req.params.id } } },
-    ).then(() => {
-      Users.findByIdAndUpdate(
-        req.user.id,
-        { $pull: { _posts: { _id: req.params.id } } },
-      )
-        .then(() => {
-          res.send('Success: Post Deleted');
-        })
-        .catch((err) => res.json(err));
-    }).catch((err) => res.json(err));
+// only can delete when current user is the poster
+postRouter.delete('/:id', (req, res) => {
+  Post.findById(req.params.id).then((post) => {
+    console.log(post._poster);
+    console.log(req.user.id);
+    if (post._poster.toString().localeCompare(req.user.id.toString()) === 0) {
+      Post.findByIdAndRemove(req.params.id).then(() => {
+        Forum.findByIdAndUpdate(
+          req.query.forum_id,
+          { $pull: { _posts: req.params.id } },
+        ).then(() => {
+          Users.findByIdAndUpdate(
+            req.user.id,
+            { $pull: { _posts: req.params.id } },
+          )
+            .then(() => {
+              res.send('Success: Post Deleted');
+            })
+            .catch((err) => res.json(err));
+        }).catch((err) => res.json(err));
+      }).catch((err) => res.json(err));
+    } else {
+      res.send('current user not the poster, hence not allowed to delete. ');
+    }
   }).catch((err) => res.json(err));
-}); */
-// TO DO : only delete when user is owner of post
+});
+
+/*
 postRouter.delete('/:id', (req, res) => {
   console.log('Delete post!');
   Post.findByIdAndDelete(req.params.id)
     .then((removedPost) => res.json(removedPost))
     .catch((err) => res.send(err));
 });
+*/
 
 module.exports = postRouter;
