@@ -1,9 +1,10 @@
 import { BorderAllRounded } from "@material-ui/icons";
 import React from "react";
 import Card from "react-bootstrap/Card";
+import Button from "@material-ui/core/Button";
 
 export default function ProfileCard(props) {
-  let { scoredMarks, totalMarks, quizTitle } = props;
+  let { scoredMarks, totalMarks, quizTitle, quizAttempt } = props;
 
   return (
     <Card
@@ -21,6 +22,7 @@ export default function ProfileCard(props) {
         >
           {scoredMarks} / {totalMarks}
         </Card.Text>
+        <Button onClick={quizAttempt}>Review Quiz Attempt</Button>
       </Card.Body>
     </Card>
   );

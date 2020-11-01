@@ -100,6 +100,7 @@ class StudentProfilePage extends Component {
                   scoredMarks={grade.marks}
                   totalMarks={grade.total}
                   quizTitle={grade._quiz.title}
+                  quizAttempt={grade._attempts}
                 />
               ))}
           </div>
