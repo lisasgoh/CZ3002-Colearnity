@@ -69,7 +69,7 @@ class TeacherCreateQuiz extends Component {
         ...this.state.questions,
         {
           title: this.state.qnTitle,
-          points: this.state.quizMarks,
+          points: parseInt(this.state.quizMarks),
           options: [
             {
               optionNumber: 1,
@@ -118,7 +118,6 @@ class TeacherCreateQuiz extends Component {
   };
 
   handleSubmit = async (event) => {
-    const {history} = this.props;
     const { quizTitle, questions } = this.state;
     console.log("WE DONE IT" + quizTitle);
     event.preventDefault();
