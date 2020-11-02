@@ -84,7 +84,7 @@ class StudentHomePage extends Component {
                     </Link>
                   ))}
               </div>
-              <Link to={{ pathname: "/createforum" }}>
+              <Link to={{ pathname: "/createforum", state: { forum_id: null }}}>
                 <AddCircleOutlineRoundedIcon
                   style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
                 />
