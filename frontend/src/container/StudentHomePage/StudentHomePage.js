@@ -19,8 +19,17 @@ class StudentHomePage extends Component {
       createdForums: [],
       posts: [],
       isStudent: null,
+      filteredPosts: null,
     };
   }
+
+  getFilteredPosts = (value) => {
+    console.log("ENTERED CALLBACK");
+    this.setState({
+      filteredPosts: value,
+    });
+    console.log(value);
+  };
 
   componentDidMount() {
     usersService.getUserHomePage().then((userData) => {
@@ -47,9 +56,15 @@ class StudentHomePage extends Component {
   }, []) */
 
   render() {
-    const { forums, createdForums, posts, isStudent } = this.state;
+    const {
+      forums,
+      createdForums,
+      posts,
+      isStudent,
+      filteredPosts,
+    } = this.state;
     console.log(createdForums);
-    let combined = ["icon", "fa fa-plus-circle"].join(" ");
+
     return (
       <div className="studenthomepage">
         <div className="leftsection">
@@ -98,22 +113,35 @@ class StudentHomePage extends Component {
           <div className="topbar">
             <h2>Recent Posts</h2>
 
-            <Filter />
+            <Filter posts={posts} parentCallback={this.getFilteredPosts} />
           </div>
-          {posts &&
-            posts.map((post) => (
-              <Post
-                id={post._id}
-                username={post._poster.username}
-                content={post.description}
-                numLikes={post.votes}
-                tags={post.tags}
-                title={post.title}
-                userVote={post.userVote}
-                isPoster={post._poster._id == localStorage.getItem("userID")}
-              />
-            ))}
-          <Post editingaccess={true} />
+          {filteredPosts === null
+            ? posts &&
+              posts.map((post) => (
+                <Post
+                  id={post._id}
+                  username={post._poster.username}
+                  content={post.description}
+                  numLikes={post.votes}
+                  tags={post.tags}
+                  title={post.title}
+                  userVote={post.userVote}
+                  isPoster={post._poster._id == localStorage.getItem("userID")}
+                />
+              ))
+            : filteredPosts &&
+              filteredPosts.map((post) => (
+                <Post
+                  id={post._id}
+                  username={post._poster.username}
+                  content={post.description}
+                  numLikes={post.votes}
+                  tags={post.tags}
+                  title={post.title}
+                  userVote={post.userVote}
+                  isPoster={post._poster._id == localStorage.getItem("userID")}
+                />
+              ))}
         </div>
       </div>
     );
