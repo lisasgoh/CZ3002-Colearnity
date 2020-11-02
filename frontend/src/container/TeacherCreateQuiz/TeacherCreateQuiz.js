@@ -122,7 +122,7 @@ class TeacherCreateQuiz extends Component {
     const { quizTitle, questions } = this.state;
     console.log("WE DONE IT" + quizTitle);
     event.preventDefault();
-    try {
+    /* try {
       //await createQuizService.postQuiz(quizTitle,questions,"5f8521b48e9dffee9f62e06a");
       await createQuizService.postQuiz(
         quizTitle,
@@ -130,9 +130,17 @@ class TeacherCreateQuiz extends Component {
         this.state.subforum_id.toString()
       );
      //history.go("http://localhost:3001/teachercreatequiz");
-     window.location.href = "/teacherhomepage";
+     window.location.href = "/homepage";
     } catch (e) {
       alert("IS IT THIS?" + e.message);
+    } */
+    try {
+      createQuizService.postQuiz(quizTitle, questions, this.state.subforum_id)
+        .then(() => {
+          this.props.history.push(`/subforumpage/${this.state.subforum_id}`);
+        })
+    }  catch (e) {
+      console.log(e);
     }
   };
 
@@ -198,12 +206,9 @@ class TeacherCreateQuiz extends Component {
           <Button color="primary" onClick={this.addQuestion}>
             Add New Question
           </Button>
-          <Link to="/teacherhomepage" onClick={this.handleSubmit}>
-          <Button color="primary" >
+          <Button color="primary" onClick={this.handleSubmit} >
             Submit New Quiz
           </Button>
-          </Link>
-          
         </div>
       </div>
     );

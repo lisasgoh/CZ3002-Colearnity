@@ -35,12 +35,6 @@ forumRouter.post('/', (req, res) => {
         { $push: { _subforums: forum._id } })
         .then((parentForum) => {
           console.log(parentForum);
-          Users.findByIdAndUpdate(req.user.id,
-            { $push: { _created_forums: forum._id } })
-            .then((user) => {
-              console.log(user);
-              res.json(forum);
-            });
           res.json(forum);
         })
         .catch((err) => res.send(err));

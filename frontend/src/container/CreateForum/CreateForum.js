@@ -41,12 +41,14 @@ export default function CreateForum(props) {
         if (is_sub === true) {
           forumService.createSubForum(forum, forumID).then((forumData) => {
             console.log(forumData._id);
+            // history.push(`/homepage`);
             history.push(`/subforumpage/${forumData._id}`);
           });
         } else {
           forumService.createMainForum(forum).then((forumData) => {
             console.log(forumData);
             console.log(forumData._id);
+            // history.push(`/homepage`);
             history.push(`/forumpage/${forumData._id}`);
           });
         }
