@@ -14,8 +14,11 @@ export default function CreateForum(props) {
   const history = useHistory();
 
   useEffect(() => {
-    setID(props.location.state.forum_id);
-    if (forumID != null) {
+    if (props.location.state.forum_id != null) {
+      setID(props.location.state.forum_id);
+    }
+    console.log(forumID);
+    if (forumID != '') {
       setIsSub(true);
     }
   }, [])
@@ -41,6 +44,7 @@ export default function CreateForum(props) {
           });
         } else {
           forumService.createMainForum(forum).then((forumData) => {
+            console.log(forumData);
             console.log(forumData._id);
             history.push(`/forumpage/${forumData._id}`);
           });
