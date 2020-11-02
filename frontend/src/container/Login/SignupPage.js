@@ -24,6 +24,10 @@ class SignupPage extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  validateForm() {
+    return this.state.email.length > 0 && this.state.password.length > 0 && this.state.username.length > 0;
+  }
+
   handleInputChange(event) {
     this.setState({
       ...this.state,
@@ -116,7 +120,7 @@ class SignupPage extends Component {
               />
             </div>
 
-            <Button type="submit" value="Submit">
+            <Button block disabled={!this.validateForm()} type="submit" value="Submit">
               Sign Up
             </Button>
 

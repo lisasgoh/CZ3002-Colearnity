@@ -1,6 +1,7 @@
 const express = require('express');
 const Post = require('../models/Post');
 const Forum = require('../models/Forum');
+const Util = require('../util/util');
 
 const searchRouter = express.Router();
 
@@ -16,7 +17,13 @@ searchRouter.get('/post', (req, res) => {
   }, (err, post) => {
     if (err) {
       res.send(err);
-    } else { res.json(post); }
+    } else if (req.user) {
+      Util.getPostsVoteInfo([post], req.user.id, (postWithVote) => {
+        res.json(postWithVote);
+      });
+    } else {
+      res.json(post);
+    }
   });
 });
 

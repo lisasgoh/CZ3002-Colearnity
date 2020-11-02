@@ -1,16 +1,13 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 /* eslint-disable consistent-return */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-shadow */
 const passport = require('passport');
 const mongoose = require('mongoose');
 const router = require('express').Router();
 const auth = require('./auth');
 const Users = require('../models/Users');
-const Vote = require('../models/Vote');
 const QuizAttempt = require('../models/QuizAttempt');
+const Util = require('../util/util');
 
 // POST new user route (optional, everyone has access)
 router.post('/', auth.optional, (req, res) => {
@@ -73,13 +70,13 @@ router.post('/login', auth.optional, (req, res) => {
         return res.status(401).json(err);
       }
       if (passportUser) {
-        const user = passportUser;
-        user.token = passportUser.generateJWT();
-        req.login(user, (err) => {
-          if (err) {
-            return res.status(401).json(err);
+        const pUser = passportUser;
+        pUser.token = passportUser.generateJWT();
+        req.login(pUser, (error) => {
+          if (error) {
+            return res.status(401).json(error);
           }
-          return res.json({ user: user.toAuthJSON() });
+          return res.json({ user: pUser.toAuthJSON() });
         });
       }
       // return res.status(400).info;
@@ -138,8 +135,20 @@ router.get('/current', auth.required, (req, res) => {
     Users.findById(req.user.id).select(['-_forums', '-_created_forums', '-salt', '-hash'])
       .populate(populateQuery)
       .then((user) => {
-        console.log(user);
-        res.json(user);
+        Util.getPostsVoteInfo(user._posts, req.user.id, (postsWithVotes) => {
+          console.log(`userPosts With Vote${postsWithVotes}`);
+          const userObj = user.toObject();
+          userObj._posts = postsWithVotes;
+          console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
+          res.json(userObj);
+        });
+        // .then((userPostsWithVote) => {
+        //   console.log(`userPosts With Vote${userPostsWithVote}`);
+        //   const userObj = user.toObject();
+        //   userObj._posts = userPostsWithVote;
+        //   console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
+        //   res.json(userObj);
+        // });
       })
       .catch((err) => res.send(err));
   });
@@ -182,53 +191,24 @@ router.get('/home', auth.required, (req, res) => {
     .then((user) => {
       console.log(`HERERE${user}`);
       const homePagePosts = user._forums.reduce((result, item) => result.concat(item._posts), []);
-      // console.log(homePagePosts);
-      const promises = homePagePosts.map((post) => {
-        const postObj = post.toObject();
-        // console.log(`Post obj${postObj._id}`);
-        return Vote.findOne({ _post: postObj._id, _voter: req.user.id })
-          .then((vote) => {
-            // console.log(vote);
-            if (vote == null) {
-              postObj.userVote = 0;
-            } else {
-              postObj.userVote = vote.dir;
-            }
-            return postObj;
-          });
-      });
-      Promise.all(promises).then((userPostsWithVote) => {
-        console.log(`votesss${JSON.stringify(userPostsWithVote)}`);
+      Util.getPostsVoteInfo(homePagePosts, req.user.id, (postsWithVotes) => {
+        console.log(`userPosts With Vote${postsWithVotes}`);
         const userObj = user.toObject();
-        userObj.homePagePosts = userPostsWithVote;
+        userObj.homePagePosts = postsWithVotes;
         console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
         res.json(userObj);
       });
+      // .then((userPostsWithVote) => {
+      //   console.log(`userPosts With Vote${userPostsWithVote}`);
+      //   const userObj = user.toObject();
+      //   userObj.homePagePosts = userPostsWithVote;
+      //   console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
+      //   res.json(userObj);
+      // });
     })
     .catch((err) => res.send(err));
 });
 
-// Testing
-/* router.get('/:id', (req, res) => {
-  console.log('DFDSFShgghfddfD');
-  Users.findById(req.params.id)
-    .populate({ path: '_forums', model: 'Forum', select: { _id: 1, name: 1 } })
-    .populate({
-      path: '_posts',
-      model: 'Post',
-      select: {
-        _id: 1, title: 1, description: 1, votes: 1,
-      },
-    }).then((user) => res.json(user))
-    .catch((err) => res.json(err));
-});* /
-router.get('/home', (req, res) => {
-  console.log(req.isAuthenticated());
-  console.log(req.user.id);
-  /*  const {
-    payload: { id },
-  } = req;
-*/
 router.get('/:id', (req, res) => {
   const populateQuery = {
     path: '_forums',
