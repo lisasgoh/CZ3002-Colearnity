@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, {useState, Component, PureComponent} from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles, withStyles } from '@material-ui/core/styles';
@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import search_query from "../services/search";
 import testQuiz from "../services/quiz";
+import { useHistory } from "react-router-dom";
 import API from "../utils/API";
+import { withRouter } from 'react-router';
 
 const styles = (theme) => ({
     search: {
@@ -43,7 +45,7 @@ const styles = (theme) => ({
     },
   });
 
-class Search extends Component {
+class Search extends React.Component {
   /*  
   const classes = useStyles();
     const [searchQuery, setSearchQuery] = useState("HELLO");
@@ -62,12 +64,12 @@ class Search extends Component {
       querySearch:"initial state",
       posts:null,
     };
+
   }
 
   getSearchQuery=()=>{
-
+    const { history } = this.props;
     API.get("/api/search?postKeyword=test").then((response) => console.log(response));
-
     testQuiz.getQuiz("5f9947deff08a627f4bea004").then((response) => console.log(response));
     search_query
       .searchPost(`test`)
@@ -82,7 +84,6 @@ class Search extends Component {
         },
       });
     });
-
   }
 
   searchHandler=(evt)=>{
@@ -92,10 +93,10 @@ class Search extends Component {
   }
     render(){
       const {classes} = this.props;
+      //const { history } = this.props;
     return (
         <div>
             <div className={classes.search}>
-            
             <InputBase
               placeholder="Search…"
               classes={{
@@ -109,19 +110,16 @@ class Search extends Component {
           <Link to={{
             pathname: "/searchresult",
             state:this.state.querySearch,
-          }}>
+            
+          }} onClick={() => {if (window.location.pathname.localeCompare("/searchresult")===0){window.location.reload()}}}>
               
-              <Button
-          
+        <Button
           color="primary"
           size="small"
           onClick={this.getSearchQuery}
           startIcon={<SearchIcon />}
         />
-        
-              
-            </Link>
-            
+      </Link>
             </div>
         </div>
     )

@@ -11,11 +11,15 @@ export default class SearchResults extends React.Component {
   constructor(props) {
     super(props);
 
+    
     this.state = {
       posts:null,
       subforums:null,
+      isSubforum:null,
+      pathName:"",
     };
   }
+
   componentDidMount=()=>{
    Promise.all([
     search_query.searchPost(`${this.props.location.state}`),
@@ -26,25 +30,14 @@ export default class SearchResults extends React.Component {
     this.setState({
       posts: postSearch,
       subforums: forumSearch,
+      pathName: forumSearch.is_sub?`/subforumpage/${forumSearch._id}`:`/forumpage/${forumSearch._id}`
     });
     console.log(postSearch);
     console.log(forumSearch);
+    console.log("ISSUB?" + forumSearch.is_sub);
   })
-  
-  /*
-    search_query.searchPost(`${this.props.location.state}`).then((forum) => {
-      this.setState({
-          posts: forum,
-      });
-      console.log(forum);
-    });
-    search_query.searchForum(`${this.props.location.state}`).then((forum) => {
-      console.log("HI");
-      console.log(forum);
-      console.log("BYE");
-    });
-    */
   }
+
   render(){
     return (
       <div className="searchresults">
@@ -53,7 +46,8 @@ export default class SearchResults extends React.Component {
           <div className="forums">
           {this.state.subforums &&
               this.state.subforums.map((subforum) => (
-                <Link to={{ pathname: `/subforumpage/${subforum._id}` }}>
+                
+                <Link to={{ pathname: subforum.is_sub? `/subforumpage/${subforum._id}`:  `/forumpage/${subforum._id}`}}>
                   <SubforumButton
                     subforumTitle={subforum.name}
                     _id={subforum._id}

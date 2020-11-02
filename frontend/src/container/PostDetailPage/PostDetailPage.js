@@ -48,10 +48,12 @@ class PostDetailPage extends Component {
       newreply: "",
       isAdmin: this.props.location.isAdmin,
       isPoster: null,
-      forumIDs: null,
-      linkforums: this.props.location.state.isSub
-        ? `/subforumpage/${this.props.location.state.forumID}`
-        : `/forumpage/${this.props.location.state.forumID}`,
+      forumID: null,
+      forumName: null,
+      forumDesc: null,
+      linkforums: null, //this.props.location.state.isSub
+      //   ? `/subforumpage/${this.props.location.state.forumID}`
+      //   : `/forumpage/${this.props.location.state.forumID}`,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -85,67 +87,63 @@ class PostDetailPage extends Component {
   }
 
   componentDidMount() {
-    console.log(
-      "Did it pass data: " +
-        this.props.location.state.isSub +
-        this.props.location.state.forumID
-    );
-    postService
-      .getIndivPost(`${this.state.id}`)
-      .then((post) => {
-        // console.log(forumData);
-        console.log(post);
-        this.setState({
-          ...this.state,
-          ...{
-            postVotes: post.votes,
-            postTitle: post.title,
-            postDesc: post.description,
-            postComments: post._comments,
-            poster: post._poster.username,
-            postTime: post.createdAt,
-            isPoster: post._poster._id == localStorage.getItem("userID"),
-            forumIDs: post._forum,
-            userVote: post.userVote,
-          },
-        });
-        return forumService.getForum(post._forum);
-      })
-      .then((forum) => {
-        console.log("Is post from subforum? " + forum.is_sub);
-        this.setState({
-          linkforums: forum.is_sub
-            ? `/subforumpage/${this.props.location.state.forumID}`
-            : `/forumpage/${this.props.location.state.forumID}`,
-        });
+    // console.log(
+    //   "Did it pass data: " +
+    //     this.props.location.state.isSub +
+    //     this.props.location.state.forumID
+    // );
+    postService.getIndivPost(`${this.state.id}`).then((post) => {
+      // console.log(forumData);
+      console.log(post);
+      this.setState({
+        ...this.state,
+        ...{
+          postVotes: post.votes,
+          postTitle: post.title,
+          postDesc: post.description,
+          postComments: post._comments,
+          poster: post._poster.username,
+          postTime: post.createdAt,
+          isPoster: post._poster._id == localStorage.getItem("userID"),
+          forumID: post._forum._id,
+          forumName: post._forum.name,
+          forumDesc: post._forum.description,
+          userVote: post.userVote,
+          linkforums: post._forum.is_sub
+            ? `/subforumpage/${post._forum._id}`
+            : `/forumpage/${post._forum._id}`,
+        },
       });
+      // return forumService.getForum(post._forum);
+    });
+    // .then(() => {
+    //   console.log("Is post from subforum? " + forum.is_sub);
+    //   this.setState({
+    //     linkforums: forum.is_sub
+    //       ? `/subforumpage/${this.state.forumID}`
+    //       : `/forumpage/${this.state.forumID}`,
+    //   });
+    // });
   }
 
   render() {
     console.log(this.state);
-    console.log(
-      this.props.location.state.isSub + this.props.location.state.forumID
-    );
+    // console.log(
+    //   this.props.location.state.isSub + this.props.location.state.forumID
+    // );
     console.log(this.state.newreply);
     const { classes } = this.props;
     return (
       <div className="postdetailpage">
         <div className="leftsection">
           <Link to={{ pathname: this.state.linkforums }}>
-            <h2>CZ3002 ASE</h2>
+            <h2>{this.state.forumName}</h2>
           </Link>
 
-          <Button variant="contained" color="secondary" size="small">
+          {/* <Button variant="contained" color="secondary" size="small">
             Join Forum
-          </Button>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-            pretium orci eget lobortis porttitor. Praesent consectetur lacus eu
-            egestas blandit. Mauris ultrices consequat diam sit amet ornare.
-            Etiam elementum felis in nisl condimentum scelerisque. Integer
-            scelerisque turpis at ipsum aliquam elementum. Praesent non posuere
-            sem, eget varius purus.
-          </p>
+          </Button> */}
+          <p>{this.state.forumDescription}</p>
 
           {/* <h3>Subforums</h3>
           <div className="subforums">
@@ -158,6 +156,7 @@ class PostDetailPage extends Component {
         <div className="rightsection">
           <Post
             id={this.state.id}
+            postID={this.state.id}
             username={this.state.poster}
             title={this.state.postTitle}
             content={this.state.postDesc}
@@ -165,6 +164,7 @@ class PostDetailPage extends Component {
             isPoster={this.state.isPoster}
             tags={this.state.tags}
             userVote={this.state.userVote}
+
           />
 
           <form onSubmit={this.handleSubmit}>

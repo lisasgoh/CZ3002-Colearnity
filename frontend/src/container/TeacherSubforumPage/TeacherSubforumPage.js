@@ -6,7 +6,6 @@ import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import "./TeacherSubforumPage.css";
-
 import API from "../../utils/API";
 
 class TeacherSubforumPage extends Component {

@@ -43,7 +43,7 @@ export default function Post(props) {
     userVote,
   } = props;
 
-  console.log(props);
+  // console.log(props);
 
   //FOR LIKES
   const [liked, setLiked] = useState(userVote > 0); //props.liked
@@ -141,23 +141,24 @@ export default function Post(props) {
   };
 
   const modalHandlerEditTrue = () => {
+    console.log(content + "PROPS" + props.content);
     setModalEdit(true);
   };
 
-  const setContent =(content)=>{
+  const setContent = (content) => {
     setPostDescription(content.target.value);
     console.log(content.target.value);
-  }
+  };
 
-  const editContent=(desc)=>{
-    console.log("TEST!" + desc +props.postID);
-    Update.update(props.postID, {"description":desc}).then((newPostDesc) => {
+  const editContent = (desc) => {
+    console.log("TEST!" + desc + props.postID);
+    Update.update(props.postID, { description: desc }).then((newPostDesc) => {
       console.log(newPostDesc);
+      history.go(0);
     });
     history.go(0);
+  };
 
-  }
-  
   // const [modalShow, setModal] = useState(false);
   // const modalHandlerFalse = () => {
   //   setModal(false);
@@ -273,7 +274,11 @@ export default function Post(props) {
         ) : (
           ""
         )}
-        <DeletePostPopup show={modalShowDelete} onHide={modalHandlerDeleteFalse} isDelete={true}/>
+        <DeletePostPopup
+          show={modalShowDelete}
+          onHide={modalHandlerDeleteFalse}
+          isDelete={true}
+        />
         {isPoster ? (
           <Button
             color="primary"
@@ -286,7 +291,14 @@ export default function Post(props) {
         ) : (
           ""
         )}
-        <DeletePostPopup show={modalShowEdit} onHide={modalHandlerEditFalse} isDelete={false} setContent = {setContent} editPost={editContent} prevContent = {props.content}/>
+        <DeletePostPopup
+          show={modalShowEdit}
+          onHide={modalHandlerEditFalse}
+          isDelete={false}
+          setContent={setContent}
+          editPost={editContent}
+          prevContent={props.content}
+        />
 
         {/* <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} /> */}
         <Dialog

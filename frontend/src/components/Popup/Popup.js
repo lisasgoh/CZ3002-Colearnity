@@ -16,19 +16,19 @@ export default function DeletePostPopup(props) {
                 >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                    {props.isDelete?  "Delete Post": "Edit Post" }
+                    {props.isDelete?  "Delete": "Edit" }
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {props.isDelete?<p>
-                    Confirm Delete Post?
+                    Confirm Delete?
                     </p>:
                     <input type="text" value={content} style={{width:'100%'}} onChange={contentHandler}/>
                     }
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={()=>{props.onHide(true); props.editPost(content)}} >Yes</Button>
-                    <Button onClick={props.onHide}>No</Button>
+                    <Button onClick={()=>{props.onHide(true); props.editPost(content)}} >Confirm</Button>
+                    <Button onClick={props.onHide}>Cancel</Button>
                 </Modal.Footer>
                 </Modal>
         );
