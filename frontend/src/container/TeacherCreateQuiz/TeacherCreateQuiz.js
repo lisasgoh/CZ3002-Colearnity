@@ -8,7 +8,7 @@ import Icon from "@material-ui/core/Icon";
 import "./TeacherCreateQuiz.css";
 import API from "../../utils/API";
 import createQuizService from "../../services/quiz";
-
+import { Link } from "react-router-dom";
 import forumService from "./../../services/forum";
 
 class TeacherCreateQuiz extends Component {
@@ -118,6 +118,7 @@ class TeacherCreateQuiz extends Component {
   };
 
   handleSubmit = async (event) => {
+    const {history} = this.props;
     const { quizTitle, questions } = this.state;
     console.log("WE DONE IT" + quizTitle);
     event.preventDefault();
@@ -128,6 +129,8 @@ class TeacherCreateQuiz extends Component {
         questions,
         this.state.subforum_id.toString()
       );
+     //history.go("http://localhost:3001/teachercreatequiz");
+     window.location.href = "/teacherhomepage";
     } catch (e) {
       alert("IS IT THIS?" + e.message);
     }
@@ -195,9 +198,12 @@ class TeacherCreateQuiz extends Component {
           <Button color="primary" onClick={this.addQuestion}>
             Add New Question
           </Button>
-          <Button color="primary" onClick={this.handleSubmit}>
+          <Link to="/teacherhomepage" onClick={this.handleSubmit}>
+          <Button color="primary" >
             Submit New Quiz
           </Button>
+          </Link>
+          
         </div>
       </div>
     );
