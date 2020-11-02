@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 export default function ForumButton(props) {
   const ForumButton = withStyles({
     root: {
-      backgroundColor: props.color, //props.colour
+      backgroundColor: "orange", //props.color, //props.colour
       marginRight: "0.9em",
       borderRadius: "6px",
       border: "1px solid black",
@@ -17,8 +17,9 @@ export default function ForumButton(props) {
       fontSize: "1.1em",
       textTransform: "none",
       lineHeight: "1em",
+      transition: "0.3s",
       "&:hover": {
-        backgroundColor: props.hovercolor,
+        backgroundColor: "darkorange", //props.hovercolor,
         color: "black",
       },
     },
