@@ -16,11 +16,12 @@ export default function CreateForum(props) {
   useEffect(() => {
     if (props.location.state.forum_id != null) {
       setID(props.location.state.forum_id);
-    }
-    console.log(forumID);
-    if (forumID != '') {
       setIsSub(true);
     }
+    console.log(forumID);
+    // if (forumID != '') {
+    //   setIsSub(true);
+    // }
   }, [])
 
   function validateForm() {
