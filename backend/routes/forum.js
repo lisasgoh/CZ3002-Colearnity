@@ -18,6 +18,7 @@ forumRouter.post('/', (req, res) => {
   // console.log("HI");
   // console.log(req.user);
   console.log(req.isAuthenticated());
+  console.log(req.body);
   const forum = new Forum({
     name: req.body.name,
     description: req.body.description,
@@ -25,6 +26,7 @@ forumRouter.post('/', (req, res) => {
     is_sub: req.body.is_sub,
     _parentforum: req.query.forum_id,
   });
+  console.log(forum);
   if (req.body.is_sub === true) { // add parent forum id and subforums list
     console.log('IS SUBFORUM');
     forum.save().then((forum) => {
@@ -39,13 +41,19 @@ forumRouter.post('/', (req, res) => {
               console.log(user);
               res.json(forum);
             });
-          // res.json(forum);
+          res.json(forum);
         })
         .catch((err) => res.send(err));
     });
   } else {
+    console.log(forum);
     forum.save().then((forum) => {
-      res.json(forum);
+      Users.findByIdAndUpdate(req.user.id,
+        { $push: { _created_forums: forum._id } })
+        .then((user) => {
+          console.log(user);
+          res.json(forum);
+        });
     })
       .catch((err) => res.send(err));
   }
