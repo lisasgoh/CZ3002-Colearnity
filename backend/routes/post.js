@@ -73,12 +73,7 @@ postRouter.get('/', (req, res) => {
 });
 
 // create post
-// TODO: add to forum & user db
 postRouter.post('/', (req, res) => {
-  // console.log(req.body);
-  // console.log(req.query);
-  // console.log(req.user);
-  // const temp = '5f7f525d56b9835b245e8aaf';
   // check if user is part of forum
   const post = new Post({
     title: req.body.title,

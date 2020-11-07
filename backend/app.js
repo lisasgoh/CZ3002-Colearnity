@@ -24,6 +24,8 @@ const resultRouter = require('./routes/result');
 const searchRouter = require('./routes/search');
 const filterRouter = require('./routes/filter');
 
+require('dotenv').config();
+
 const Users = require('./models/Users');
 require('./config/passport');
 
@@ -32,7 +34,12 @@ mongoose.promise = global.Promise;
 const app = express();
 
 // connect to mongodb
-const url = 'mongodb+srv://colearnity:zHiVt0wXsWUQ3MKB@cluster0.4j8bx.mongodb.net/<dbname>?retryWrites=true&w=majority';
+// const url = 'mongodb+srv://colearnity:zHiVt0wXsWUQ3MKB@cluster0.4j8bx.mongodb.net/<dbname>?retryWrites=true&w=majority';
+let url = process.env.MONGODB_URI;
+
+if (process.env.NODE_ENV === 'test') {
+  url = process.env.TEST_MONGODB_URI;
+}
 
 mongoose
   .connect(url, {

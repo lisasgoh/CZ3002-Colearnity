@@ -38,7 +38,9 @@ router.post('/', auth.optional, (req, res) => {
   return finalUser
     .save()
     .then(() => res.json({ user: finalUser.toAuthJSON() }))
-    .catch((error) => res.json(error));
+    .catch(() => {
+      res.status(400).send({ error: 'duplicate email/username' });
+    });
 });
 
 // POST login route (optional, everyone has access)
