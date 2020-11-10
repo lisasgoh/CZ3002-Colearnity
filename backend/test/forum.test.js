@@ -29,7 +29,18 @@ const FORUM_A = {
   description: 'test description',
   is_sub: false,
 };
-
+const FORUM_A_NO_NAME = {
+  description: 'test description',
+  is_sub: false,
+};
+const FORUM_A_NO_DESCRIPTION = {
+  name: 'test forum',
+  is_sub: false,
+};
+const FORUM_A_NO_ISSUB = {
+  name: 'test forum',
+  description: 'test description',
+};
 const auth = {};
 
 let cookie = null;
@@ -54,11 +65,8 @@ beforeAll(async (done) => {
 });
 
 afterAll(async () => {
-  console.log('HERE');
   await Forum.remove({});
-  console.log('HERERE');
   await Users.remove({});
-  console.log('HERERE');
   mongoose.connection.close();
 });
 
@@ -72,36 +80,47 @@ describe('create main forum', () => {
     const forum = response.body;
     console.log(forum);
     expect(response.statusCode).toBe(200);
-    // expect(user.email).toBe(USER_A.email);
+    expect(forum.name).toBe(FORUM_A.name);
     done();
   });
-  /*
-  it('creates subforum successfully ', async (done) => {
+  it('creates main forum unsuccessfully - no name', async (done) => {
     const response = await request
-      .post('/api/users')
-      .send(USER_NO_EMAIL);
-    expect(response.statusCode).toBe(422); // test error msg?
-    done();
-  });
-  it('creates user unsuccessfully - no password', async (done) => {
-    const response = await request
-      .post('/api/users')
-      .send(USER_NO_PASSWORD);
-    expect(response.statusCode).toBe(422); // test error msg?
-    done();
-  });
-  it('creates user unsuccessfully - duplicate email', async (done) => {
-    const response = await request
-      .post('/api/users')
-      .send(USER_A_DUP_EMAIL);
-    expect(response.statusCode).toBe(400); // test error msg?
-    done();
-  });
-  it('creates user unsuccessfully - duplicate username', async (done) => {
-    const response = await request
-      .post('/api/users')
-      .send(USER_A_DUP_USERNAME);
+      .post('/api/forum')
+      .set('Cookie', cookie)
+      .send(FORUM_A_NO_NAME);
     expect(response.statusCode).toBe(400);
+    done();
+  });
+  it('creates main forum unsuccessfully - no description', async (done) => {
+    const response = await request
+      .post('/api/forum')
+      .set('Cookie', cookie)
+      .send(FORUM_A_NO_DESCRIPTION);
+    expect(response.statusCode).toBe(400);
+    done();
+  });
+  it('creates main forum unsuccessfully - no is_sub', async (done) => {
+    const response = await request
+      .post('/api/forum')
+      .set('Cookie', cookie)
+      .send(FORUM_A_NO_ISSUB);
+    expect(response.statusCode).toBe(400);
+    done();
+  });/*
+  it('creates main forum unsuccessfully - no authentication', async (done) => {
+    const response = await request
+      .post('/api/forum')
+      .set('Cookie', `${cookie}=1; expires=1 Jan 1970 00:00:00 GMT;`)
+      .send(FORUM_A);
+    expect(response.statusCode).toBe(401);
+    done();
+  });
+  it('creates main forum unsuccessfully - duplicate name', async (done) => {
+    const response = await request
+      .post('/api/forum')
+      .set('Cookie', `${cookie}=1; expires=1 Jan 1970 00:00:00 GMT;`)
+      .send(FORUM_A);
+    expect(response.statusCode).toBe(401);
     done();
   }); */
 });
