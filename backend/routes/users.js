@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 /* eslint-disable consistent-return */
@@ -16,7 +17,7 @@ router.post('/', auth.optional, (req, res) => {
   console.log(user.email);
   console.log(user.password);
   if (!user.email) {
-    return res.status(422).json({
+    return res.status(400).json({
       errors: {
         email: 'is required',
       },
@@ -24,7 +25,7 @@ router.post('/', auth.optional, (req, res) => {
   }
 
   if (!user.password) {
-    return res.status(422).json({
+    return res.status(400).json({
       errors: {
         password: 'is required',
       },
@@ -44,14 +45,17 @@ router.post('/', auth.optional, (req, res) => {
 });
 
 // POST login route (optional, everyone has access)
-router.post('/login', auth.optional, (req, res) => {
+router.post('/login', auth.optional, (req, res, next) => {
   console.log('HERE');
   console.log(req.body);
+  if (!req.body.hasOwnProperty('user')) {
+    return res.status(403).send({ error: 'Invalid format' });
+  }
   const {
     body: { user },
   } = req;
   if (!user.email) {
-    return res.status(422).json({
+    return res.status(400).json({
       errors: {
         email: 'is required',
       },
@@ -59,31 +63,29 @@ router.post('/login', auth.optional, (req, res) => {
   }
 
   if (!user.password) {
-    return res.status(422).json({
+    return res.status(400).json({
       errors: {
         password: 'is required',
       },
     });
   }
-  return passport.authenticate(
-    'local',
-    (err, passportUser) => {
-      if (err) {
-        return res.status(401).json(err);
+  return passport.authenticate('local', (err, passportUser) => {
+    if (err) {
+      return next(err); // will generate a 500 error
+    }
+    // Generate a JSON response reflecting authentication status
+    if (!passportUser) {
+      return res.status(401).send({ error: 'authentication failed' });
+    }
+    const authenticatedUser = passportUser;
+    authenticatedUser.token = passportUser.generateJWT();
+    req.login(authenticatedUser, (error) => {
+      if (error) {
+        return res.status(401).json(error);
       }
-      if (passportUser) {
-        const pUser = passportUser;
-        pUser.token = passportUser.generateJWT();
-        req.login(pUser, (error) => {
-          if (error) {
-            return res.status(401).json(error);
-          }
-          return res.json({ user: pUser.toAuthJSON() });
-        });
-      }
-      // return res.status(400).info;
-    },
-  )(req, res);
+      return res.json({ user: authenticatedUser.toAuthJSON() });
+    });
+  })(req, res, next);
 });
 
 // GET current route (required, only authenticated users have access)
@@ -191,13 +193,13 @@ router.get('/home', auth.required, (req, res) => {
   return Users.findById(req.user.id).select(['-_grades', '-_posts', '-_attempts', '-_quizzes', '-salt', '-hash'])
     .populate(populateQuery)
     .then((user) => {
-      console.log(`HERERE${user}`);
+      // console.log(`HERERE${user}`);
       const homePagePosts = user._forums.reduce((result, item) => result.concat(item._posts), []);
       Util.getPostsVoteInfo(homePagePosts, req.user.id, (postsWithVotes) => {
-        console.log(`userPosts With Vote${postsWithVotes}`);
+        // console.log(`userPosts With Vote${postsWithVotes}`);
         const userObj = user.toObject();
         userObj.homePagePosts = postsWithVotes;
-        console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
+        // console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
         res.json(userObj);
       });
       // .then((userPostsWithVote) => {

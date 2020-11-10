@@ -19,6 +19,15 @@ forumRouter.post('/', (req, res) => {
   // console.log(req.user);
   console.log(req.isAuthenticated());
   console.log(req.body);
+  if (!req.body.name || !req.body.description || !req.body.hasOwnProperty('is_sub')) {
+    res.status(400).send({ error: 'invalid form submission' });
+  }
+  if (req.body.is_sub && !req.query.forum_id) {
+    res.status(400).send({ error: 'parent forum not given' });
+  }
+  if (!req.user) {
+    res.status(401).send({ error: 'unauthorized user' });
+  }
   const forum = new Forum({
     name: req.body.name,
     description: req.body.description,
@@ -45,7 +54,7 @@ forumRouter.post('/', (req, res) => {
       Users.findByIdAndUpdate(req.user.id,
         { $push: { _created_forums: forum._id } })
         .then((user) => {
-          console.log(user);
+          //       console.log(user);
           res.json(forum);
         });
     })

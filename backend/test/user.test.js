@@ -96,14 +96,14 @@ describe('create user', () => {
     const response = await request
       .post('/api/users')
       .send(USER_NO_EMAIL);
-    expect(response.statusCode).toBe(422); // test error msg?
+    expect(response.statusCode).toBe(400); // test error msg?
     done();
   });
   it('creates user unsuccessfully - no password', async (done) => {
     const response = await request
       .post('/api/users')
       .send(USER_NO_PASSWORD);
-    expect(response.statusCode).toBe(422); // test error msg?
+    expect(response.statusCode).toBe(400); // test error msg?
     done();
   });
   it('creates user unsuccessfully - duplicate email', async (done) => {
@@ -127,17 +127,16 @@ describe('login', () => {
     const response = await request
       .post('/api/users/login')
       .send(USER_B_NO_EMAIL);
-    expect(response.statusCode).toBe(422);
+    expect(response.statusCode).toBe(400);
     done();
   });
   it('login - no password', async (done) => {
     const response = await request
       .post('/api/users/login')
       .send(USER_B_NO_PASSWORD);
-    expect(response.statusCode).toBe(422);
+    expect(response.statusCode).toBe(400);
     done();
   });
-  /*
   it('login - wrong email', async (done) => {
     const response = await request
       .post('/api/users/login')
@@ -151,12 +150,12 @@ describe('login', () => {
       .send(USER_B_WRONG_PASSWORD);
     expect(response.statusCode).toBe(401);
     done();
-  }); */
+  });
   it('login - wrong data', async (done) => {
     const response = await request
       .post('/api/users/login')
       .send(USER_LOGIN_WRONG_FORMAT);
-    expect(response.statusCode).toBe(500);
+    expect(response.statusCode).toBe(403);
     done();
   });
   it('login - successful', async (done) => {
