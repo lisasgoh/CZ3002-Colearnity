@@ -7,13 +7,13 @@ const Forum = require('./Forum');
 const Vote = require('./Vote');
 const Users = require('./Users');
 
-const TagSchema = new mongoose.Schema({
+/* const TagSchema = new mongoose.Schema({
   tag: {
     type: String,
     unique: true,
   },
 });
-
+*/
 const postSchema = new Schema(
   {
     title: {
@@ -42,42 +42,12 @@ const postSchema = new Schema(
     votes: {
       type: Number,
     },
-    tags: [TagSchema],
+    tags: [{
+      type: String,
+    }],
   },
   { timestamps: true },
 );
-/*
-const populatePoster = function (next) {
-  this.populate({
-    path: "poster",
-    select: "username",
-  });
-  next();
-};
-
-const populateComments = function (next) {
-  this.populate({
-    path: "comments",
-    select: "commenter createdAt text votes",
-  });
-  next();
-};
-
-const populateForum = function (next) {
-  this.populate({
-    path: "forum",
-  });
-  next();
-};
-// Execute populate methods before find query
-postSchema.pre("find", populatePoster);
-postSchema.pre("findOne", populatePoster);
-
-postSchema.pre("find", populateComments);
-postSchema.pre("findOne", populateComments);
-
-postSchema.pre("find", populateForum);
-postSchema.pre("findOne", populateForum); */
 
 // document middleware
 const cascadeRemove = function (next) {

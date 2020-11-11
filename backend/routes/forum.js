@@ -191,17 +191,6 @@ forumRouter.get('/:id', (req, res) => {
     .catch((err) => res.send(err));
 });
 
-// get all forums (for testing)
-forumRouter.get('/', (req, res) => {
-  Forum.find()
-    .populate({ path: '_teacher', model: 'Users', select: { _id: 1, username: 1 } })
-    .populate({ path: '_subforums', model: 'Forum' })
-    .populate({ path: '_quizzes', model: 'Quiz' })
-    .populate({ path: '_posts', model: 'Post', select: { title: 1, votes: 1, _poster: 1 } })
-    .then((forum) => res.json(forum))
-    .catch((err) => res.send(err));
-});
-
 // change forum details todo
 forumRouter.put('/:id', (req, res) => {
   Forum.findByIdAndUpdate(req.params.id, req.body)

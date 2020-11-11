@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
@@ -12,7 +13,9 @@ const postRouter = express.Router();
 // get individual post info
 postRouter.get('/:id', (req, res) => {
   console.log('HERE');
-  console.log(req.params.id);
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid post id' });
+  }
   Post.findById(req.params.id)
     .populate({
       path: '_comments',
@@ -31,7 +34,9 @@ postRouter.get('/:id', (req, res) => {
       },
     })
     .then((post) => {
-      console.log(post);
+      if (post == null) {
+        return res.status(400).send({ error: 'post does not exist' });
+      }
       if (req.user) {
         const postObj = post.toObject();
         Vote.findOne({ _post: post._id, _voter: req.user.id })
@@ -41,7 +46,7 @@ postRouter.get('/:id', (req, res) => {
             } else {
               postObj.userVote = votePost.dir;
             }
-            console.log(JSON.stringify(postObj, null, 1));
+            // console.log(JSON.stringify(postObj, null, 1));
             const comments = postObj._comments;
             const promises = comments
               .map((comment) => Vote.findOne({ _comment: comment._id, _voter: req.user.id })
@@ -54,9 +59,9 @@ postRouter.get('/:id', (req, res) => {
                   return comment;
                 }));
             Promise.all(promises).then((commentsWithVote) => {
-              console.log(`votesss${JSON.stringify(commentsWithVote)}`);
+              // console.log(`votesss${JSON.stringify(commentsWithVote)}`);
               postObj._comments = commentsWithVote;
-              console.log(`Final post${JSON.stringify(postObj, null, 1)}`);
+              // console.log(`Final post${JSON.stringify(postObj, null, 1)}`);
               res.json(postObj);
             }).catch((error) => res.json(error));
           });
@@ -67,13 +72,19 @@ postRouter.get('/:id', (req, res) => {
     .catch((error) => res.json(error));
 });
 
-// get all posts (for testing)
-postRouter.get('/', (req, res) => {
-  Post.find({}).then((posts) => res.json(posts));
-});
-
 // create post
 postRouter.post('/', (req, res) => {
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  // Test if parent forum ID is given if it is a sub forum
+  if (!req.query.forum_id) {
+    return res.status(400).send({ error: 'forum not given' });
+  }
+  // Test if forum ID is a valid Mongoose Object ID
+  if (!req.query.forum_id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid forum id' });
+  }
   // check if user is part of forum
   const post = new Post({
     title: req.body.title,
@@ -83,53 +94,43 @@ postRouter.post('/', (req, res) => {
     _comments: [],
     _forum: req.query.forum_id,
   });
-  post
-    .save()
-    .then(() => Forum.findByIdAndUpdate(req.query.forum_id,
-      { $push: { _posts: { $each: [post._id], $position: 0 } } },
+  // This is wrong i think because the promise is unhandled???
+  // Forum.findById(req.query.forum_id).then((forum) => {
+  //   if (forum == null) {
+  //     return res.status(400).send({ error: 'Forum does not exist' });
+  //   }
+  // });
+  post.save((err, savedPost) => {
+    if (err) {
+      console.log(err);
+      if (err.name === 'ValidationError') {
+        return res.status(422).send({ error: 'Title required' });
+      }
+      return res.status(500);
+      // return res.send(err);
+    }
+    console.log(req.body);
+    console.log(savedPost);
+    Forum.findByIdAndUpdate(req.query.forum_id,
+      { $push: { _posts: { $each: [savedPost._id], $position: 0 } } },
       { new: true })
       .then((forum) => {
-        console.log(forum);
+        if (forum == null) {
+          return res.status(400).send({ error: 'Forum does not exist' });
+        }
         Users.findByIdAndUpdate(req.user.id,
-          { $push: { _posts: { $each: [post._id], $position: 0 } } },
+          { $push: { _posts: { $each: [savedPost._id], $position: 0 } } },
           { new: true })
-          .then((user) => {
-            console.log(user);
-            res.json(post);
+          .then(() => {
+            // console.log(user);
+            console.log(savedPost);
+            res.json(savedPost);
           });
-      })
-      .catch((error) => res.json(error)));
-});
-
-/*
-postRouter.post('/', (req, res) => {
-  const { body } = req;
-  // check if user is part of forum
-  const post = new Post({
-    title: body.title,
-    description: body.description,
-    votes: 0,
-    _poster: req.user.id,
-    _comments: [],
-    _forum: req.query.forum_id,
+      });
   });
-  post
-    .save()
-    .then(() => Forum.findById(req.query.forum_id)
-      .then((forum) => {
-        forum._posts.unshift(post);
-        console.log(forum);
-        return forum.save();
-      }).then(() => Users.findById(req.user.id).then((user) => {
-        user._posts.unshift(post);
-        console.log(user);
-        return user.save();
-      }).then(() => res.json(post))
-        .catch((error) => res.json(error))));
 });
-*/
 
-// update post title/description
+// update post title/description // need to be the poster
 postRouter.put('/:id', (req, res) => {
   Post.findByIdAndUpdate(req.params.id, { $set: req.body })
     .then((updatedPost) => {
@@ -137,38 +138,6 @@ postRouter.put('/:id', (req, res) => {
     })
     .catch((error) => res.json(error));
 });
-
-/*
-// delete post
-// delete post from forum
-// delete post from user
-// only can delete when current user is the poster
-postRouter.delete('/:id', (req, res) => {
-  Post.findById(req.params.id).then((post) => {
-    console.log(post._poster);
-    console.log(req.user.id);
-    if (post._poster.toString().localeCompare(req.user.id.toString()) === 0) {
-      Post.findByIdAndRemove(req.params.id).then(() => {
-        Forum.findByIdAndUpdate(
-          req.query.forum_id,
-          { $pull: { _posts: req.params.id } },
-        ).then(() => {
-          Users.findByIdAndUpdate(
-            req.user.id,
-            { $pull: { _posts: req.params.id } },
-          )
-            .then(() => {
-              res.send('Success: Post Deleted');
-            })
-            .catch((err) => res.json(err));
-        }).catch((err) => res.json(err));
-      }).catch((err) => res.json(err));
-    } else {
-      res.send('current user not the poster, hence not allowed to delete. ');
-    }
-  }).catch((err) => res.json(err));
-});
-*/
 
 postRouter.delete('/:id', (req, res) => {
   console.log('Delete post!');
@@ -180,7 +149,7 @@ postRouter.delete('/:id', (req, res) => {
         .then((removedPost) => res.json(removedPost))
         .catch((err) => res.send(err));
     } else {
-      res.send('current user not the poster, hence not allowed to delete. ');
+      res.status(401).send({ error: 'current user not the poster, hence not allowed to delete. ' });
     }
   });
 });
