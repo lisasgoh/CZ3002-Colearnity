@@ -14,15 +14,15 @@ searchRouter.get('/post', (req, res) => {
       { title: str },
       { description: str },
     ],
-  }, (err, post) => {
+  }, (err, posts) => {
     if (err) {
       res.send(err);
     } else if (req.user) {
-      Util.getPostsVoteInfo([post], req.user.id, (postWithVote) => {
-        res.json(postWithVote);
+      Util.getPostsVoteInfo(posts, req.user.id, (postsWithVote) => {
+        res.json(postsWithVote);
       });
     } else {
-      res.json(post);
+      res.json(posts);
     }
   });
 });

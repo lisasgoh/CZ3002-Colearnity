@@ -4,9 +4,11 @@ const Vote = require('../models/Vote');
 
 function getPostsVoteInfo(posts, userId, callback) {
   console.log('HEERERE');
+  console.log(posts);
   const promises = posts.map((post) => {
+    // console.log(postObj);
     const postObj = post.toObject();
-    console.log(`Post obj${postObj._id}`);
+    // console.log(`Post obj${postObj._id}`);
     return Vote.findOne({ _post: postObj._id, _voter: userId })
       .then((vote) => {
         // console.log(vote);
@@ -19,7 +21,7 @@ function getPostsVoteInfo(posts, userId, callback) {
       });
   });
   Promise.all(promises).then((postsWithVote) => {
-    console.log(`votesss${JSON.stringify(postsWithVote, null, 1)}`);
+    // console.log(`votesss${JSON.stringify(postsWithVote, null, 1)}`);
     callback(postsWithVote);
   });
 }
