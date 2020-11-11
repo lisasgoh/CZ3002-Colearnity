@@ -28,13 +28,17 @@ quizRouter.post('/', (req, res) => {
       };
       return newOpt;
     });
+    const stats = {
+      correct: 0,
+      wrong: 0,
+      choices: [0, 0, 0, 0],
+    };
     const newQn = {
       questionNumber: index + 1,
       title: question.title,
       points: question.points,
       options: newOpts,
-      correct: 0,
-      wrong: 0,
+      stats,
     };
     return newQn;
   });
@@ -63,7 +67,7 @@ quizRouter.post('/', (req, res) => {
           $push: { _quizzes: doc._id },
         }).then((user) => {
           console.log(user);
-          res.json(user);
+          res.json(quiz);
         });
       })
       .catch((error) => res.send(error));
@@ -96,22 +100,24 @@ quizRouter.post('/:id', (req, res) => {
   console.log(attempt);
   Quiz.findById(req.params.id)
     .then((quiz) => {
-      console.log(quiz);
       let marks = 0;
       let total = 0;
       const results = attempt.map((choice, index) => {
         console.log(`Chosen option${choice - 1}`);
-        const points = 1;
-        // const { points } = quiz.questions[index];
+        const question = quiz.questions[index];
+        console.log(question);
+        const { points } = question;
         total += points;
-        if (quiz.questions[index].options[choice - 1].isCorrectAnswer === true) {
+        question.stats.choices[choice - 1] += 1;
+        quiz.markModified('questions');
+        if (question.options[choice - 1].isCorrectAnswer === true) {
           console.log('Correct answer');
-          quiz.questions[index].correct += 1;
+          question.stats.correct += 1;
           marks += points;
           return points;
         }
         console.log('Wrong answer');
-        quiz.questions[index].wrong += 1;
+        question.stats.wrong += 1;
         return 0;
       });
       console.log(`Results${results}`);
@@ -134,7 +140,6 @@ quizRouter.post('/:id', (req, res) => {
         .then((savedAttempt) => {
           quiz._attempts.push(savedAttempt);
           quiz.results.push(marks);
-          console.log(quiz);
           return quiz.save();
         })
         .then(() => {

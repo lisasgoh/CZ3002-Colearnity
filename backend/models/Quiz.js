@@ -15,6 +15,18 @@ const optionSchema = new Schema({
   },
 });
 
+const statsSchema = new Schema({
+  correct: {
+    type: Number,
+  },
+  wrong: {
+    type: Number,
+  },
+  choices: [{
+    type: Number,
+  }],
+});
+
 const questionSchema = new Schema({
   questionNumber: {
     type: Number,
@@ -22,21 +34,18 @@ const questionSchema = new Schema({
   title: {
     type: String,
     required: true,
-    maxlength: 25,
   },
   options: [optionSchema],
   points: {
     type: Number,
   },
-  correct: Number,
-  wrong: Number,
+  stats: statsSchema,
 });
 
 const quizSchema = new Schema({
   title: {
     type: String,
     required: true,
-    maxlength: 25,
   },
   description: {
     type: String,
