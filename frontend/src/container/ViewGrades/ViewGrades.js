@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import QuizButton from "../../components/ForumButtons/QuizButton";
+import QuestionStats from "../../components/QuestionStats/QuestionStats";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import { withStyles } from "@material-ui/core/styles";
 import {
@@ -13,9 +14,10 @@ import {
   Paper,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import "./SubforumPage.css";
+import "./ViewGrades.css";
 
 import quizService from "./../../services/quiz";
+
 const styles = (theme) => ({
   table: {
     minWidth: 650,
@@ -58,6 +60,7 @@ class ViewGrades extends Component {
     const { avgResults, quizQns, quizTitle, totalPossibleMarks } = this.state;
 
     const { classes } = this.props;
+
     return (
       <div className="subforumpage">
         <div className="leftsection">
@@ -88,13 +91,24 @@ class ViewGrades extends Component {
                       <TableCell align="center" component="th" scope="row">
                         {qn.questionNumber}
                       </TableCell>
-                      <TableCell align="center">{qn.correct}</TableCell>
-                      <TableCell align="center">{qn.wrong}</TableCell>
+                      <TableCell align="center">{qn.stats.correct}</TableCell>
+                      <TableCell align="center">{qn.stats.wrong}</TableCell>
                     </TableRow>
                   ))}
               </TableBody>
             </Table>
           </TableContainer>
+
+          <div>
+            {quizQns &&
+              quizQns.map((qn, index) => (
+                <QuestionStats
+                  question={qn.title}
+                  options={qn.options}
+                  stats={qn.stats}
+                />
+              ))}
+          </div>
         </div>
       </div>
     );

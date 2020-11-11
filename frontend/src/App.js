@@ -21,7 +21,7 @@ import TeacherCreateQuiz from "./container/TeacherCreateQuiz/TeacherCreateQuiz";
 import CreateForum from "./container/CreateForum/CreateForum";
 import Testpage from "./container/Testpage";
 import SearchResult from "./container/SearchResults/SearchResults";
-import ViewGrades from "./container/SubforumPage/ViewGrades";
+import ViewGrades from "./container/ViewGrades/ViewGrades";
 
 function App() {
   return (
