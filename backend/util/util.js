@@ -4,7 +4,6 @@ const Vote = require('../models/Vote');
 
 function getPostsVoteInfo(posts, userId, callback) {
   console.log('HEERERE');
-  console.log(posts);
   const promises = posts.map((post) => {
     // console.log(postObj);
     const postObj = post.toObject();
