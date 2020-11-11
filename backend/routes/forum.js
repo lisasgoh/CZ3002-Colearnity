@@ -1,5 +1,5 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-console */
-/* eslint-disable no-shadow */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
@@ -19,14 +19,21 @@ forumRouter.post('/', (req, res) => {
   // console.log(req.user);
   console.log(req.isAuthenticated());
   console.log(req.body);
-  if (!req.body.name || !req.body.description || !req.body.hasOwnProperty('is_sub')) {
-    res.status(400).send({ error: 'invalid form submission' });
-  }
-  if (req.body.is_sub && !req.query.forum_id) {
-    res.status(400).send({ error: 'parent forum not given' });
-  }
+  // Test if user is authorised
   if (!req.user) {
-    res.status(401).send({ error: 'unauthorized user' });
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  // Test if required fields are given
+  if (!req.body.name || !req.body.description || !req.body.hasOwnProperty('is_sub')) {
+    return res.status(400).send({ error: 'invalid form submission' });
+  }
+  // Test if parent forum ID is given if it is a sub forum
+  if (req.body.is_sub === true && !req.query.forum_id) {
+    return res.status(400).send({ error: 'parent forum not given' });
+  }
+  // Test if forum ID is a valid Mongoose Object ID
+  if (req.body.is_sub === true && !req.query.forum_id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid forum id' });
   }
   const forum = new Forum({
     name: req.body.name,
@@ -38,27 +45,47 @@ forumRouter.post('/', (req, res) => {
   console.log(forum);
   if (req.body.is_sub === true) { // add parent forum id and subforums list
     console.log('IS SUBFORUM');
-    forum.save().then((forum) => {
-      console.log(forum);
+    Forum.findById(req.query.forum_id).then((parentForum) => {
+      if (parentForum == null) {
+        return res.status(400).send({ error: 'parent forum does not exist' });
+      } if (parentForum.is_sub === true) {
+        console.log('HEREERERE parent forumi s sub');
+        return res.status(400).send({ error: 'parent forum is not a main forum' });
+      }
+      forum.save().then((savedForum) => {
+        parentForum._subforums.push(savedForum._id);
+        parentForum.save();
+        res.json(savedForum);
+      });
+    });
+    /*
+    forum.save().then((savedForum) => {
+      console.log(savedForum);
       Forum.findByIdAndUpdate(req.query.forum_id,
-        { $push: { _subforums: forum._id } })
+        { $push: { _subforums: savedForum._id } })
         .then((parentForum) => {
           console.log(parentForum);
-          res.json(forum);
+          res.json(savedForum);
         })
-        .catch((err) => res.send(err));
-    });
+        .catch((err) => {
+          console.log(err);
+          res.status(400).send(err);
+        });
+    }); */
   } else {
     console.log(forum);
-    forum.save().then((forum) => {
+    forum.save().then((savedForum) => {
+      console.log('herer successfully save');
       Users.findByIdAndUpdate(req.user.id,
-        { $push: { _created_forums: forum._id } })
-        .then((user) => {
-          //       console.log(user);
-          res.json(forum);
+        { $push: { _created_forums: savedForum._id } })
+        .then(() => {
+          res.json(savedForum);
         });
     })
-      .catch((err) => res.send(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(401).send({ error: 'Duplicate name' });
+      });
   }
 });
 
@@ -93,6 +120,9 @@ forumRouter.post('/:id', (req, res) => {
 
 // get forum details todo -> populate fields --> consider sorting
 forumRouter.get('/:id', (req, res) => {
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid forum id' });
+  }
   Forum.findById(req.params.id)
     .populate({ path: '_teacher', model: 'Users', select: { _id: 1, username: 1 } })
     .populate({ path: '_subforums', model: 'Forum', select: { _id: 1, name: 1 } })
@@ -106,6 +136,9 @@ forumRouter.get('/:id', (req, res) => {
       populate: { path: '_poster', model: 'Users', select: { _id: 1, username: 1 } },
     })
     .then((forum) => {
+      if (forum == null) {
+        return res.status(400).send({ error: 'forum does not exist' });
+      }
       if (req.user) {
         forum = forum.toObject();
         forum.isSubscribed = false;
@@ -118,9 +151,9 @@ forumRouter.get('/:id', (req, res) => {
             return forum;
           }
           return forum;
-        }).then((forum) => {
-          console.log(forum);
-          const forumPosts = forum._posts;
+        }).then((savedForum) => {
+          console.log(savedForum);
+          const forumPosts = savedForum._posts;
           const promises = forumPosts.map((post) => {
             console.log(post._id);
             console.log(req.user.id);
@@ -138,9 +171,9 @@ forumRouter.get('/:id', (req, res) => {
           });
           Promise.all(promises).then((forumPostsWithVote) => {
             console.log(`votesss${JSON.stringify(forumPostsWithVote)}`);
-            forum._posts = forumPostsWithVote;
-            console.log(`Final forum${JSON.stringify(forum, null, 1)}`);
-            res.json(forum);
+            savedForum._posts = forumPostsWithVote;
+            console.log(`Final forum${JSON.stringify(savedForum, null, 1)}`);
+            res.json(savedForum);
           });
         }).catch((err) => res.send(err));
       } else {
