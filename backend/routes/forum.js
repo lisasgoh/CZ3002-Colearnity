@@ -52,10 +52,16 @@ forumRouter.post('/', (req, res) => {
         console.log('HEREERERE parent forumi s sub');
         return res.status(400).send({ error: 'parent forum is not a main forum' });
       }
-      forum.save().then((savedForum) => {
-        parentForum._subforums.push(savedForum._id);
-        parentForum.save();
-        res.json(savedForum);
+      forum.save((err, savedForum) => {
+        if (err) {
+          if (err.name === 'MongoError' && err.code === 11000) {
+            return res.status(422).send({ error: 'Forum already exists' });
+          }
+        } else {
+          parentForum._subforums.push(savedForum._id);
+          parentForum.save();
+          res.json(savedForum);
+        }
       });
     });
     /*
@@ -74,18 +80,20 @@ forumRouter.post('/', (req, res) => {
     }); */
   } else {
     console.log(forum);
-    forum.save().then((savedForum) => {
-      console.log('herer successfully save');
-      Users.findByIdAndUpdate(req.user.id,
-        { $push: { _created_forums: savedForum._id } })
-        .then(() => {
-          res.json(savedForum);
-        });
-    })
-      .catch((err) => {
-        console.log(err);
-        res.status(401).send({ error: 'Duplicate name' });
-      });
+    forum.save((err, savedForum) => {
+      if (err) {
+        if (err.name === 'MongoError' && err.code === 11000) {
+          return res.status(422).send({ error: 'Forum already exists' });
+        }
+      } else {
+        console.log('herer successfully save');
+        Users.findByIdAndUpdate(req.user.id,
+          { $push: { _created_forums: savedForum._id } })
+          .then(() => {
+            res.json(savedForum);
+          });
+      }
+    });
   }
 });
 

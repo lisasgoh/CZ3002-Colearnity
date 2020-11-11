@@ -132,14 +132,14 @@ describe('create main forum', () => {
       expect(response.statusCode).toBe(400);
       done();
     });
-    /*
     it('creates main forum unsuccessfully - duplicate name', async (done) => {
       const response = await request
         .post('/api/forum')
         .send(FORUM_A);
-      expect(response.statusCode).toBe(401);
+      expect(response.statusCode).toBe(422);
+      expect(response.body).toEqual({ error: 'Forum already exists' });
       done();
-    }); */
+    });
   });
 });
 
@@ -203,7 +203,7 @@ describe('create sub forum', () => {
 let forum = null;
 
 describe('get forum', () => {
-  it('get forum successfully ', async (done) => {
+  it('get forum successfully - no authentication ', async (done) => {
     const responsePost = await request
       .post('/api/forum')
       .send(FORUM_A);
@@ -211,6 +211,20 @@ describe('get forum', () => {
     const responseGet = await request
       .get(`/api/forum/${forum._id}`);
     expect(responseGet.statusCode).toBe(200);
+    expect(forum).toHaveProperty('_id');
+    done();
+  });
+  it('get forum successfully - with authentication', async (done) => {
+    await request
+      .post('/api/users/login')
+      .send(USER_A_LOGIN);
+    const response = await request
+      .get(`/api/forum/${forum._id}`);
+    const forumFromDB = response.body;
+    console.log(forumFromDB);
+    expect(response.statusCode).toBe(200);
+    expect(forumFromDB).toHaveProperty('_id');
+    expect(forumFromDB).toHaveProperty('isSubscribed');
     done();
   });
   it('get forum unsuccessfully - invalid ID', async (done) => {
