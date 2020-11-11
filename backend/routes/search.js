@@ -14,17 +14,16 @@ searchRouter.get('/post', (req, res) => {
       { title: str },
       { description: str },
     ],
-  }, (err, posts) => {
-    if (err) {
-      res.send(err);
-    } else if (req.user) {
-      Util.getPostsVoteInfo(posts, req.user.id, (postsWithVote) => {
-        res.json(postsWithVote);
-      });
-    } else {
-      res.json(posts);
-    }
-  });
+  }).populate({ path: '_poster', model: 'Users', select: { _id: 1, username: 1 } })
+    .then((posts) => {
+      if (req.user) {
+        Util.getPostsVoteInfo(posts, req.user.id, (postsWithVote) => {
+          res.json(postsWithVote);
+        });
+      } else {
+        res.json(posts);
+      }
+    }).catch((err) => res.send(err));
 });
 
 // get forum(s) based on search keywords forum info - /api/search?forumKeyword=(words)
