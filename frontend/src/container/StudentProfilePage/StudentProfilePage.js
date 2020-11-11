@@ -84,13 +84,13 @@ class StudentProfilePage extends Component {
               posts.map((post, index) => (
                 <Post
                   id={post._id}
-                  title={post.title}
-                  username={username} //all posts should be made by user on profile page
+                  username={post._poster.username}
                   content={post.description}
                   numLikes={post.votes}
                   tags={post.tags}
-                  isPoster={post._poster._id == localStorage.getItem("userID")}
-                  postID = {post._id}
+                  title={post.title}
+                  userVote={post.userVote}
+                  isPoster={true} //{post._poster._id == localStorage.getItem("userID")}
                 />
               ))}
           </div>
