@@ -10,7 +10,6 @@ import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import { Link } from "react-router-dom";
-import Comments from "./../../components/Comments/Comments";
 import AltComments from "./../../components/AltComments/AltComments";
 import postService from "./../../services/post";
 import commentService from "./../../services/comment";
@@ -143,7 +142,7 @@ class PostDetailPage extends Component {
           {/* <Button variant="contained" color="secondary" size="small">
             Join Forum
           </Button> */}
-          <p>{this.state.forumDescription}</p>
+          <p>{this.state.forumDesc}</p>
 
           {/* <h3>Subforums</h3>
           <div className="subforums">

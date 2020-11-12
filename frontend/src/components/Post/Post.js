@@ -323,7 +323,7 @@ export default function Post(props) {
       </div>
 
       <div className="tags">
-        <StyledChip
+        {/* <StyledChip
           size="small"
           label="CZ3002 ASE"
           //   onClick={handleClick}
@@ -338,7 +338,7 @@ export default function Post(props) {
           clickable
           component="a"
           href="https://www.google.com"
-        />
+        /> */}
         {tags &&
           tags.map((tag) => (
             <StyledChip
