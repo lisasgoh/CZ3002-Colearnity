@@ -35,7 +35,7 @@ export default function Login() {
             <FormControl
               autoFocus
               type="email"
-              placeholder="Enter username"
+              placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
