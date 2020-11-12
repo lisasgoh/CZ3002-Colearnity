@@ -38,7 +38,7 @@ class PostDetailPage extends Component {
       id: this.props.match.params.id,
       postTitle: null,
       postDesc: null,
-      postComments: null,
+      postComments: [],
       postVotes: null,
       poster: null,
       postTime: null,
@@ -135,7 +135,10 @@ class PostDetailPage extends Component {
     return (
       <div className="postdetailpage">
         <div className="leftsection">
-          <Link to={{ pathname: this.state.linkforums }} style={{color: 'black'}}>
+          <Link
+            to={{ pathname: this.state.linkforums }}
+            style={{ color: "black" }}
+          >
             <h2>{this.state.forumName}</h2>
           </Link>
 
@@ -162,6 +165,7 @@ class PostDetailPage extends Component {
             isPoster={this.state.isPoster}
             tags={this.state.tags}
             userVote={this.state.userVote}
+            numComments={this.state.postComments.length}
           />
 
           <form onSubmit={this.handleSubmit}>

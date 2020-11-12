@@ -41,6 +41,7 @@ export default function Post(props) {
     isAdmin,
     isPoster,
     userVote,
+    numComments,
   } = props;
 
   // console.log(props);
@@ -223,103 +224,109 @@ export default function Post(props) {
       </Link>
 
       <div className="actionbar">
-        <Link
-          to={{
-            pathname: `/postdetailpage/${id}`,
-            state: { forumID: props.forumID, isSub: props.isSub },
-          }}
-        >
-          <Button
-            // variant="contained"
+        <div>
+          <Link
+            to={{
+              pathname: `/postdetailpage/${id}`,
+              state: { forumID: props.forumID, isSub: props.isSub },
+            }}
+          >
+            <Button
+              // variant="contained"
+              color="primary"
+              size="small"
+              // className={classes.button}
+              startIcon={<QuestionAnswerRoundedIcon />}
+            >
+              Comment
+            </Button>
+          </Link>
+
+          <span class="numText"> {numComments} Comments</span>
+
+          <IconButton
+            aria-label="upvote"
             color="primary"
             size="small"
-            // className={classes.button}
-            startIcon={<QuestionAnswerRoundedIcon />}
+            onClick={setLikeHandler}
           >
-            Comment
-          </Button>
-        </Link>
+            {liked ? <ThumbUpAltRoundedIcon /> : <ThumbUpAltOutlinedIcon />}
+          </IconButton>
+          <IconButton
+            aria-label="downvote"
+            color="primary"
+            size="small"
+            onClick={setDislikeHandler}
+          >
+            {disliked ? (
+              <ThumbDownAltRoundedIcon />
+            ) : (
+              <ThumbDownAltOutlinedIcon />
+            )}
+          </IconButton>
 
-        <IconButton
-          aria-label="upvote"
-          color="primary"
-          size="small"
-          onClick={setLikeHandler}
-        >
-          {liked ? <ThumbUpAltRoundedIcon /> : <ThumbUpAltOutlinedIcon />}
-        </IconButton>
-        <IconButton
-          aria-label="downvote"
-          color="primary"
-          size="small"
-          onClick={setDislikeHandler}
-        >
-          {disliked ? (
-            <ThumbDownAltRoundedIcon />
+          <span class="numText"> {likesDisplay} Votes</span>
+        </div>
+        <div>
+          {isAdmin || isPoster ? (
+            <Button
+              color="secondary"
+              size="small"
+              startIcon={<DeleteRoundedIcon />}
+              onClick={handleClickOpen}
+            >
+              Delete
+            </Button>
           ) : (
-            <ThumbDownAltOutlinedIcon />
+            ""
           )}
-        </IconButton>
-
-        <span> {likesDisplay} Votes</span>
-        {isAdmin || isPoster ? (
-          <Button
-            color="primary"
-            size="small"
-            startIcon={<DeleteRoundedIcon />}
-            onClick={handleClickOpen}
-          >
-            Delete
-          </Button>
-        ) : (
-          ""
-        )}
-        <DeletePostPopup
-          show={modalShowDelete}
-          onHide={modalHandlerDeleteFalse}
-          isDelete={true}
-        />
-        {isPoster ? (
-          <Button
-            color="primary"
-            size="small"
-            startIcon={<EditRoundedIcon />}
-            onClick={modalHandlerEditTrue}
-          >
-            Edit
-          </Button>
-        ) : (
-          ""
-        )}
-        <DeletePostPopup
-          show={modalShowEdit}
-          onHide={modalHandlerEditFalse}
-          isDelete={false}
-          setContent={setContent}
-          editPost={editContent}
-          prevContent={props.content}
-        />
-
-        {/* <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} /> */}
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          fullWidth={true}
-          maxWidth={"sm"}
-        >
-          <DialogTitle>{"Delete Post"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Confirm Delete Post?</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDelete} color="primary">
-              Yes
+          <DeletePostPopup
+            show={modalShowDelete}
+            onHide={modalHandlerDeleteFalse}
+            isDelete={true}
+          />
+          {isPoster ? (
+            <Button
+              color="secondary"
+              size="small"
+              startIcon={<EditRoundedIcon />}
+              onClick={modalHandlerEditTrue}
+            >
+              Edit
             </Button>
-            <Button onClick={handleClose} color="primary">
-              No
-            </Button>
-          </DialogActions>
-        </Dialog>
+          ) : (
+            ""
+          )}
+          <DeletePostPopup
+            show={modalShowEdit}
+            onHide={modalHandlerEditFalse}
+            isDelete={false}
+            setContent={setContent}
+            editPost={editContent}
+            prevContent={props.content}
+          />
+
+          {/* <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} /> */}
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            fullWidth={true}
+            maxWidth={"sm"}
+          >
+            <DialogTitle>{"Delete Post"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>Confirm Delete Post?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDelete} color="primary">
+                Yes
+              </Button>
+              <Button onClick={handleClose} color="primary">
+                No
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
       </div>
 
       <div className="tags">

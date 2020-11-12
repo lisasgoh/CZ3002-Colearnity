@@ -27,7 +27,17 @@ export default function DeletePostPopup(props) {
                     }
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={()=>{props.onHide(true); props.editPost(content)}} >Confirm</Button>
+                    <Button onClick={()=>{
+                        props.onHide(true); 
+                        if(!props.isDelete){
+                            props.editPost(content)
+                        }
+                        else{
+                            props.deleteComment();
+                        }
+                        }
+
+                    } >Confirm</Button>
                     <Button onClick={props.onHide}>Cancel</Button>
                 </Modal.Footer>
                 </Modal>

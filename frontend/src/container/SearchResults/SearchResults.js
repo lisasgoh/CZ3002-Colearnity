@@ -78,6 +78,7 @@ export default class SearchResults extends React.Component {
                 title={post.title}
                 userVote={post.userVote}
                 isPoster={post._poster._id == localStorage.getItem("userID")}
+                numComments={post._comments.length}
               />
             ))}
         </div>

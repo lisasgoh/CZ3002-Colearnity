@@ -48,21 +48,28 @@ commentRouter.post('/', (req, res) => {
 
 // Edit a comment given a particular ID
 commentRouter.put('/:id', (req, res) => {
-  Comment.findByIdAndUpdate(req.params.id, {
-    text: req.body.text,
-  })
-    .then((updatedComment) => {
-      res.json(updatedComment);
-    })
-    .catch((error) => res.send(error));
+  Comment.findById(req.params.id).then((comment) => {
+    if (comment._commenter.toString().localeCompare(req.user.id.toString()) === 0) {
+      Comment.findByIdAndUpdate(req.params.id, { text: req.body.text })
+        .then((updatedComment) => res.json(updatedComment))
+        .catch((err) => res.send(err));
+    } else {
+      res.status(401).send({ error: 'current user not the original commenter, hence not allowed to edit. ' });
+    }
+  });
 });
 
 // Delete a comment given a particular ID
 commentRouter.delete('/:id', (req, res) => {
-  Comment.findByIdAndDelete(req.params.id)
-    .then((deletedComment) => {
-      res.json(deletedComment);
-    }).catch((err) => res.send(err));
+  Comment.findById(req.params.id).then((comment) => {
+    if (comment._commenter.toString().localeCompare(req.user.id.toString()) === 0) {
+      Comment.findByIdAndDelete(req.params.id)
+        .then((deletedComment) => res.json(deletedComment))
+        .catch((err) => res.send(err));
+    } else {
+      res.status(401).send({ error: 'current user not the original commenter, hence not allowed to delete. ' });
+    }
+  });
 });
 
 module.exports = commentRouter;

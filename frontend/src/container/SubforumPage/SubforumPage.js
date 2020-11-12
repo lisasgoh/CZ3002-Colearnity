@@ -144,6 +144,7 @@ class SubforumPage extends Component {
                 isPoster={post._poster._id == localStorage.getItem("userID")}
                 isSub={this.state.isSub}
                 forumID={this.state.subForumID}
+                numComments={post._comments.length}
               />
             ))}
         </div>

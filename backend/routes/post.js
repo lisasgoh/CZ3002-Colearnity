@@ -130,13 +130,18 @@ postRouter.post('/', (req, res) => {
   });
 });
 
-// update post title/description // need to be the poster
+// update post title/description
+// need to be the poster
 postRouter.put('/:id', (req, res) => {
-  Post.findByIdAndUpdate(req.params.id, { $set: req.body })
-    .then((updatedPost) => {
-      res.json(updatedPost);
-    })
-    .catch((error) => res.json(error));
+  Post.findById(req.params.id).then((post) => {
+    if (post._poster.toString().localeCompare(req.user.id.toString()) === 0) {
+      Post.findByIdAndUpdate(req.params.id, { $set: req.body })
+        .then((updatedPost) => res.json(updatedPost))
+        .catch((err) => res.send(err));
+    } else {
+      res.status(401).send({ error: 'current user not the poster, hence not allowed to edit. ' });
+    }
+  });
 });
 
 postRouter.delete('/:id', (req, res) => {

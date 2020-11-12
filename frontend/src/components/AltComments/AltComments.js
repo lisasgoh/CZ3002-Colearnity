@@ -1,4 +1,11 @@
 import React, { useState } from "react";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -154,6 +161,19 @@ export default function AltComments(props) {
     });
     //history.go(0);
   };
+
+  function handleDeleteComment() {
+        try {
+      commentService.deleteObj(id).then((deleteComment) => {
+        console.log(deleteComment);
+        history.go(0);
+      });
+    } catch (e) {
+      alert(e.message);
+    }
+    return true;
+  }
+
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -226,7 +246,9 @@ export default function AltComments(props) {
             show={modalShowDelete}
             onHide={modalHandlerDeleteFalse}
             isDelete={true}
+            deleteComment={handleDeleteComment}
           />
+          
           {isPoster ? (
             <Button
               color="primary"
