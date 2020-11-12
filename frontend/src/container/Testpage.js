@@ -8,11 +8,6 @@ class Testpage extends Component {
         return(
             <div className="test">
                 <div className="ls-btn">
-                    <Link to="/landingpage">
-                        <Button>Landing Page</Button>
-                    </Link>
-                </div>
-                <div className="ls-btn">
                     <Link to="/login">
                         <Button>Login</Button>
                     </Link>
@@ -47,21 +42,6 @@ class Testpage extends Component {
                 <div className="ls-btn">
                     <Link to="/takequizpage/:id">
                         <Button>Take Quiz Page</Button>
-                    </Link>
-                </div>
-                <div className="ls-btn">
-                    <Link to="/teacherhomepage">
-                        <Button>Teacher Home Page</Button>
-                    </Link>
-                </div>
-                <div className="ls-btn">
-                    <Link to="/teacherforumpage">
-                        <Button>Teacher Forum Page</Button>
-                    </Link>
-                </div>
-                <div className="ls-btn">
-                    <Link to="/teachersubforumpage">
-                        <Button>Teacher Sub Forum Page</Button>
                     </Link>
                 </div>
                 <div className="ls-btn">
