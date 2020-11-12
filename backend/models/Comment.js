@@ -10,6 +10,7 @@ const commentSchema = new Schema(
   {
     text: {
       type: String,
+      required: true,
     },
     _commenter: {
       type: Schema.Types.ObjectId,

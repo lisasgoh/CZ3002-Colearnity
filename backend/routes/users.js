@@ -243,4 +243,9 @@ router.get('/:id', (req, res) => {
     .catch((err) => res.send(err));
 });
 
+router.post('/logout', (req, res) => {
+  res.clearCookie('connect.sid');
+  res.redirect('/');
+});
+
 module.exports = router;

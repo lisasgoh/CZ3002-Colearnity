@@ -123,6 +123,16 @@ describe('create user', () => {
 });
 
 describe('login', () => {
+  it('login - successful', async (done) => {
+    const response = await request
+      .post('/api/users/login')
+      .send(USER_B);
+    expect(response.statusCode).toBe(200);
+    const { user } = response.body;
+    expect(user).toHaveProperty('token');
+    expect(user.email).toBe(USER_A.email);
+    done();
+  });
   it('login - no email', async (done) => {
     const response = await request
       .post('/api/users/login')
@@ -156,16 +166,6 @@ describe('login', () => {
       .post('/api/users/login')
       .send(USER_LOGIN_WRONG_FORMAT);
     expect(response.statusCode).toBe(403);
-    done();
-  });
-  it('login - successful', async (done) => {
-    const response = await request
-      .post('/api/users/login')
-      .send(USER_B);
-    expect(response.statusCode).toBe(200);
-    const { user } = response.body;
-    expect(user).toHaveProperty('token');
-    expect(user.email).toBe(USER_A.email);
     done();
   });
 });

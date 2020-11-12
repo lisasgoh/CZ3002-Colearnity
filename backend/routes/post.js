@@ -35,7 +35,7 @@ postRouter.get('/:id', (req, res) => {
     })
     .then((post) => {
       if (post == null) {
-        return res.status(400).send({ error: 'post does not exist' });
+        return res.status(404).send({ error: 'post does not exist' });
       }
       if (req.user) {
         const postObj = post.toObject();
