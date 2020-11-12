@@ -172,6 +172,17 @@ quizRouter.post('/:id', (req, res) => {
 
 // get quiz under forum given a forum id
 quizRouter.get('/filter', (req, res) => {
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  // Test if parent forum ID is given if it is a sub forum
+  if (!req.query.forum_id) {
+    return res.status(400).send({ error: 'forum not given' });
+  }
+  // Test if forum ID is a valid Mongoose Object ID
+  if (!req.query.forum_id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid forum id' });
+  }
   const id = req.query.forum_id;
   Quiz.find({ _forum: id }, (err, quiz) => {
     if (err) res.send(err);
@@ -181,6 +192,17 @@ quizRouter.get('/filter', (req, res) => {
 
 // Only for teachers
 quizRouter.delete('/:id', (req, res) => {
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  // Test if parent forum ID is given if it is a sub forum
+  if (!req.query.forum_id) {
+    return res.status(400).send({ error: 'forum not given' });
+  }
+  // Test if forum ID is a valid Mongoose Object ID
+  if (!req.query.forum_id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid forum id' });
+  }
   Quiz.findByIdAndRemove(req.params.id)
     .then(() => {
       Forum.findByIdAndUpdate(req.query.forum_id, {
