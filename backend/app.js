@@ -20,7 +20,6 @@ const voteRouter = require('./routes/vote');
 const forumRouter = require('./routes/forum');
 const quizRouter = require('./routes/quiz');
 const quizAttemptRouter = require('./routes/quizattempt');
-const resultRouter = require('./routes/result');
 const searchRouter = require('./routes/search');
 const filterRouter = require('./routes/filter');
 
@@ -102,7 +101,6 @@ app.use('/api/votes', voteRouter);
 app.use('/api/forum', forumRouter);
 app.use('/api/quiz', quizRouter);
 app.use('/api/quizattempt', quizAttemptRouter);
-app.use('/api/result', resultRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/filter', filterRouter);
 

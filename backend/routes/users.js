@@ -111,7 +111,7 @@ router.get('/current', auth.required, (req, res) => {
       path: '_posts',
       model: 'Post',
       select: {
-        _id: 1, title: 1, description: 1, votes: 1,
+        _id: 1, title: 1, description: 1, votes: 1, _comments: 1,
       },
       populate: {
         path: '_poster',
@@ -165,7 +165,7 @@ router.get('/home', auth.required, (req, res) => {
     path: '_forums',
     model: 'Forum',
     select: { _id: 1, name: 1 },
-    populate: {
+    populate: [{
       path: '_posts',
       model: 'Post',
       select: {
@@ -185,6 +185,32 @@ router.get('/home', auth.required, (req, res) => {
         },
       }],
     },
+    {
+      path: '_subforums',
+      model: 'Forum',
+      populate: [
+        {
+          path: '_posts',
+          model: 'Post',
+          select: {
+            _id: 1, title: 1, description: 1, votes: 1, _comments: 1,
+          },
+          populate: [{
+            path: '_poster',
+            model: 'Users',
+            select: {
+              _id: 1, username: 1,
+            },
+          }, {
+            path: '_forum',
+            model: 'Forum',
+            select: {
+              _id: 1, name: 1,
+            },
+          }],
+        },
+      ],
+    }],
   }, {
     path: '_created_forums',
     model: 'Forum',
