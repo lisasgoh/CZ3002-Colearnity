@@ -62,7 +62,7 @@ class Search extends React.Component {
     super(props);
 
     this.state = {
-      querySearch:"initial state",
+      querySearch:"",
       posts:null,
     };
 
@@ -106,13 +106,19 @@ class Search extends React.Component {
               }}
               inputProps={{ 'aria-label': 'search' }}
               onChange={this.searchHandler}
+              value={this.state.querySearch}
             />
           
           <Link to={{
             pathname: "/searchresult",
             state:this.state.querySearch,
             
-          }} onClick={() => {if (window.location.pathname.localeCompare("/searchresult")===0){window.location.reload()}}}>
+          }} onClick={() => {
+            this.setState({
+              querySearch: "",
+            });
+            if (window.location.pathname.localeCompare("/searchresult")===0){window.location.reload();}
+            }}>
               
         <Button
           color="primary"
