@@ -14,8 +14,8 @@ class Navbar extends Component {
     render() {
         return(
             <nav className="NavbarItems">
-                <Link to="/"><h1 className="navbar-logo">Colearnity</h1></Link>
-                <Search />
+                <Link to="/" style={{textDecoration: "none"}}><h1 className="navbar-logo">Colearnity</h1></Link>
+                <div className="searchbar"><Search /></div>
                 <div className="menu-icon" onClick={this.handleClick}>
                     <i className={this.state.clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </div>
@@ -24,8 +24,9 @@ class Navbar extends Component {
                         return (
                             <li key={index}>
                                 <a className={item.cName} 
-                                href={item.url}>
-                                <Link to={item.url}>
+                                href={item.url}
+                                style={{textDecoration: "none"}}>
+                                <Link to={item.url} style={{color: "black", textDecoration: "none"}}>
                                     {item.title}
                                 </Link>
                                 </a>
