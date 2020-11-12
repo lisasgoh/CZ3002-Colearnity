@@ -137,8 +137,9 @@ class ForumPage extends Component {
                 isAdmin={isAdmin}
                 isPoster={post._poster._id == localStorage.getItem("userID")}
                 isSub={this.state.isSubforum}
-                forumID = {this.state.forumID}
-                postID = {post._id}
+                forumID={this.state.forumID}
+                postID={post._id}
+                numComments={post._comments.length}
               />
             ))}
         </div>

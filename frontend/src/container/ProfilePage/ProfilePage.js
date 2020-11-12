@@ -91,6 +91,7 @@ class StudentProfilePage extends Component {
                   title={post.title}
                   userVote={post.userVote}
                   isPoster={true} //{post._poster._id == localStorage.getItem("userID")}
+                  numComments={post._comments.length}
                 />
               ))}
           </div>
