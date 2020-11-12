@@ -13,9 +13,6 @@ import ForumPage from "./container/ForumPage/ForumPage";
 import SubforumPage from "./container/SubforumPage/SubforumPage";
 import ReviewQuizPage from "./container/ReviewQuizPage/ReviewQuizPage";
 import TakeQuizPage from "./container/TakeQuizPage/TakeQuizPage";
-import TeacherHomePage from "./container/TeacherHomePage/TeacherHomePage";
-import TeacherForumPage from "./container/TeacherForumPage/TeacherForumPage";
-import TeacherSubforumPage from "./container/TeacherSubforumPage/TeacherSubforumPage";
 import PostDetailPage from "./container/PostDetailPage/PostDetailPage";
 import TeacherCreateQuiz from "./container/TeacherCreateQuiz/TeacherCreateQuiz";
 import CreateForum from "./container/CreateForum/CreateForum";
@@ -28,8 +25,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Navbar />
-        <Route path="/" exact component={Testpage} />
-        <Route path="/landingpage" exact component={LandingPage} />
+        <Route path="/" exact component={LandingPage} />
         <Route path="/login" exact component={LoginPage} />
         <Route path="/signup" exact component={SignupPage} />
         <Route path="/homepage" exact component={StudentHomePage} />
@@ -38,19 +34,13 @@ function App() {
         <Route path="/forumpage/:id" exact component={ForumPage} />
         <Route path="/reviewquizpage/:id" exact component={ReviewQuizPage} />
         <Route path="/takequizpage/:id" exact component={TakeQuizPage} />
-        <Route path="/teacherhomepage" exact component={TeacherHomePage} />
         <Route path="/subforumpage/:id" exact component={SubforumPage} />
-        <Route path="/teacherforumpage" exact component={TeacherForumPage} />
-        <Route
-          path="/teachersubforumpage"
-          exact
-          component={TeacherSubforumPage}
-        />
         <Route path="/postdetailpage/:id" exact component={PostDetailPage} />
         <Route path="/teachercreatequiz" exact component={TeacherCreateQuiz} />
         <Route path="/createforum" exact component={CreateForum} />
         <Route path="/searchresult" exact component={SearchResult} />
         <Route path="/viewgrades/:id" exact component={ViewGrades} />
+        <Route path="/testpage" exact component={Testpage} />
       </div>
     </BrowserRouter>
   );

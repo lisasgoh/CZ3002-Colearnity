@@ -103,7 +103,6 @@ class StudentHomePage extends Component {
                 <AddCircleOutlineRoundedIcon
                   style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
                 />
-                )
               </Link>
             </>
           )}

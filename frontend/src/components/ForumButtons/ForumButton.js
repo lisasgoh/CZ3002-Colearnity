@@ -9,7 +9,7 @@ export default function ForumButton(props) {
       marginRight: "0.9em",
       borderRadius: "6px",
       border: "1px solid black",
-      padding: "30px 15px",
+      // padding: "30px 15px",
       fontWeight: "bolder",
       width: "150px",
       height: "100px",

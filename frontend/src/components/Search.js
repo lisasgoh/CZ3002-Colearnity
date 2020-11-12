@@ -38,6 +38,7 @@ const styles = (theme) => ({
     },
     inputRoot: {
       color: 'inherit',
+      marginLeft: '1em',
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 1),
@@ -117,7 +118,7 @@ class Search extends React.Component {
           color="primary"
           size="small"
           onClick={this.getSearchQuery}
-          startIcon={<SearchIcon />}
+          startIcon={<SearchIcon style={{color: 'black'}}/>}
         />
       </Link>
             </div>
