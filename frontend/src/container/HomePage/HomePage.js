@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./StudentHomePage.css";
+import "./HomePage.css";
 import Post from "../../components/Post/Post";
 import ForumButton from "../../components/ForumButtons/ForumButton";
 import Filter from "../../components/Filter/Filter";
@@ -10,7 +10,7 @@ import TeacherPost from "../../components/Post/TeacherPost";
 
 import usersService from "../../services/users";
 
-class StudentHomePage extends Component {
+class HomePage extends Component {
   constructor(props) {
     super(props);
 
@@ -66,7 +66,7 @@ class StudentHomePage extends Component {
     console.log(createdForums);
 
     return (
-      <div className="studenthomepage">
+      <div className="homepage">
         <div className="leftsection">
           <h2>My Forums</h2>
           <div className="forums">
@@ -99,7 +99,9 @@ class StudentHomePage extends Component {
                     </Link>
                   ))}
               </div>
-              <Link to={{ pathname: "/createforum", state: { forum_id: null }}}>
+              <Link
+                to={{ pathname: "/createforum", state: { forum_id: null } }}
+              >
                 <AddCircleOutlineRoundedIcon
                   style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
                 />
@@ -147,4 +149,4 @@ class StudentHomePage extends Component {
   }
 }
 
-export default StudentHomePage;
+export default HomePage;

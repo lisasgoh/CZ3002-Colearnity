@@ -1,42 +1,42 @@
-.studenthomepage {
+.homepage {
   display: grid;
   text-align: center;
   grid-template-columns: 2fr 4fr;
 }
 
-.studenthomepage .leftsection {
+.homepage .leftsection {
   padding: 50px 3%;
   background-color: #eaeaea;
 }
 
-.studenthomepage .forums,
-.studenthomepage .createdforums {
+.homepage .forums,
+.homepage .createdforums {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
   margin: 5% 0 30px 0;
 }
 
-.studenthomepage .createdHeading {
+.homepage .createdHeading {
   margin-top: 30px;
 }
 
-.studenthomepage .rightsection {
+.homepage .rightsection {
   padding: 50px 3%;
   align-items: center;
   justify-content: center;
 }
 
-/* .studenthomepage .rightsection .topbar {
+/* .homepage .rightsection .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.studenthomepage .rightsection .topbar h2 {
+.homepage .rightsection .topbar h2 {
   text-align: center;
 } */
 
-.studenthomepage .rightsection h2 {
+.homepage .rightsection h2 {
   display: inline-block;
 }
