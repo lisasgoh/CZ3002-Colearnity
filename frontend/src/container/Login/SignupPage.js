@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button } from "../../components/Button/Button";
+// import { Button } from "../../components/Button/Button";
+import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import "./Login.css";
@@ -25,7 +26,19 @@ class SignupPage extends Component {
   }
 
   validateForm() {
-    return this.state.email.length > 0 && this.state.password.length > 0 && this.state.username.length > 0;
+    if (
+      this.state.email == null ||
+      this.state.password == null ||
+      this.state.username == null
+    )
+      return false;
+    //initialisation
+    else
+      return (
+        this.state.email.length > 0 &&
+        this.state.password.length > 0 &&
+        this.state.username.length > 0
+      );
   }
 
   handleInputChange(event) {
@@ -66,7 +79,7 @@ class SignupPage extends Component {
             <p> </p>
 
             <div className="form-group">
-              <label>Username</label>
+              <label>Username*</label>
               <input
                 type="username"
                 className="form-control"
@@ -77,7 +90,7 @@ class SignupPage extends Component {
             </div>
 
             <div className="form-group">
-              <label>Email Address</label>
+              <label>Email Address*</label>
               <input
                 type="email"
                 className="form-control"
@@ -88,7 +101,7 @@ class SignupPage extends Component {
             </div>
 
             <div className="form-group">
-              <label>Password</label>
+              <label>Password*</label>
               <input
                 type="password"
                 className="form-control"
@@ -120,7 +133,13 @@ class SignupPage extends Component {
               />
             </div>
 
-            <Button block disabled={!this.validateForm()} type="submit" value="Submit">
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={!this.validateForm()}
+              type="submit"
+              value="Submit"
+            >
               Sign Up
             </Button>
 

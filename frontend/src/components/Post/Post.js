@@ -10,7 +10,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-import ReplyRoundedIcon from "@material-ui/icons/ReplyRounded";
+import QuestionAnswerRoundedIcon from "@material-ui/icons/QuestionAnswerRounded";
 import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
@@ -234,9 +234,9 @@ export default function Post(props) {
             color="primary"
             size="small"
             // className={classes.button}
-            startIcon={<ReplyRoundedIcon />}
+            startIcon={<QuestionAnswerRoundedIcon />}
           >
-            Reply
+            Comment
           </Button>
         </Link>
 

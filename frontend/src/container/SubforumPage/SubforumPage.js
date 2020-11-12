@@ -68,12 +68,12 @@ class SubforumPage extends Component {
 
           <h3>Quizzes</h3>
           <div className="quizzes">
-            <QuizButton
+            {/* <QuizButton
               quizTitle="Quiz 1"
               completed={true}
               completionDate="11/9/2020"
               grade="10/10"
-            />
+            /> */}
             {quizzes &&
               quizzes.map((quiz) => (
                 <Link
