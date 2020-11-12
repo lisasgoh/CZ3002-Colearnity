@@ -15,7 +15,6 @@ const getTokenFromHeaders = (req) => {
 */
 
 const getTokenFromHeaders = (req) => {
-  console.log(req.headers);
   if (req.headers.token) {
     return req.headers.token;
   }
