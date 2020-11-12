@@ -12,8 +12,17 @@ const quizRouter = express.Router();
 // create new quiz
 // Update user
 quizRouter.post('/', (req, res) => {
-  // console.log(req.user);
-  // console.log(req.isAuthenticated());
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  // Test if parent forum ID is given if it is a sub forum
+  if (!req.query.forum_id) {
+    return res.status(400).send({ error: 'forum not given' });
+  }
+  // Test if forum ID is a valid Mongoose Object ID
+  if (!req.query.forum_id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid forum id' });
+  }
   const { questions } = req.body;
   console.log(questions);
   let totalPoints = 0;
