@@ -121,8 +121,8 @@ const deleteFromParent = async function (next) {
   });
 }; */
 
-forumSchema.pre('remove', cascadeRemove);
-forumSchema.pre('findOneAndDelete', cascadeDelete);
+// forumSchema.pre('remove', cascadeRemove);
+// forumSchema.pre('findOneAndDelete', cascadeDelete);
 // forumSchema.pre('findOneAndDelete', deleteFromParent);
 
 const Forum = mongoose.model('Forum', forumSchema);
