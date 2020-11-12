@@ -169,7 +169,7 @@ router.get('/home', auth.required, (req, res) => {
       path: '_posts',
       model: 'Post',
       select: {
-        _id: 1, title: 1, description: 1, votes: 1,
+        _id: 1, title: 1, description: 1, votes: 1, _comments: 1,
       },
       populate: [{
         path: '_poster',
