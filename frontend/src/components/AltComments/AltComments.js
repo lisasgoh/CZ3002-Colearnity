@@ -15,7 +15,7 @@ import ThumbUpAltRoundedIcon from "@material-ui/icons/ThumbUpAltRounded";
 import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import ThumbDownAltRoundedIcon from "@material-ui/icons/ThumbDownAltRounded";
 import Button from "@material-ui/core/Button";
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from "@material-ui/icons/Edit";
 
 import voteService from "./../../services/vote";
 import commentService from "./../../services/comment";
@@ -141,20 +141,29 @@ export default function AltComments(props) {
     setModalEdit(true);
   };
 
-  const setContent =(content)=>{
+  const setContent = (content) => {
     setPostDescription(content.target.value);
     console.log(content.target.value);
-  }
+  };
 
-  const editContent=(desc)=>{
-    console.log("TEST!" + desc +props.id);
-    commentService.update(props.id, {"text":desc}).then((newPostDesc) => {
+  const editContent = (desc) => {
+    console.log("TEST!" + desc + props.id);
+    commentService.update(props.id, { text: desc }).then((newPostDesc) => {
       console.log(newPostDesc);
       history.go(0);
     });
     //history.go(0);
-
-  }
+  };
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   return (
     <Card className={classes.root}>
@@ -166,7 +175,7 @@ export default function AltComments(props) {
           </Avatar>
         }
         title={username}
-        subheader={createdAt}
+        subheader={formatDate(createdAt)}
       />
       <CardContent>
         <Typography
@@ -213,7 +222,11 @@ export default function AltComments(props) {
           ) : (
             ""
           )}
-          <DeletePostPopup show={modalShowDelete} onHide={modalHandlerDeleteFalse} isDelete={true}/>
+          <DeletePostPopup
+            show={modalShowDelete}
+            onHide={modalHandlerDeleteFalse}
+            isDelete={true}
+          />
           {isPoster ? (
             <Button
               color="primary"
@@ -226,7 +239,14 @@ export default function AltComments(props) {
           ) : (
             ""
           )}
-          <DeletePostPopup show={modalShowEdit} onHide={modalHandlerEditFalse} isDelete={false} setContent = {setContent} editPost={editContent} prevContent = {props.text}/>
+          <DeletePostPopup
+            show={modalShowEdit}
+            onHide={modalHandlerEditFalse}
+            isDelete={false}
+            setContent={setContent}
+            editPost={editContent}
+            prevContent={props.text}
+          />
         </div>
       </CardActions>
     </Card>

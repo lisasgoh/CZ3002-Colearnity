@@ -191,7 +191,7 @@ class PostDetailPage extends Component {
           {/* </Grid> */}
 
           <div className="topbar">
-            <h2>Replies</h2>
+            <h2>Comments</h2>
           </div>
           {this.state.postComments &&
             this.state.postComments.map((comment) => (
