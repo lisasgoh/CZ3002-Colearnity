@@ -7,23 +7,21 @@ const Post = require('../models/Post');
 
 const commentRouter = express.Router();
 
-// get comment by id
-commentRouter.get('/:id', (req, res) => {
-  Comment.findById(req.params.id, (err, comment) => {
-    if (err) res.send(err);
-    else res.json(comment);
-  });
-});
-
-/*
-// get all comments (test)
-commentRouter.get('/', (req, res) => {
-  Comment.find({ _post: req.query.post_id }).then((comments) => res.json(comments));
-});
-*/
-// create new comment
 // TODO: test whether text is null?
 commentRouter.post('/', (req, res) => {
+  console.log(req.isAuthenticated());
+  console.log(req.query.post_id);
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  // Test if parent forum ID is given if it is a sub forum
+  if (!req.query.post_id) {
+    return res.status(400).send({ error: 'post not given' });
+  }
+  // Test if forum ID is a valid Mongoose Object ID
+  if (!req.query.post_id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid post id' });
+  }
   const comment = new Comment({
     text: req.body.text,
     votes: 0,
@@ -31,24 +29,24 @@ commentRouter.post('/', (req, res) => {
     _post: req.query.post_id,
   });
   console.log(comment);
-  comment
-    .save()
-    .then(() => Post.findById(req.query.post_id))
-    .then((post) => {
-      post._comments.unshift(comment);
-      return post.save();
-    })
-    .then((post) => {
-      // res.redirect(`/`);
-      console.log(comment);
-      res.json(post);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
+  comment.save((err, savedComment) => {
+    if (err) {
+      return res.status(422).send({ error: 'Error while saving comment' });
+    }
+    Post.findByIdAndUpdate(req.query.post_id,
+      { $push: { _comments: { $each: [savedComment._id], $position: 0 } } },
+      { new: true })
+      .then((post) => {
+        if (post == null) {
+          return res.status(400).send({ error: 'Post does not exist' });
+        }
+        res.json(post);
+      })
+      .catch((err) => res.send(err));
+  });
 });
 
-// update comment text
+// Edit a comment given a particular ID
 commentRouter.put('/:id', (req, res) => {
   Comment.findByIdAndUpdate(req.params.id, {
     text: req.body.text,
@@ -59,26 +57,7 @@ commentRouter.put('/:id', (req, res) => {
     .catch((error) => res.send(error));
 });
 
-// delete comments
-// delete from posts
-/* commentRouter.delete('/:id', (req, res) => {
-  Comment.findByIdAndRemove(req.params.id).then(() => {
-    Post.findByIdAndUpdate(
-      req.query.post_id,
-      { $pull: { _comments: req.params.id } },
-    )
-      .then(() => {
-        Users.findByIdAndUpdate(
-          req.user.id,
-          { $pull: { _comments: req.params.id } },
-        )
-          .then(() => {
-            res.send('Success: Comment Deleted');
-          })
-          .catch((err) => res.send(err));
-      }).catch((err) => res.send(err));
-  }).catch((err) => res.send(err));
-}); */
+// Delete a comment given a particular ID
 commentRouter.delete('/:id', (req, res) => {
   Comment.findByIdAndDelete(req.params.id)
     .then((deletedComment) => {

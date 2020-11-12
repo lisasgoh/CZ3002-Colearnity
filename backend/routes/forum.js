@@ -20,7 +20,7 @@ forumRouter.post('/', (req, res) => {
   console.log(req.isAuthenticated());
   console.log(req.body);
   // Test if user is authorised
-  if (!req.user) {
+  if (!req.user || (req.user && req.user.is_student)) {
     return res.status(401).send({ error: 'unauthorized user' });
   }
   // Test if required fields are given
@@ -139,13 +139,13 @@ forumRouter.get('/:id', (req, res) => {
       path: '_posts',
       model: 'Post',
       select: {
-        title: 1, votes: 1, _poster: 1, description: 1, tags: 1,
+        title: 1, votes: 1, _poster: 1, description: 1, tags: 1, _comments: 1,
       },
       populate: { path: '_poster', model: 'Users', select: { _id: 1, username: 1 } },
     })
     .then((forum) => {
       if (forum == null) {
-        return res.status(400).send({ error: 'forum does not exist' });
+        return res.status(404).send({ error: 'forum does not exist' });
       }
       if (req.user) {
         forum = forum.toObject();

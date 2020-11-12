@@ -124,7 +124,9 @@ class SubforumPage extends Component {
 
         <div className="rightsection">
           <div className="topbar">
-            <AddCircleOutlineRoundedIcon />
+            <Link to={{ pathname: "/createpost", state: { forum_id: id } }}>
+              <AddCircleOutlineRoundedIcon />
+            </Link>
             <h2>Recent Posts</h2>
             <FilterListRoundedIcon />
           </div>

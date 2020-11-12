@@ -169,7 +169,7 @@ router.get('/home', auth.required, (req, res) => {
       path: '_posts',
       model: 'Post',
       select: {
-        _id: 1, title: 1, description: 1, votes: 1,
+        _id: 1, title: 1, description: 1, votes: 1, _comments: 1,
       },
       populate: [{
         path: '_poster',
@@ -241,6 +241,11 @@ router.get('/:id', (req, res) => {
       res.json(user);
     })
     .catch((err) => res.send(err));
+});
+
+router.post('/logout', (req, res) => {
+  res.clearCookie('connect.sid');
+  res.redirect('/');
 });
 
 module.exports = router;

@@ -14,12 +14,26 @@ const USER_A = {
   username: 'testuser01',
   email: 'test@gmail.com',
   password: '123456',
-  is_student: 'false',
+  is_student: false,
+};
+
+const USER_A_STUDENT = {
+  username: 'student01',
+  email: 'student@gmail.com',
+  password: '123456',
+  is_student: true,
 };
 
 const USER_A_LOGIN = {
   user: {
     email: 'test@gmail.com',
+    password: '123456',
+  },
+};
+
+const USER_STUDENT_LOGIN = {
+  user: {
+    email: 'student@gmail.com',
     password: '123456',
   },
 };
@@ -58,7 +72,7 @@ const INVALID_ID = '12345';
 
 // const auth = {};
 
-// const cookie = null;
+const cookie = null;
 
 let parentForum = null;
 let subForum = null;
@@ -66,46 +80,43 @@ let subForum = null;
 beforeAll(async (done) => {
   await request
     .post('/api/users')
-    .send(USER_A)
-    .then(() => {
-      // const { user } = (response.body);
-      // auth.token = user.token;
-      // auth.user_id = user._id;
-      done();
-    });
+    .send(USER_A);
+  await request
+    .post('/api/users')
+    .send(USER_A_STUDENT);
+  // const { user } = (response.body);
+  // auth.token = user.token;
+  // auth.user_id = user._id;
+  done();
 });
 
 afterAll(async () => {
   await Forum.remove({});
   await Users.remove({});
+  await request.post('/api/users/logout');
   mongoose.connection.close();
 });
 
 describe('create main forum', () => {
-  describe('without authentication', () => {
-    it('creates main forum unsuccessfully - no authentication', async (done) => {
-      const response = await request
-        .post('/api/forum')
-        .send(FORUM_A);
-      expect(response.statusCode).toBe(401);
-      done();
-    });
-  });
   describe('with authentication', () => {
     beforeAll(async (done) => {
-      await request
+      const response = await request
         .post('/api/users/login')
-        .send(USER_A_LOGIN)
-        .then(() => {
-          // cookies = response.headers['set-cookie'][0]
-          // .split(',').map((item) => item.split(';')[0]);
-          // cookie = cookies.join(';');
-          done();
-        });
+        .send(USER_A_LOGIN);
+      // cookies = response.headers['set-cookie'][0]
+      //   .split(',').map((item) => item.split(';')[0]);
+      // cookie = cookies.join(';');
+      done();
+    });
+    afterAll(async (done) => {
+      const responseLogout = await request.post('/api/users/logout');
+      expect(responseLogout.statusCode).toBe(302);
+      done();
     });
     it('creates main forum successfully', async (done) => {
       const response = await request
         .post('/api/forum')
+        // .set('Cookie', cookie)
         .send(FORUM_A);
       parentForum = response.body;
       expect(response.statusCode).toBe(200);
@@ -140,6 +151,25 @@ describe('create main forum', () => {
       expect(response.body).toEqual({ error: 'Forum already exists' });
       done();
     });
+    it('creates main forum unsuccessfully - no authentication', async (done) => {
+      const responseLogout = await request.post('/api/users/logout');
+      expect(responseLogout.statusCode).toBe(302);
+      const response = await request
+        .post('/api/forum')
+        .send(FORUM_A);
+      expect(response.statusCode).toBe(401);
+      done();
+    });
+    it('creates main forum unsuccessfully - not student', async (done) => {
+      await request
+        .post('/api/users/login')
+        .send(USER_STUDENT_LOGIN);
+      const response = await request
+        .post('/api/forum')
+        .send(FORUM_A);
+      expect(response.statusCode).toBe(401);
+      done();
+    });
   });
 });
 
@@ -154,6 +184,11 @@ describe('create sub forum', () => {
         // cookie = cookies.join(';');
         done();
       });
+  });
+  afterAll(async (done) => {
+    const responseLogout = await request.post('/api/users/logout');
+    expect(responseLogout.statusCode).toBe(302);
+    done();
   });
   it('create sub forum successfully', async (done) => {
     const response = await request
@@ -203,21 +238,15 @@ describe('create sub forum', () => {
 let forum = null;
 
 describe('get forum', () => {
-  it('get forum successfully - no authentication ', async (done) => {
-    const responsePost = await request
-      .post('/api/forum')
-      .send(FORUM_A);
-    forum = responsePost.body;
-    const responseGet = await request
-      .get(`/api/forum/${forum._id}`);
-    expect(responseGet.statusCode).toBe(200);
-    expect(forum).toHaveProperty('_id');
-    done();
-  });
   it('get forum successfully - with authentication', async (done) => {
     await request
       .post('/api/users/login')
       .send(USER_A_LOGIN);
+    const responsePost = await request
+      .post('/api/forum')
+      .send(FORUM_A);
+    expect(responsePost.statusCode).toBe(200);
+    forum = responsePost.body;
     const response = await request
       .get(`/api/forum/${forum._id}`);
     const forumFromDB = response.body;
@@ -234,11 +263,22 @@ describe('get forum', () => {
     expect(response.body).toEqual({ error: 'invalid forum id' });
     done();
   });
+  it('get forum successfully - no authentication ', async (done) => {
+    const responseLogout = await request.post('/api/users/logout');
+    expect(responseLogout.statusCode).toBe(302);
+    const responseGet = await request
+      .get(`/api/forum/${forum._id}`);
+    expect(responseGet.statusCode).toBe(200);
+    console.log(responseGet.body);
+    expect(responseGet.body).toHaveProperty('_id');
+    expect(responseGet.body.isSubscribed).toBeUndefined();
+    done();
+  });
   it('get forum unsuccessfully - does not exist', async (done) => {
     await Forum.remove({});
     const response = await request
       .get(`/api/forum/${forum._id}`);
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({ error: 'forum does not exist' });
     done();
   });
