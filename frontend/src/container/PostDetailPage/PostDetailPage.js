@@ -135,7 +135,7 @@ class PostDetailPage extends Component {
     return (
       <div className="postdetailpage">
         <div className="leftsection">
-          <Link to={{ pathname: this.state.linkforums }}>
+          <Link to={{ pathname: this.state.linkforums }} style={{color: 'black'}}>
             <h2>{this.state.forumName}</h2>
           </Link>
 
