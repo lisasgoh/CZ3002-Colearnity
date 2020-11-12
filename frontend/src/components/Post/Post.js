@@ -224,7 +224,7 @@ export default function Post(props) {
       </Link>
 
       <div className="actionbar">
-        <div>
+        <div className="actionbarrow">
           <Link
             to={{
               pathname: `/postdetailpage/${id}`,
@@ -267,7 +267,7 @@ export default function Post(props) {
 
           <span class="numText"> {likesDisplay} Votes</span>
         </div>
-        <div>
+        <div className="actionbarrow">
           {isAdmin || isPoster ? (
             <Button
               color="secondary"

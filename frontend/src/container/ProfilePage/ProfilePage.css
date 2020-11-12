@@ -5,13 +5,13 @@
   justify-content: center;
 }
 
-.logout {
+/* .logout {
   display: flex;
   flex-direction: row;
   justify-content: flex-end; 
   margin-left: 80ch;   
   padding-top: 5ch;
-}
+} */
 
 .profilepic {
   display: flex;
