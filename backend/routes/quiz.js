@@ -53,24 +53,30 @@ quizRouter.post('/', (req, res) => {
     results: [],
   });
   console.log(quiz);
-  quiz.save((err, doc) => {
-    if (err) {
-      res.send(err);
+  Users.findById(req.user.id).then((currentuser) => {
+    if (currentuser.is_student === false) {
+      quiz.save((err, doc) => {
+        if (err) {
+          res.send(err);
+        }
+        Forum.findByIdAndUpdate(
+          req.query.forum_id,
+          { $push: { _quizzes: doc._id } },
+          { new: true },
+        )
+          .then(() => {
+            Users.findByIdAndUpdate(req.user.id, {
+              $push: { _quizzes: doc._id },
+            }).then((user) => {
+              console.log(user);
+              res.json(quiz);
+            });
+          })
+          .catch((error) => res.send(error));
+      });
+    } else {
+      res.status(401).send({ error: 'current user not a teacher, not authorised to post quiz ' });
     }
-    Forum.findByIdAndUpdate(
-      req.query.forum_id,
-      { $push: { _quizzes: doc._id } },
-      { new: true },
-    )
-      .then(() => {
-        Users.findByIdAndUpdate(req.user.id, {
-          $push: { _quizzes: doc._id },
-        }).then((user) => {
-          console.log(user);
-          res.json(quiz);
-        });
-      })
-      .catch((error) => res.send(error));
   });
 });
 
