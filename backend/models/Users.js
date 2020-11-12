@@ -52,14 +52,12 @@ const UsersSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'Forum',
-      unique: true,
     },
   ],
   _created_forums: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Forum',
-      unique: true,
     },
   ],
   // _grades: [GradeSchema],
