@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Post from "../../components/Post/Post";
-import "./StudentProfilePage.css";
+import "./ProfilePage.css";
 import ProfilePic from "../../assets/profile_placeholder.png";
 import ProfileCard from "./ProfileCard";
 import Button from "@material-ui/core/Button";

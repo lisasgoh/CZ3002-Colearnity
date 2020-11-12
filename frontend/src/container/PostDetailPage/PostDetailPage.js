@@ -10,7 +10,6 @@ import SubforumButton from "../../components/ForumButtons/SubforumButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import { Link } from "react-router-dom";
-import Comments from "./../../components/Comments/Comments";
 import AltComments from "./../../components/AltComments/AltComments";
 import postService from "./../../services/post";
 import commentService from "./../../services/comment";
@@ -136,14 +135,14 @@ class PostDetailPage extends Component {
     return (
       <div className="postdetailpage">
         <div className="leftsection">
-          <Link to={{ pathname: this.state.linkforums }}>
+          <Link to={{ pathname: this.state.linkforums }} style={{color: 'black'}}>
             <h2>{this.state.forumName}</h2>
           </Link>
 
           {/* <Button variant="contained" color="secondary" size="small">
             Join Forum
           </Button> */}
-          <p>{this.state.forumDescription}</p>
+          <p>{this.state.forumDesc}</p>
 
           {/* <h3>Subforums</h3>
           <div className="subforums">
@@ -192,7 +191,7 @@ class PostDetailPage extends Component {
           {/* </Grid> */}
 
           <div className="topbar">
-            <h2>Replies</h2>
+            <h2>Comments</h2>
           </div>
           {this.state.postComments &&
             this.state.postComments.map((comment) => (

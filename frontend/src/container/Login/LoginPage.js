@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button } from "../../components/Button/Button";
+// import { Button } from "../../components/Button/Button";
+import Button from "@material-ui/core/Button";
 import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import "./Login.css";
@@ -34,9 +35,9 @@ export default function Login() {
             <FormControl
               autoFocus
               type="email"
-              placeholder="Enter username"
+              placeholder="Enter email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </FormGroup>
           <FormGroup controlId="password" bsSize="large">
@@ -45,10 +46,18 @@ export default function Login() {
               type="password"
               placeholder="Enter password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </FormGroup>
-          <Button block disabled={!validateForm()} type="submit">Login</Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            disabled={!validateForm()}
+            type="submit"
+          >
+            Login
+          </Button>
+          {/* <Button block disabled={!validateForm()} type="submit">Login</Button> */}
           {/* <p className="sright">
             Forgot <a href="#">password?</a>
           </p> */}

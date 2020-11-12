@@ -3,11 +3,11 @@ import Navbar from "./components/Navbar/Navbar";
 import "./App.css";
 
 import { BrowserRouter, Route } from "react-router-dom";
-import StudentHomePage from "./container/StudentHomePage/StudentHomePage";
+import HomePage from "./container/HomePage/HomePage";
 import LandingPage from "./container/LandingPage/LandingPage";
 import SignupPage from "./container/Login/SignupPage";
 import LoginPage from "./container/Login/LoginPage";
-import StudentProfilePage from "./container/StudentProfilePage/StudentProfilePage";
+import ProfilePage from "./container/ProfilePage/ProfilePage";
 import CreatePost from "./container/CreatePost/CreatePost";
 import ForumPage from "./container/ForumPage/ForumPage";
 import SubforumPage from "./container/SubforumPage/SubforumPage";
@@ -28,8 +28,8 @@ function App() {
         <Route path="/" exact component={LandingPage} />
         <Route path="/login" exact component={LoginPage} />
         <Route path="/signup" exact component={SignupPage} />
-        <Route path="/homepage" exact component={StudentHomePage} />
-        <Route path="/profilepage" exact component={StudentProfilePage} />
+        <Route path="/homepage" exact component={HomePage} />
+        <Route path="/profilepage" exact component={ProfilePage} />
         <Route path="/createpost" exact component={CreatePost} />
         <Route path="/forumpage/:id" exact component={ForumPage} />
         <Route path="/reviewquizpage/:id" exact component={ReviewQuizPage} />
