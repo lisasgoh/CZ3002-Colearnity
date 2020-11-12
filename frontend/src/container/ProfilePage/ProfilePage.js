@@ -40,8 +40,9 @@ class StudentProfilePage extends Component {
   };
 
   logout = () => {
-    localStorage.clear("token");
-    this.setState({ navigate: true });
+    // localStorage.clear("token");
+    // this.setState({ navigate: true });
+    usersService.logout();
   };
 
   render() {
