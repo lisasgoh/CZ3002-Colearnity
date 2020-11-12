@@ -64,15 +64,15 @@ class StudentProfilePage extends Component {
 
     return (
       <div className="container">
-        <div className="logout">
-          <Grid container justify="flex-end">
-            <Button variant="contained" onClick={this.logout}>
-              Logout
-            </Button>
-          </Grid>
-        </div>
+        {/* <div className="logout">
+          <Grid container justify="flex-end"></Grid>
+        </div> */}
         <img className="profilepic" src={ProfilePic} alt="Logo" />
         <h1>{username}</h1>
+
+        <Button variant="contained" onClick={this.logout}>
+          Logout
+        </Button>
         <ColoredLine color="grey" />
 
         <div className="row_container">

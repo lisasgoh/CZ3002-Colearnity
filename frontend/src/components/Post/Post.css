@@ -40,9 +40,21 @@
   justify-content: flex-start;
 }
 
+.actionbar .actionbarrow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .actionbar button,
 .actionbar .numText {
   margin-left: 1.5em;
+}
+
+.actionbar .numText {
+  text-align: center;
+  font-size: 0.9em;
 }
 
 .actionbar button:first-child {
