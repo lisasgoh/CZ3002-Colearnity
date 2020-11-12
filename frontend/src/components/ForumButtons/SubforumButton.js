@@ -16,6 +16,7 @@ export default function SubforumButton(props) {
       margin: "10px 10px",
       fontSize: "1.1em",
       textTransform: "none",
+      lineHeight: "1em",
       "&:hover": {
         backgroundColor: "darkorange",
         color: "black",
