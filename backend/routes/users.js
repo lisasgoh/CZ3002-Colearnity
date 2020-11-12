@@ -220,7 +220,14 @@ router.get('/home', auth.required, (req, res) => {
     .populate(populateQuery)
     .then((user) => {
       // console.log(`HERERE${user}`);
-      const homePagePosts = user._forums.reduce((result, item) => result.concat(item._posts), []);
+      let subforums = [];
+      user._forums.forEach((forum) => {
+        subforums = subforums.concat(forum._subforums);
+      });
+      // console.log(subforums);
+      const allForums = user._forums.concat(subforums);
+      // console.log(allForums);
+      const homePagePosts = allForums.reduce((result, item) => result.concat(item._posts), []);
       Util.getPostsVoteInfo(homePagePosts, req.user.id, (postsWithVotes) => {
         // console.log(`userPosts With Vote${postsWithVotes}`);
         const userObj = user.toObject();
@@ -228,13 +235,6 @@ router.get('/home', auth.required, (req, res) => {
         // console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
         res.json(userObj);
       });
-      // .then((userPostsWithVote) => {
-      //   console.log(`userPosts With Vote${userPostsWithVote}`);
-      //   const userObj = user.toObject();
-      //   userObj.homePagePosts = userPostsWithVote;
-      //   console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
-      //   res.json(userObj);
-      // });
     })
     .catch((err) => res.send(err));
 });
