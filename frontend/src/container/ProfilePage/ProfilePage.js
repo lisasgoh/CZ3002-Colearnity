@@ -88,7 +88,7 @@ class StudentProfilePage extends Component {
                   username={post._poster.username}
                   content={post.description}
                   numLikes={post.votes}
-                  tags={post.tags}
+                  tags={post._forum} //{post.tags}
                   title={post.title}
                   userVote={post.userVote}
                   isPoster={true} //{post._poster._id == localStorage.getItem("userID")}
