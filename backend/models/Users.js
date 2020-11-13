@@ -5,22 +5,6 @@ const jwt = require('jsonwebtoken');
 
 const { Schema } = mongoose;
 
-/*
-const GradeSchema = new mongoose.Schema({
-  _quiz: {
-    type: Schema.Types.ObjectId,
-    ref: 'Quiz',
-  },
-  grades: [
-    {
-      type: Number,
-    },
-  ],
-  marks: {
-    type: Number,
-  },
-}); */
-
 const UsersSchema = new Schema({
   hash: {
     type: String,
@@ -60,7 +44,6 @@ const UsersSchema = new Schema({
       ref: 'Forum',
     },
   ],
-  // _grades: [GradeSchema],
   _posts: [
     {
       type: Schema.Types.ObjectId,

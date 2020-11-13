@@ -27,17 +27,6 @@ const commentSchema = new Schema(
   },
   { timestamps: true },
 );
-/*
-const populateComments = function (next) {
-  this.populate({
-    path: 'comments',
-    select: 'commenter createdAt text votes',
-  });
-  next();
-}; */
-
-// commentSchema.pre('find', populateComments);
-// commentSchema.pre('findById', populateComments);
 
 // document middleware
 const cascadeRemove = function (next) {
