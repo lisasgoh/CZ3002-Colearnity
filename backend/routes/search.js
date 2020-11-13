@@ -14,7 +14,8 @@ searchRouter.get('/post', (req, res) => {
       { title: str },
       { description: str },
     ],
-  }).populate({ path: '_poster', model: 'Users', select: { _id: 1, username: 1 } })
+  }).populate([{ path: '_poster', model: 'Users', select: { _id: 1, username: 1 } },
+    { path: '_forum', model: 'Forum', select: { _id: 1, name: 1, is_sub: 1 } }])
     .then((posts) => {
       if (req.user) {
         Util.getPostsVoteInfo(posts, req.user.id, (postsWithVote) => {

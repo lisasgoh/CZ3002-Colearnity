@@ -1,8 +1,12 @@
 import axios from "axios";
 const baseUrl = "http://localhost:3000/api/comments";
 
-const create = (newObject, post_id) => {
-  console.log(" Jdfhjskfjasdfkjasdljadsjldasfjla");
+/**
+ * @param {object} newComment - A new comment
+ * @param {string} post_id - Post id of the parent post
+ * @return {object} The new comment object
+ */
+const create = (newComment, post_id) => {
   const request = axios({
     method: "post",
     url: `${baseUrl}?post_id=${post_id}`,
@@ -11,14 +15,17 @@ const create = (newObject, post_id) => {
       token: localStorage.getItem("token"),
     },
     withCredentials: true,
-    data: newObject,
+    data: newComment,
   });
-  console.log(request.then((response) => response.data));
-  console.log('t est');
   return request.then((response) => response.data);
 };
 
-const update = (id, newObject) => {
+/**
+ * @param {object} newComment - The new comment object
+ * @param {string} id - Comment id
+ * @return {object} The newly updated comment object
+ */
+const update = (id, newComment) => {
   const request = axios({
     method: "put",
     url: `${baseUrl}/${id}`,
@@ -26,11 +33,15 @@ const update = (id, newObject) => {
       "token": localStorage.getItem("token")  
     },
     withCredentials: true,
-    data: newObject,
+    data: newComment,
   });
   return request.then((response) => response.data);
 };
 
+/**
+ * @param {string} id - Comment id
+ * @return {object} The deleted comment object
+ */
 const deleteObj = (id) => {
   const request = axios({
     method: "delete",
