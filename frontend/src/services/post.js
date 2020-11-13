@@ -1,6 +1,10 @@
 import axios from "axios";
 const baseUrl = "http://localhost:3000/api/posts";
 
+/**
+ * @param {string} id - id of the post to be retrieved
+ * @return {object} The post object
+ */
 const getIndivPost = (id) => {
   const request = axios({
     method: "get",
@@ -13,21 +17,30 @@ const getIndivPost = (id) => {
   return request.then((response) => response.data);
 };
 
-const create = (newObject, forum_id) => {
+/**
+ * @param {object} newPost - A new post
+ * @param {string} forum_id - Forum id of the parent forum
+ * @return {object} The new post object
+ */
+const create = (newPost, forum_id) => {
   const request = axios({
     method: "post",
     url: `${baseUrl}?forum_id=${forum_id}`,
     headers: {
       'Content-Type': 'application/json',
       "token": localStorage.getItem("token")  },
-    data: newObject,
+    data: newPost,
     withCredentials: true,
   });
-  console.log(request.then((response) => response.data));
   return request.then((response) => response.data);
 };
 
-const update = (id, newObject) => {
+/**
+ * @param {string} id - id of the post to be updated
+ * @param {object} newPost - The new post object
+ * @return {object} The newly updated post object
+ */
+const update = (id, newPost) => {
   const request = axios({
     method: "put",
     url: `${baseUrl}/${id}`,
@@ -35,11 +48,15 @@ const update = (id, newObject) => {
       "token": localStorage.getItem("token")  
     },
     withCredentials: true,
-    data: newObject,
+    data: newPost,
   });
   return request.then((response) => response.data);
 };
 
+/**
+ * @param {string} id - id of the post to be deleted
+ * @return {object} The deleted post object
+ */
 const deleteObj = (id) => {
   const request = axios({
     method: "delete",

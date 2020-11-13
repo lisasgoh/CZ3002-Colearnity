@@ -1,6 +1,10 @@
 import axios from "axios";
 const baseUrl = "http://localhost:3000/api/forum";
 
+/**
+ * @param {string} id - id of the forum to be retrieved
+ * @return {object} The forum object
+ */
 const getForum = (id) => {
   const request = axios({
     method: 'get',
@@ -13,7 +17,12 @@ const getForum = (id) => {
   return request.then((response) => response.data);
 };
 
-const createSubForum = (newObject, forum_id) => {
+/**
+ * @param {object} newSubforum - A new subforum
+ * @param {string} forum_id - Forum id of the parent forum
+ * @return {object} The new subforum object
+ */
+const createSubForum = (newSubforum, forum_id) => {
   const request = axios({
     method: "post",
     url: `${baseUrl}?forum_id=${forum_id}`,
@@ -22,12 +31,16 @@ const createSubForum = (newObject, forum_id) => {
       "token": localStorage.getItem("token") 
     },
     withCredentials: true,
-    data: newObject,
+    data: newSubforum,
   });
   return request.then((response) => response.data);
 };
 
-const createMainForum = (newObject) => {
+/**
+ * @param {object} newMainforum - A new main forum
+ * @return {object} The new main forum object
+ */
+const createMainForum = (newMainforum) => {
   const request = axios({
     method: "post",
     url: baseUrl,
@@ -36,17 +49,16 @@ const createMainForum = (newObject) => {
       "token": localStorage.getItem("token") 
     },
     withCredentials: true,
-    data: newObject,
+    data: newMainforum,
   });
-  console.log(request.then((response) => response.data));
   return request.then((response) => response.data);
 };
 
+/**
+ * @param {string} forumID - The forum to subscribe/unsubscribe to
+ * @return {object} The updated user object
+ */
 const toggleSubscribe = (forumID) => {
-  const forumIDdata = {
-    id: forumID,
-  };
-
   const request = axios({
     method: "post",
     url: `${baseUrl}/${forumID}`,
@@ -56,7 +68,6 @@ const toggleSubscribe = (forumID) => {
     },
     withCredentials: true,
   });
-  console.log(request.then((response) => response.data));
   return request.then((response) => response.data);
 };
 

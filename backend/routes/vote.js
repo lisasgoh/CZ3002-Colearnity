@@ -50,10 +50,8 @@ votesRouter.post('/', (req, res) => {
       .then((diff) => {
         Post.findByIdAndUpdate(req.query.post_id, {
           $inc: { votes: diff },
-        })
-          .then((oldPost) => {
-            res.json(oldPost);
-          })
+        }, { new: true })
+          .then((newPost) => res.json(newPost))
           .catch((error) => res.json(error));
       });
   } else if (req.query.comment_id != null) {
@@ -88,10 +86,8 @@ votesRouter.post('/', (req, res) => {
     }).then((diff) => {
       Comment.findByIdAndUpdate(req.query.comment_id, {
         $inc: { votes: diff },
-      })
-        .then((oldComment) => {
-          res.json(oldComment);
-        })
+      }, { new: true })
+        .then((newComment) => res.json(newComment))
         .catch((error) => res.json(error));
     });
   }

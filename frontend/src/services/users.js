@@ -1,6 +1,10 @@
 import axios from "axios";
 const baseUrl = "http://localhost:3000/api/users";
 
+/**
+ * Get the current user profile data
+ * @return the user profile data
+ */
 const getUser = () => {
   const request = axios({
     method: "get",
@@ -14,6 +18,10 @@ const getUser = () => {
   return request.then((response) => response.data);
 };
 
+/**
+ * Get the current user home page
+ * @return the user home page data
+ */
 const getUserHomePage = () => {
   const request = axios({
     method: "get",
@@ -27,17 +35,20 @@ const getUserHomePage = () => {
   return request.then((response) => response.data);
 };
 
-const getUserById = (id) => {
-  const request = axios.get(`${baseUrl}/${id}`);
+/**
+ * @param {object} newUser
+ * @return {object} authentication info of the newly created user
+ */
+const create = (newUser) => {
+  const request = axios.post(baseUrl, newUser);
   return request.then((response) => response.data);
 };
 
-const create = (newObject) => {
-  const request = axios.post(baseUrl, newObject);
-  console.log(request.then((response) => response.data));
-  return request.then((response) => response.data);
-};
-
+/**
+ * @param {string} email 
+ * @param {string} password
+ * @return {object} authentication info of the user
+ */
 const login = (email, password) => {
   const user = {
     user: {
@@ -45,7 +56,6 @@ const login = (email, password) => {
       password: password,
     },
   };
-  console.log(user);
   const request = axios({
     method: "post",
     url: `${baseUrl}/login`,
@@ -60,6 +70,9 @@ const login = (email, password) => {
   });
 };
 
+/**
+ * Logout user
+ */
 const logout = async () => {
   const response = await axios({
     method: "post",
@@ -70,4 +83,4 @@ const logout = async () => {
   }
 }
 
-export default { getUser, getUserById, getUserHomePage, create, login, logout };
+export default { getUser, getUserHomePage, create, login, logout };
