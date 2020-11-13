@@ -49,7 +49,7 @@ commentRouter.put('/:id', (req, res) => {
     return res.status(401).send({ error: 'unauthorized user' });
   }
   if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-    return res.status(400).send({ error: 'invalid post id' });
+    return res.status(400).send({ error: 'invalid comment id' });
   }
   if (!req.body.text) {
     return res.status(422).send({ error: 'New text required' });

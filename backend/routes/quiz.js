@@ -94,7 +94,7 @@ quizRouter.post('/', (req, res) => {
             .catch((error) => res.send(error));
         });
       } else {
-        res.status(401).send({ error: 'current user not a teacher, not authorised to post quiz ' });
+        return res.status(401).send({ error: 'current user not a teacher, not authorised to post quiz ' });
       }
     });
   }).catch((err) => res.send(err));
@@ -197,18 +197,13 @@ quizRouter.delete('/:id', (req, res) => {
     return res.status(400).send({ error: 'invalid quiz id' });
   }
   Quiz.findByIdAndRemove(req.params.id)
-    .then(() => {
-      Forum.findByIdAndUpdate(req.query.forum_id, {
+    .then((quiz) => {
+      Forum.findByIdAndUpdate(quiz._forum, {
         $pull: { _quizzes: req.params.id },
       })
         .then(() => {
-          Users.findByIdAndUpdate(req.user.id, {
-            $pull: { _quizzes: req.params.id },
-          })
-            .then(() => {
-              res.send('Success: Quiz Deleted');
-            })
-            .catch((err) => res.send(err));
+          QuizAttempt.remove({ _quiz: req.params.id })
+            .then(() => res.send('Success: Quiz Deleted'));
         })
         .catch((err) => res.send(err));
     })
