@@ -1,9 +1,14 @@
 import axios from "axios";
 const baseUrl = "http://localhost:3000/api/votes";
 
-const voteComment = (voteDiff, comment_id) => {
+/**
+ * @param {string} votedir direction of vote (1 = upvote, -1 = downvote)
+ * @param {string} comment_id id of the comment to be voted on
+ * @return {object} the new comment object with vote count updated
+ */
+const voteComment = (votedir, comment_id) => {
   const voteData = {
-    vote_dir: voteDiff,
+    vote_dir: votedir,
   };
 
   const request = axios({
@@ -20,9 +25,14 @@ const voteComment = (voteDiff, comment_id) => {
   return request.then((response) => response.data);
 };
 
-const votePost = (voteDiff, post_id) => {
+/**
+ * @param {string} votedir direction of vote (1 = upvote, -1 = downvote)
+ * @param {string} post_id id of the post to be voted on
+ * @return {object} the new post object with vote count updated
+ */
+const votePost = (votedir, post_id) => {
   const voteData = {
-    vote_dir: voteDiff,
+    vote_dir: votedir,
   };
 
   const request = axios({

@@ -39,7 +39,7 @@ const update = (id, newComment) => {
 };
 
 /**
- * @param {string} id - Comment id
+ * @param {string} id - id of the comment to be deleted
  * @return {object} The deleted comment object
  */
 const deleteObj = (id) => {
