@@ -70,9 +70,7 @@ const SUBFORUM_B = {
 
 const INVALID_ID = '12345';
 
-// const auth = {};
-
-const cookie = null;
+// let cookie = null;
 
 let parentForum = null;
 let subForum = null;
@@ -84,9 +82,6 @@ beforeAll(async (done) => {
   await request
     .post('/api/users')
     .send(USER_A_STUDENT);
-  // const { user } = (response.body);
-  // auth.token = user.token;
-  // auth.user_id = user._id;
   done();
 });
 
@@ -100,7 +95,7 @@ afterAll(async () => {
 describe('create main forum', () => {
   describe('with authentication', () => {
     beforeAll(async (done) => {
-      const response = await request
+      await request
         .post('/api/users/login')
         .send(USER_A_LOGIN);
       // cookies = response.headers['set-cookie'][0]
@@ -191,7 +186,7 @@ describe('create sub forum', () => {
     expect(responseLogout.statusCode).toBe(302);
     done();
   });
-  it('create sub forum successfully', async (done) => {
+  it('create sub forum unsuccessfully - parent forum id not given', async (done) => {
     const response = await request
       .post('/api/forum')
       .send(SUBFORUM_A);
@@ -208,7 +203,6 @@ describe('create sub forum', () => {
     done();
   });
   it('create sub forum successfully', async (done) => {
-    console.log(parentForum);
     const response = await request
       .post(`/api/forum?forum_id=${parentForum._id}`)
       .send(SUBFORUM_A);
@@ -217,7 +211,6 @@ describe('create sub forum', () => {
     done();
   });
   it('create sub forum unsuccessfully - forum is not parent', async (done) => {
-    console.log(parentForum);
     const response = await request
       .post(`/api/forum?forum_id=${subForum._id}`)
       .send(SUBFORUM_B);
@@ -251,7 +244,6 @@ describe('get forum', () => {
     const response = await request
       .get(`/api/forum/${forum._id}`);
     const forumFromDB = response.body;
-    console.log(forumFromDB);
     expect(response.statusCode).toBe(200);
     expect(forumFromDB).toHaveProperty('_id');
     expect(forumFromDB).toHaveProperty('isSubscribed');
@@ -270,7 +262,6 @@ describe('get forum', () => {
     const responseGet = await request
       .get(`/api/forum/${forum._id}`);
     expect(responseGet.statusCode).toBe(200);
-    console.log(responseGet.body);
     expect(responseGet.body).toHaveProperty('_id');
     expect(responseGet.body.isSubscribed).toBeUndefined();
     done();

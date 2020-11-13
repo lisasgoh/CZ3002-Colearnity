@@ -1,5 +1,4 @@
 /* eslint-disable consistent-return */
-/* eslint-disable no-console */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
@@ -37,7 +36,6 @@ forumRouter.post('/', (req, res) => {
     is_sub: req.body.is_sub,
     _parentforum: req.query.forum_id,
   });
-  console.log(forum);
   if (req.body.is_sub === true) { // add parent forum id and subforums list
     Forum.findById(req.query.forum_id).then((parentForum) => {
       if (parentForum == null) {
@@ -58,14 +56,12 @@ forumRouter.post('/', (req, res) => {
       });
     });
   } else {
-    console.log(forum);
     forum.save((err, savedForum) => {
       if (err) {
         if (err.name === 'MongoError' && err.code === 11000) {
           return res.status(422).send({ error: 'Forum already exists' });
         }
       } else {
-        console.log('herer successfully save');
         Users.findByIdAndUpdate(req.user.id,
           { $push: { _created_forums: savedForum._id } })
           .then(() => {
@@ -127,10 +123,12 @@ forumRouter.get('/:id', (req, res) => {
       }
       if (req.user) {
         const forumPosts = forum._posts;
+        // Gets whether the user voted on the posts in the forum
         Util.getPostsVoteInfo(forumPosts, req.user.id, (postsWithVotes) => {
           const forumObj = forum.toObject();
           forumObj._posts = postsWithVotes;
           if (forum.is_sub === false) {
+            // Check whether user is subscribed to the forum
             forumObj.isSubscribed = false;
             Users.findById(req.user.id).then((user) => {
               if (user._forums.includes(req.params.id)) {
@@ -161,6 +159,7 @@ forumRouter.get('/:id', (req, res) => {
             ).then((quizAttemptIds) => {
               const quizAttemptIdArray = quizAttemptIds
                 .map((obj) => new mongoose.Types.ObjectId(obj.quizAttemptId));
+              // Gets the user's quiz attempts in that sub forum
               QuizAttempt.find({ _id: { $in: quizAttemptIdArray } })
                 .populate({ path: '_quiz', model: 'Quiz', select: { _id: 1, title: 1 } })
                 .then((quizAttempts) => {
@@ -176,10 +175,18 @@ forumRouter.get('/:id', (req, res) => {
     });
 });
 
-// delete forum
-// delete from users (cascade delete) (parent references -> )
+/** Delete forum given an ID  */
 forumRouter.delete('/:id', (req, res) => {
-  Forum.findByIdAndRemove(req.params.id).then(() => {
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid post id' });
+  }
+  Forum.findByIdAndRemove(req.params.id).then((forum) => {
+    if (forum == null) {
+      return res.status(400).send({ error: 'forum does not exist' });
+    }
     Users.update(
       {},
       {

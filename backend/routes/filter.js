@@ -8,7 +8,6 @@ const filterRouter = express.Router();
 
 // get post(s) based on filter keywords post info - /api/filter?filter=(words)
 filterRouter.get('/', (req, res) => {
-  console.log(`get request for forum name: ${req.query.filter}`);
   const { filter } = req.query;
 
   // get forum id from forum name
@@ -17,7 +16,6 @@ filterRouter.get('/', (req, res) => {
   }, (err, result) => {
     if (err) res.send(err);
     else {
-      console.log(`result from db:${result[0]._id}`);
       Post.find({
         _forum: result[0]._id,
       }, (err, post) => {

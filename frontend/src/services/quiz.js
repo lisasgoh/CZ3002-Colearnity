@@ -45,7 +45,6 @@ const postQuiz = (quizTitle, questions, forum_id) => {
     title: quizTitle,
     questions: questions,
   };
-  console.log(forum_id);
   const request = axios({
     method: "post",
     url: `${baseUrl}?forum_id=${forum_id}`,

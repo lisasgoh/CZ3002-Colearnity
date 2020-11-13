@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-console */
 const express = require('express');
 const Post = require('../models/Post');
 const Forum = require('../models/Forum');
@@ -83,7 +82,6 @@ postRouter.post('/', (req, res) => {
   if (!req.query.forum_id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send({ error: 'invalid forum id' });
   }
-  // check if user is part of forum
   const post = new Post({
     title: req.body.title,
     description: req.body.description,
@@ -94,12 +92,10 @@ postRouter.post('/', (req, res) => {
   });
   post.save((err, savedPost) => {
     if (err) {
-      console.log(err);
       if (err.name === 'ValidationError') {
         return res.status(422).send({ error: 'Title required' });
       }
-      return res.status(500);
-      // return res.send(err);
+      return res.status(500).send({ error: err.name });
     }
     Forum.findByIdAndUpdate(req.query.forum_id,
       { $push: { _posts: { $each: [savedPost._id], $position: 0 } } },
@@ -111,10 +107,7 @@ postRouter.post('/', (req, res) => {
         Users.findByIdAndUpdate(req.user.id,
           { $push: { _posts: { $each: [savedPost._id], $position: 0 } } },
           { new: true })
-          .then(() => {
-            console.log(savedPost);
-            res.json(savedPost);
-          });
+          .then(() => res.json(savedPost));
       });
   });
 });
@@ -149,7 +142,6 @@ postRouter.delete('/:id', (req, res) => {
   if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send({ error: 'invalid post id' });
   }
-  console.log('Delete post!');
   Post.findById(req.params.id).then((post) => {
     if (post == null) {
       return res.status(400).send({ error: 'post does not exist' });

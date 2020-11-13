@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 const express = require('express');
 const Comment = require('../models/Comment');
@@ -8,16 +8,27 @@ const Vote = require('../models/Vote');
 
 const votesRouter = express.Router();
 
-votesRouter.get('/:id', (req, res) => {
-  Vote.findById(req.params.id).then((vote) => {
-    res.json(vote);
-  }).catch((err) => res.json(err));
-});
-
 /** Vote for post or comment */
 votesRouter.post('/', (req, res) => {
-  // Check if user voted for post/comment before
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  // If neither postID or commentID given
+  if (!req.query.post_id && !req.query.comment_id) {
+    return res.status(400).send({ error: 'neither post nor comment given' });
+  }
+  if (!req.body.vote_dir) {
+    return res.status(400).send({ error: 'Invalid format: Vote dir not given' });
+  }
+  if (req.body.vote_dir !== -1 && req.body.vote_dir !== 1) {
+    return res.status(400).send({ error: 'Invalid format: Vote dir can only be 1 (Upvote) or -1 (Downvote)' });
+  }
   if (req.query.post_id != null) {
+    // Check for invalid Post ID
+    if (!req.query.post_id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).send({ error: 'invalid post id' });
+    }
+    // Check if user voted for post before
     Vote.findOne({ _voter: req.user.id, _post: req.query.post_id })
       .then((vote) => {
         let diff = 0;
@@ -31,10 +42,8 @@ votesRouter.post('/', (req, res) => {
           newVote.save();
           return diff;
         }
-        console.log(vote);
-        console.log('The user has voted on this post');
         const oldVoteVal = vote.dir;
-        const newVoteVal = Number(req.body.vote_dir);
+        const newVoteVal = req.body.vote_dir;
         if (oldVoteVal === newVoteVal) {
           diff = -newVoteVal;
           vote.dir = 0;
@@ -53,6 +62,11 @@ votesRouter.post('/', (req, res) => {
           .catch((error) => res.json(error));
       });
   } else if (req.query.comment_id != null) {
+    // Check for invalid comment ID
+    if (!req.query.comment_id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).send({ error: 'invalid comment id' });
+    }
+    // Check if user voted for comment before
     Vote.findOne({ _voter: req.user.id, _comment: req.query.comment_id }).then((vote) => {
       let diff = 0;
       if (vote == null) {
@@ -65,12 +79,8 @@ votesRouter.post('/', (req, res) => {
         newVote.save();
         return diff;
       }
-      console.log(vote);
-      console.log('The user has voted on this comment');
       const oldVoteVal = vote.dir;
-      const newVoteVal = Number(req.body.vote_dir);
-      console.log(oldVoteVal);
-      console.log(newVoteVal);
+      const newVoteVal = req.body.vote_dir;
       if (oldVoteVal === newVoteVal) {
         diff = -newVoteVal;
         vote.dir = 0;
@@ -79,7 +89,6 @@ votesRouter.post('/', (req, res) => {
         vote.dir = newVoteVal;
       }
       vote.save();
-      console.log(diff);
       return diff;
     }).then((diff) => {
       Comment.findByIdAndUpdate(req.query.comment_id, {

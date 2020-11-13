@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
@@ -88,8 +87,6 @@ describe('create post', () => {
         .post('/api/forum')
         .send(FORUM_A);
       forum = response.body;
-      console.log(forum);
-      // expect(response.statusCode).toBe(200);
       const responsePost = await request
         .post(`/api/posts?forum_id=${forum._id}`)
         .send(POST_A);
@@ -98,7 +95,6 @@ describe('create post', () => {
       done();
     });
     it('creates post unsuccessfully - no title', async (done) => {
-      console.log(forum);
       const response = await request
         .post(`/api/posts?forum_id=${forum._id}`)
         .send(POST_A_NO_TITLE);
@@ -115,7 +111,6 @@ describe('create post', () => {
     });
     it('create post unsuccessfully - forum does not exist', async (done) => {
       await Forum.remove({});
-      console.log(forum);
       const response = await request
         .post(`/api/posts?forum_id=${forum._id}`)
         .withCredentials()
@@ -132,7 +127,6 @@ describe('create post', () => {
       const response = await request
         .post(`/api/posts?forum_id=${forum._id}`)
         .send(POST_A);
-      console.log(response.body);
       expect(response.statusCode).toBe(401);
       expect(response.body).toEqual({ error: 'unauthorized user' });
       done();
@@ -159,9 +153,6 @@ describe('get post', () => {
       done();
     });
     it('get post successfully - with authentication', async (done) => {
-      // await request
-      //   .post('/api/users/login')
-      //   .send(USER_A_LOGIN);
       const response = await request
         .get(`/api/posts/${post._id}`);
       expect(response.statusCode).toBe(200);
@@ -182,7 +173,6 @@ describe('get post', () => {
     expect(responseLogout.statusCode).toBe(302);
     const response = await request
       .get(`/api/posts/${post._id}`);
-    console.log(response.body);
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty('_id');
     expect(response.body.userVote).toBeUndefined();

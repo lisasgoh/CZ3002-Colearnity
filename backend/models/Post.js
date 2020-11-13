@@ -1,19 +1,13 @@
+/* eslint-disable func-names */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-//
+
 const Forum = require('./Forum');
 const Vote = require('./Vote');
 const Users = require('./Users');
 
-/* const TagSchema = new mongoose.Schema({
-  tag: {
-    type: String,
-    unique: true,
-  },
-});
-*/
 const postSchema = new Schema(
   {
     title: {
@@ -51,7 +45,6 @@ const postSchema = new Schema(
 
 // document middleware
 const cascadeRemove = function (next) {
-  console.log(`Remove post middleware called${this._id}`);
   mongoose.model('Comment').find({ _post: this._id })
     .then((comments) => {
       comments.forEach((comment) => comment.remove());
@@ -63,11 +56,8 @@ const cascadeRemove = function (next) {
 // query middleware
 const cascadeDelete = function (next) {
   this.model.findOne(this.getQuery()).then((post) => {
-    console.log('Post cascadeDelete middleware');
-    console.log(`Removing ${post._id}`);
     mongoose.model('Comment').find({ _post: post._id })
       .then((comments) => {
-        console.log(comments);
         comments.forEach((comment) => {
           comment.remove();
         });
@@ -79,18 +69,14 @@ const cascadeDelete = function (next) {
 
 const deleteFromParent = async function (next) {
   const post = await this.model.findOne(this.getQuery());
-  console.log('Post deleteFromParent middleware');
-  console.log(`Removing ${post._id}`);
   Forum.updateOne(
     { _posts: post._id },
     { $pull: { _posts: post._id } },
   ).then(() => {
-    console.log('Deleted from forum');
     Users.updateOne(
       { _posts: post._id },
       { $pull: { _posts: post._id } },
     ).then(() => {
-      console.log('Deleted from user');
       next();
     });
   });
@@ -99,7 +85,6 @@ const deleteFromParent = async function (next) {
 postSchema.pre('remove', cascadeRemove);
 postSchema.pre('findOneAndDelete', cascadeDelete);
 postSchema.pre('findOneAndDelete', deleteFromParent);
-// postSchema.post('findOne', getUserVote);
 
 const Post = mongoose.model('Post', postSchema);
 

@@ -1,5 +1,5 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable consistent-return */
-/* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 
@@ -16,7 +16,7 @@ quizRouter.post('/', (req, res) => {
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
   }
-  // Test if parent forum ID is given if it is a sub forum
+  // Test if forum ID is given
   if (!req.query.forum_id) {
     return res.status(400).send({ error: 'forum not given' });
   }
@@ -24,74 +24,88 @@ quizRouter.post('/', (req, res) => {
   if (!req.query.forum_id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send({ error: 'invalid forum id' });
   }
-  const { questions } = req.body;
-  console.log(questions);
-  let totalPoints = 0;
-  const quizQuestions = questions.map((question, index) => {
-    totalPoints += question.points;
-    const opts = question.options;
-    const newOpts = opts.map((opt, optIndex) => {
-      const newOpt = {
-        optionNumber: optIndex + 1,
-        answerBody: opt.answerBody,
-        isCorrectAnswer: opt.isCorrectAnswer,
-      };
-      return newOpt;
-    });
-    const stats = {
-      correct: 0,
-      wrong: 0,
-      choices: [0, 0, 0, 0],
-    };
-    const newQn = {
-      questionNumber: index + 1,
-      title: question.title,
-      points: question.points,
-      options: newOpts,
-      stats,
-    };
-    return newQn;
-  });
-  const quiz = new Quiz({
-    title: req.body.title,
-    description: req.body.description,
-    _teacher: req.user.id,
-    _forum: req.query.forum_id,
-    total_points: totalPoints,
-    questions: quizQuestions,
-    _attempts: [],
-    results: [],
-  });
-  console.log(quiz);
-  Users.findById(req.user.id).then((currentuser) => {
-    if (currentuser.is_student === false) {
-      quiz.save((err, doc) => {
-        if (err) {
-          res.send(err);
-        }
-        Forum.findByIdAndUpdate(
-          req.query.forum_id,
-          { $push: { _quizzes: doc._id } },
-          { new: true },
-        )
-          .then(() => {
-            Users.findByIdAndUpdate(req.user.id, {
-              $push: { _quizzes: doc._id },
-            }).then((user) => {
-              console.log(user);
-              res.json(quiz);
-            });
-          })
-          .catch((error) => res.send(error));
-      });
-    } else {
-      res.status(401).send({ error: 'current user not a teacher, not authorised to post quiz ' });
+  // Test if questions variable is present
+  if (!req.body.hasOwnProperty('questions')) {
+    return res.status(400).send({ error: 'Invalid format: No questions provided' });
+  }
+  Forum.findById(req.query.forum_id).then((forum) => {
+    // Test if forum exists
+    if (forum == null) {
+      return res.status(400).send({ error: 'Forum does not exist' });
     }
-  });
+    // Test if forum is a subforum
+    if (forum.is_sub === false) {
+      return res.status(400).send({ error: 'Forum is not a sub forum' });
+    }
+    const { questions } = req.body;
+    let totalPoints = 0;
+    const quizQuestions = questions.map((question, index) => {
+      totalPoints += question.points;
+      const opts = question.options;
+      const newOpts = opts.map((opt, optIndex) => {
+        const newOpt = {
+          optionNumber: optIndex + 1,
+          answerBody: opt.answerBody,
+          isCorrectAnswer: opt.isCorrectAnswer,
+        };
+        return newOpt;
+      });
+      // Initialise statistics
+      const stats = {
+        correct: 0,
+        wrong: 0,
+        choices: [0, 0, 0, 0],
+      };
+      const newQn = {
+        questionNumber: index + 1,
+        title: question.title,
+        points: question.points,
+        options: newOpts,
+        stats,
+      };
+      return newQn;
+    });
+    const quiz = new Quiz({
+      title: req.body.title,
+      description: req.body.description,
+      _teacher: req.user.id,
+      _forum: req.query.forum_id,
+      total_points: totalPoints,
+      questions: quizQuestions,
+      _attempts: [],
+      results: [],
+    });
+    Users.findById(req.user.id).then((currentuser) => {
+      if (currentuser.is_student === false) {
+        quiz.save((err, doc) => {
+          if (err.name === 'ValidationError') {
+            return res.status(422).send({ error: 'Title required for quiz and questions' });
+          }
+          Forum.findByIdAndUpdate(
+            req.query.forum_id,
+            { $push: { _quizzes: doc._id } },
+            { new: true },
+          )
+            .then(() => {
+              Users.findByIdAndUpdate(req.user.id, {
+                $push: { _quizzes: doc._id },
+              }).then(() => res.json(quiz));
+            })
+            .catch((error) => res.send(error));
+        });
+      } else {
+        res.status(401).send({ error: 'current user not a teacher, not authorised to post quiz ' });
+      }
+    });
+  }).catch((err) => res.send(err));
 });
 
 /** Gets quiz given an ID */
 quizRouter.get('/:id', (req, res) => {
+  // Test if ID is a valid Mongoose Object ID
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid quiz id' });
+  }
   Quiz.findById(req.params.id)
     .populate({
       path: '_teacher',
@@ -99,48 +113,53 @@ quizRouter.get('/:id', (req, res) => {
       select: { _id: 1, username: 1 },
     })
     .populate({ path: '_forum', model: 'Forum', select: { _id: 1, name: 1, description: 1 } })
-    .then((quiz) => {
-      res.json(quiz);
-    })
+    .then((quiz) => res.json(quiz))
     .catch((err) => res.json(err));
 });
 
-// take quiz and submit attempt
-// update in user
-// update quiz result
-// update quiz details
-/// check whehter user attempted before
-// [0 , 1] => first option chose for first qn, second option chose for 2nd question
+/** Does quiz */
 quizRouter.post('/:id', (req, res) => {
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  // Test if ID is a valid Mongoose Object ID
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid forum id' });
+  }
+  // Test whether format is valid
+  if (!req.body.hasOwnProperty('attempt')) {
+    return res.status(400).send({ error: 'Invalid format' });
+  }
   const { attempt } = req.body;
-  console.log(attempt);
   Quiz.findById(req.params.id)
     .then((quiz) => {
+      if (quiz == null) {
+        return res.status(404).send({ error: 'Quiz does not exist' });
+      }
       let marks = 0;
       let total = 0;
+      // Test whether user finished the quiz
+      if (attempt.length !== quiz.questions.length) {
+        return res.status(400).send({ error: 'Did not finish the quiz' });
+      }
       const results = attempt.map((choice, index) => {
-        console.log(`Chosen option${choice - 1}`);
+        // Test if each choice is valid (Only 1 to 4)
+        if (choice <= 0 || choice > 4) {
+          return res.status(400).send({ error: 'Invalid attempt choice' });
+        }
         const question = quiz.questions[index];
-        console.log(question);
         const { points } = question;
         total += points;
         question.stats.choices[choice - 1] += 1;
         quiz.markModified('questions');
         if (question.options[choice - 1].isCorrectAnswer === true) {
-          console.log('Correct answer');
           question.stats.correct += 1;
           marks += points;
           return points;
         }
-        console.log('Wrong answer');
         question.stats.wrong += 1;
         return 0;
       });
-      console.log(`Results${results}`);
-      console.log(`Attempt${attempt}`);
-      console.log(`Marks${marks}`);
-      console.log(`userid${req.user.id}`);
-      console.log(`total${total}`);
       const quizAttempt = new QuizAttempt({
         _quiz: req.params.id,
         _user: req.user.id,
@@ -149,8 +168,6 @@ quizRouter.post('/:id', (req, res) => {
         marks,
         total,
       });
-      console.log(`Quiz Attempt: ${quizAttempt}`);
-      // const result = quiz.results;
       quizAttempt
         .save()
         .then((savedAttempt) => {
@@ -160,7 +177,6 @@ quizRouter.post('/:id', (req, res) => {
         })
         .then(() => {
           Users.findByIdAndUpdate(req.user.id, {
-            // req.user.id,
             $push: { _attempts: quizAttempt },
           }).then(() => {
             res.json(quizAttempt);
@@ -171,38 +187,14 @@ quizRouter.post('/:id', (req, res) => {
     .catch((err) => res.send(err));
 });
 
-// get quiz under forum given a forum id
-quizRouter.get('/filter', (req, res) => {
-  if (!req.user) {
-    return res.status(401).send({ error: 'unauthorized user' });
-  }
-  // Test if parent forum ID is given if it is a sub forum
-  if (!req.query.forum_id) {
-    return res.status(400).send({ error: 'forum not given' });
-  }
-  // Test if forum ID is a valid Mongoose Object ID
-  if (!req.query.forum_id.match(/^[0-9a-fA-F]{24}$/)) {
-    return res.status(400).send({ error: 'invalid forum id' });
-  }
-  const id = req.query.forum_id;
-  Quiz.find({ _forum: id }, (err, quiz) => {
-    if (err) res.send(err);
-    else res.json(quiz);
-  });
-});
-
 /** Delete quiz -> Only for teachers */
 quizRouter.delete('/:id', (req, res) => {
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
   }
-  // Test if parent forum ID is given if it is a sub forum
-  if (!req.query.forum_id) {
-    return res.status(400).send({ error: 'forum not given' });
-  }
   // Test if forum ID is a valid Mongoose Object ID
-  if (!req.query.forum_id.match(/^[0-9a-fA-F]{24}$/)) {
-    return res.status(400).send({ error: 'invalid forum id' });
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid quiz id' });
   }
   Quiz.findByIdAndRemove(req.params.id)
     .then(() => {

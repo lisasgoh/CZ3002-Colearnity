@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
@@ -127,7 +126,6 @@ describe('create comment', () => {
     const response = await request
       .post(`/api/comments?post_id=${post._id}`)
       .send(COMMENT_A);
-    console.log(response.body);
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({ error: 'unauthorized user' });
     done();

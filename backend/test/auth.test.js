@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable no-undef */
 const supertest = require('supertest');
 const mongoose = require('mongoose');
@@ -87,7 +86,6 @@ describe('create user', () => {
       .post('/api/users')
       .send(USER_A);
     const { user } = response.body;
-    console.log(response.body);
     expect(response.statusCode).toBe(200);
     expect(user).toHaveProperty('token');
     expect(user.email).toBe(USER_A.email);
