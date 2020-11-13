@@ -22,6 +22,7 @@ class ForumPage extends Component {
       forumMembership: null,
       isAdmin: null,
       isSubforum: null,
+      teacherName: null,
     };
   }
 
@@ -43,6 +44,7 @@ class ForumPage extends Component {
           forumMembership: forum.isSubscribed,
           isAdmin: forum._teacher._id == localStorage.getItem("userID"), //forum.isAdmin,
           isSubforum: forum.is_sub,
+          teacherName: forum._teacher.username,
         },
       });
     });
@@ -67,6 +69,7 @@ class ForumPage extends Component {
       posts,
       forumMembership,
       isAdmin,
+      teacherName,
     } = this.state;
     return (
       <div className="forumpage">
@@ -86,7 +89,8 @@ class ForumPage extends Component {
               {forumMembership ? "Leave Forum" : "Join Forum"}
             </Button>
           )}
-          <p>{forumDesc}</p>
+          <p className="teacher">Teacher: {teacherName}</p>
+          <p className="desc">{forumDesc}</p>
           <h3>Subforums</h3>
           <div className="subforums">
             {/* <SubforumButton subforumTitle="CZ3002 ASE" />
