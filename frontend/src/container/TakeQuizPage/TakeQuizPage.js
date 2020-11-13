@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import QuizQns from "../../components/QuizQns/QuizQns";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -8,9 +8,7 @@ import Step from "@material-ui/core/Step";
 import StepButton from "@material-ui/core/StepButton";
 import StepContent from "@material-ui/core/StepContent";
 import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import "./TakeQuizPage.css";
 
 import quizService from "./../../services/quiz";
@@ -32,9 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const quizValues = [];
-// function getSteps() {
-//   return ["Question 1", "Question 2", "Question 3", "Question 4"];
-// }
 
 function callbackQuiz(value) {
   console.log(value);
@@ -60,13 +55,8 @@ function getStepContent(question, value, index) {
 }
 
 export default function TakeQuizPage(props) {
-  // constructor(props) {
-  //     super();
-  //     this.setActiveStep = { activeStep: '0' };
-  // }
   const [quizID, setID] = useState(props.location.state.quizID);
   const [subforumID, setSubforumID] = useState(null);
-  // console.log("QUIZID IMPORT: " + quizID);
   const [quizTitle, setTitle] = useState(null);
   const [quizDesc, setDesc] = useState(null);
   const [quizQns, setQns] = useState([]);
@@ -74,8 +64,6 @@ export default function TakeQuizPage(props) {
 
   useEffect(() => {
     quizService.getQuiz(quizID).then((quizData) => {
-      console.log(quizData);
-      // setID(quizData._id);
       setSubforumID(quizData._forum._id);
       setTitle(quizData.title);
       setDesc(quizData.description);
@@ -118,17 +106,12 @@ export default function TakeQuizPage(props) {
   };
 
   const handleBack = () => {
-    console.log("HANDLING BACK");
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleSubmit = () => {
-    console.log(
-      "HANDLING SUBMIT.quizValues: " + quizValues + "quizID: " + quizID
-    );
     quizService.doQuiz(quizValues, quizID);
     history.push(`../subforumpage/${subforumID}`);
-    // return <Redirect to={`../subforumpage/${forumID}`} />;
   };
 
   const handleStep = (step) => () => {
@@ -145,10 +128,7 @@ export default function TakeQuizPage(props) {
   return (
     <div className="takequizpage">
       <div className="leftsection">
-        <h2></h2>
         <Divider variant="middle" />
-
-        {/* <h3>Quiz Progress</h3> */}
       </div>
 
       <div className="rightsection">
@@ -195,20 +175,14 @@ export default function TakeQuizPage(props) {
             ))}
           </Stepper>
           {activeStep === steps.length && (
-            <Paper square elevation={0} className={classes.resetContainer}>
-              {/* <Typography>All steps completed - you&apos;re finished</Typography>
-                            <Button onClick={handleReset} className={classes.button}>
-                                Reset
-                            </Button> */}
-            </Paper>
+            <Paper
+              square
+              elevation={0}
+              className={classes.resetContainer}
+            ></Paper>
           )}
         </div>
-
-        {/* <Button>Submit</Button> */}
       </div>
     </div>
   );
-  // }
 }
-
-// export default withStyles(useStyles) (TakeQuizPage);

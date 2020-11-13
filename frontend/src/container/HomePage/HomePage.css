@@ -27,16 +27,6 @@
   justify-content: center;
 }
 
-/* .homepage .rightsection .topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.homepage .rightsection .topbar h2 {
-  text-align: center;
-} */
-
 .homepage .rightsection h2 {
   display: inline-block;
 }

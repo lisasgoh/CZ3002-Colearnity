@@ -27,17 +27,8 @@ export default function QuizQns(props) {
     parentCallback([qnNum, event.target.value]);
   };
 
-  // const sendData = () => {
-  //   parentCallback({ index: qnNum - 1, value: value });
-  // };
-
   return (
     <div className="question">
-      {/* <div className="qnsheader">
-        <h6>Question {qnNum}</h6>
-        <h6>{qnWeightage} marks</h6>
-      </div> */}
-
       <p>{qn}</p>
 
       <div className="options">

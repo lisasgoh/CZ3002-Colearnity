@@ -1,11 +1,10 @@
 .newquizqn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-weight: bold;
-    border-bottom: 1px solid gray;
-    /* border-radius: 5px; */
-    padding: 20px;
-    margin-top: 20px;
-    margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  border-bottom: 1px solid gray;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 30px;
 }

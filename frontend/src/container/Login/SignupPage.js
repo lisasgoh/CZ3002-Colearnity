@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-// import { Button } from "../../components/Button/Button";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import "./Login.css";
 
 import usersService from "./../../services/users";
@@ -71,10 +69,6 @@ class SignupPage extends Component {
       <div className="main">
         <div className="signup-form">
           <form onSubmit={this.handleSubmit}>
-            {/* <Link to="/">
-              <NavigateBeforeIcon />
-            </Link> */}
-
             <h3>Sign Up</h3>
             <p> </p>
 

@@ -6,7 +6,6 @@ import Filter from "../../components/Filter/Filter";
 import Divider from "@material-ui/core/Divider";
 import { Link } from "react-router-dom";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
-import TeacherPost from "../../components/Post/TeacherPost";
 
 import usersService from "../../services/users";
 
@@ -24,17 +23,13 @@ class HomePage extends Component {
   }
 
   getFilteredPosts = (value) => {
-    console.log("ENTERED CALLBACK");
     this.setState({
       filteredPosts: value,
     });
-    console.log(value);
   };
 
   componentDidMount() {
     usersService.getUserHomePage().then((userData) => {
-      console.log(userData);
-      console.log(this.state.posts);
       this.setState({
         ...this.state,
         ...{
@@ -47,14 +42,6 @@ class HomePage extends Component {
     });
   }
 
-  /* useEffect(() => {
-    personService
-      .getAll('http://localhost:3001/persons')
-      .then(personData => {
-        setPersons(personData)
-      })
-  }, []) */
-
   render() {
     const {
       forums,
@@ -63,7 +50,6 @@ class HomePage extends Component {
       isStudent,
       filteredPosts,
     } = this.state;
-    console.log(createdForums);
 
     return (
       <div className="homepage">

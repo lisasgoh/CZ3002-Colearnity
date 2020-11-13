@@ -1,6 +1,5 @@
-import React, { Component, useEffect, useState } from "react";
+import React from "react";
 import Post from "../../components/Post/Post";
-import ForumButton from "../../components/ForumButtons/ForumButton";
 import Filter from "../../components/Filter/Filter";
 import "./SearchResults.css";
 import search_query from "../../services/search";
@@ -33,9 +32,6 @@ export default class SearchResults extends React.Component {
           ? `/subforumpage/${forumSearch._id}`
           : `/forumpage/${forumSearch._id}`,
       });
-      console.log(postSearch);
-      console.log(forumSearch);
-      console.log("ISSUB?" + forumSearch.is_sub);
     });
   };
 

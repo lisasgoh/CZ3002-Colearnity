@@ -9,7 +9,6 @@ export default function ForumButton(props) {
       marginRight: "0.9em",
       borderRadius: "6px",
       border: "1px solid black",
-      // padding: "30px 15px",
       fontWeight: "bolder",
       width: "150px",
       height: "100px",
@@ -27,12 +26,7 @@ export default function ForumButton(props) {
 
   return (
     <div>
-      <ForumButton
-        variant="contained"
-        size="small"
-        clickable
-        // className={classes.button}
-      >
+      <ForumButton variant="contained" size="small" clickable>
         {props.forumTitle}
       </ForumButton>
     </div>

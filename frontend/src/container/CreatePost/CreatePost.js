@@ -17,8 +17,6 @@ export default function CreateForum(props) {
   }, []);
 
   function validateForm() {
-    console.log(title);
-    console.log(content);
     return title.length > 0 && content.length > 0;
   }
 
@@ -28,10 +26,8 @@ export default function CreateForum(props) {
       const post = {
         title: title,
         description: content,
-        // postTags: this.state.tags,
       };
       postService.create(post, forumID).then((newPost) => {
-        console.log(newPost);
         history.push(`/postdetailpage/${newPost._id}`);
       });
     } catch (e) {
@@ -39,11 +35,6 @@ export default function CreateForum(props) {
     }
   }
 
-  console.log(title);
-  console.log(content);
-  console.log(forumID);
-
-  // let combined = ["icon", "fa fa-plus-circle"].join(" ");
   return (
     <div className="forumpage">
       <div className="leftsection_createpost"></div>
@@ -76,11 +67,6 @@ export default function CreateForum(props) {
                 onChange={(e) => setContent(e.target.value)}
               />
             </FormGroup>
-            {/* <label>Tags</label>
-            <select value={this.state.tags} onChange={(event) => this.setState({tags: event.target.value})}>
-                <option value="CZ3006">CZ3006 ASE</option>
-                <option value="CZ3001">CZ3001 ACOA</option>
-            </select> */}
             <Button disabled={!validateForm()} type="submit">
               Add Post
             </Button>

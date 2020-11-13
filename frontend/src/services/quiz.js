@@ -12,14 +12,14 @@ const getQuiz = (id) => {
 
 /**
  * @param {array} answerArray llist of answers by the user
- * @param {string} id quiz id 
+ * @param {string} id quiz id
  * @return {object} quiz attempt object
  */
 const doQuiz = (answerArray, id) => {
   const newObject = {
     attempt: answerArray,
-  }
-  console.log(JSON.stringify(newObject))
+  };
+  console.log(JSON.stringify(newObject));
   const request = axios({
     method: "post",
     url: `${baseUrl}/${id}`,
@@ -41,7 +41,6 @@ const doQuiz = (answerArray, id) => {
  * @return {object} newly created quiz object
  */
 const postQuiz = (quizTitle, questions, forum_id) => {
-  console.log("DID IT ENTER?");
   const postQuizData = {
     title: quizTitle,
     questions: questions,
@@ -62,14 +61,14 @@ const postQuiz = (quizTitle, questions, forum_id) => {
 };
 
 /**
- * @param {string} id quiz id to be deleted 
+ * @param {string} id quiz id to be deleted
  */
 const deleteObj = (id) => {
   const request = axios({
     method: "delete",
     url: `${baseUrl}/${id}`,
     headers: {
-      "token": localStorage.getItem("token")  
+      token: localStorage.getItem("token"),
     },
     withCredentials: true,
   });

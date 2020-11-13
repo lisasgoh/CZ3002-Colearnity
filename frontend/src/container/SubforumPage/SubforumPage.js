@@ -6,11 +6,9 @@ import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
 import { Link } from "react-router-dom";
 import "./SubforumPage.css";
 
-// import API from "../../utils/API";
 import forumService from "./../../services/forum";
 
 class SubforumPage extends Component {
@@ -82,7 +80,6 @@ class SubforumPage extends Component {
       isAdmin,
       parentForumID,
     } = this.state;
-    // let combined = ["icon", "fa fa-plus-circle"].join(" ");
 
     return (
       <div className="subforumpage">
@@ -104,12 +101,6 @@ class SubforumPage extends Component {
 
           <h3>Quizzes</h3>
           <div className="quizzes">
-            {/* <QuizButton
-              quizTitle="Quiz 1"
-              completed={true}
-              completionDate="11/9/2020"
-              grade="10/10"
-            /> */}
             {incompleteQuizzes &&
               incompleteQuizzes.map((quiz) => (
                 <QuizButton

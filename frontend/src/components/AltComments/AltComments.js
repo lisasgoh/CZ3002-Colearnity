@@ -25,7 +25,6 @@ import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    //maxWidth: 345,
     marginTop: "1em",
     border: "1px solid rgba(0, 0, 0, 0.05)",
   },
@@ -69,7 +68,6 @@ export default function AltComments(props) {
     isPoster,
   } = props;
 
-  //console.log(props);
   //FOR LIKES
   const [liked, setLiked] = useState(userVote > 0); //props.liked
   const [disliked, setDisliked] = useState(userVote < 0);
@@ -90,12 +88,6 @@ export default function AltComments(props) {
     }
 
     setLikesDisplay(likesDisplay + difference);
-    // voteService.votePost(difference, id);
-    // if (difference > 0) {
-    //   voteService.votePost(+1, id);
-    // } else {
-    //   voteService.votePost(-1, id);
-    // }
   };
   const setDislikeHandler = () => {
     voteService.voteComment(-1, id);
@@ -112,12 +104,6 @@ export default function AltComments(props) {
       difference += 1;
     }
     setLikesDisplay(likesDisplay + difference);
-    // voteService.votePost(difference, id);
-    // if (difference > 0) {
-    //   voteService.voteComment(+1, id);
-    // } else {
-    //   voteService.votePost(-1, id);
-    // }
   };
 
   //FOR DELETES
@@ -148,12 +134,10 @@ export default function AltComments(props) {
   };
 
   const editContent = (desc) => {
-    console.log("TEST!" + desc + props.id);
     commentService.update(props.id, { text: desc }).then((newPostDesc) => {
       console.log(newPostDesc);
       history.go(0);
     });
-    //history.go(0);
   };
 
   function handleDeleteComment() {

@@ -22,7 +22,6 @@ export default function Filter(props) {
     ...new Set(posts && posts.map((post) => post._forum.name)),
   ];
   console.log(categories);
-  //checking by forum name. fix later?
 
   const handleChange = (event) => {
     setFilter(event.target.value); //only sets once after handled change
@@ -53,11 +52,6 @@ export default function Filter(props) {
                 {category}
               </MenuItem>
             ))}
-          {/* <MenuItem value={"CZ3002 ASE"}>CZ3002 ASE</MenuItem>
-          <MenuItem value={"CZ3001 ACOA"}>CZ3001 ACOA</MenuItem>
-          <MenuItem value={"AZ1007 Data Structures"}>
-            CZ1007 Data Structures
-          </MenuItem> */}
         </Select>
       </FormControl>
     </div>

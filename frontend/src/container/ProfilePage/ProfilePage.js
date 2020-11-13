@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import Post from "../../components/Post/Post";
 import "./ProfilePage.css";
 import ProfilePic from "../../assets/profile_placeholder.png";
-import ProfileCard from "./ProfileCard";
 import Button from "@material-ui/core/Button";
 import QuizButton from "../../components/ForumButtons/QuizButton";
-import Grid from "@material-ui/core/Grid";
 import { Redirect } from "react-router-dom";
 
 import usersService from "../../services/users";
@@ -16,7 +14,7 @@ class StudentProfilePage extends Component {
 
     this.state = {
       username: null,
-      posts: [], //posts are from all forums, not user posts - consider how to populate
+      posts: [],
       grades: [],
     };
   }
@@ -65,9 +63,6 @@ class StudentProfilePage extends Component {
 
     return (
       <div className="container">
-        {/* <div className="logout">
-          <Grid container justify="flex-end"></Grid>
-        </div> */}
         <img className="profilepic" src={ProfilePic} alt="Logo" />
         <h1>{username}</h1>
 
@@ -112,15 +107,6 @@ class StudentProfilePage extends Component {
                   completed={true}
                 />
               ))}
-            {/* {grades &&
-              grades.map((grade, index) => (
-                <ProfileCard
-                  scoredMarks={grade.marks}
-                  totalMarks={grade.total}
-                  quizTitle={grade._quiz.title}
-                  quizAttempt={grade._attempts}
-                />
-              ))} */}
           </div>
         </div>
       </div>

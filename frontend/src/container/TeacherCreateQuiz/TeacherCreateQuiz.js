@@ -4,11 +4,8 @@ import NewQuizQn from "../../components/NewQuizQn/NewQuizQn";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
-import Icon from "@material-ui/core/Icon";
 import "./TeacherCreateQuiz.css";
-import API from "../../utils/API";
 import createQuizService from "../../services/quiz";
-import { Link } from "react-router-dom";
 import forumService from "./../../services/forum";
 
 class TeacherCreateQuiz extends Component {
@@ -121,24 +118,13 @@ class TeacherCreateQuiz extends Component {
     const { quizTitle, questions } = this.state;
     console.log("WE DONE IT" + quizTitle);
     event.preventDefault();
-    /* try {
-      //await createQuizService.postQuiz(quizTitle,questions,"5f8521b48e9dffee9f62e06a");
-      await createQuizService.postQuiz(
-        quizTitle,
-        questions,
-        this.state.subforum_id.toString()
-      );
-     //history.go("http://localhost:3001/teachercreatequiz");
-     window.location.href = "/homepage";
-    } catch (e) {
-      alert("IS IT THIS?" + e.message);
-    } */
     try {
-      createQuizService.postQuiz(quizTitle, questions, this.state.subforum_id)
+      createQuizService
+        .postQuiz(quizTitle, questions, this.state.subforum_id)
         .then(() => {
           this.props.history.push(`/subforumpage/${this.state.subforum_id}`);
-        })
-    }  catch (e) {
+        });
+    } catch (e) {
       console.log(e);
     }
   };
@@ -157,28 +143,7 @@ class TeacherCreateQuiz extends Component {
           <div className="quizzes">
             {quizzes &&
               quizzes.map((quiz) => <QuizButton quizTitle={quiz.title} />)}
-            {/* <QuizButton
-              quizTitle="Quiz 1"
-              completed={true}
-              completionDate="11/9/2020"
-              grade="10/10"
-            />
-            <QuizButton
-              quizTitle="Quiz 2"
-              completed={true}
-              completionDate="25/9/2020"
-              grade="6/10"
-            />
-            <QuizButton
-              quizTitle="Quiz 3"
-              completed={false}
-              dueDate="25/12/2020"
-            /> */}
           </div>
-          {/* <Icon
-            className={combined}
-            style={{ color: "#fa923f", fontSize: 100, margin: "0.3em" }}
-          /> */}
         </div>
 
         <div className="rightsection">
@@ -205,7 +170,7 @@ class TeacherCreateQuiz extends Component {
           <Button color="primary" onClick={this.addQuestion}>
             Add New Question
           </Button>
-          <Button color="primary" onClick={this.handleSubmit} >
+          <Button color="primary" onClick={this.handleSubmit}>
             Submit New Quiz
           </Button>
         </div>

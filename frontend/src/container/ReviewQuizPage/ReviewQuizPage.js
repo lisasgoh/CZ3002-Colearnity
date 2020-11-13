@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useLocation } from "react";
-import Post from "../../components/Post/Post";
-import QuizButton from "../../components/ForumButtons/QuizButton";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import QuizQns from "../../components/QuizQns/QuizQns";
 import Divider from "@material-ui/core/Divider";
@@ -11,29 +9,22 @@ import quizAttemptService from "./../../services/quizattempt";
 
 export default function ReviewQuizPage(props) {
   let { quizID, attemptID } = props.location.state;
-  // const quizID = quizID; //props.location.state.quizID; //useLocation();
-  // const attemptID = attemptID;
 
   const [quizTitle, setTitle] = useState(null);
-  // const [quizDesc, setDesc] = useState(null);
   const [quizScore, setQuizScore] = useState(null);
   const [totalScore, setTotalScore] = useState(null);
-  // const [quizQns, setQns] = useState([]);
   const [subforumName, setSubforumName] = useState(null);
-  // const [quizAttempt, setAttempt] = useState([]);
-
   const [qnsAttempt, setQnsAttempt] = useState({
     quizQns: [],
     quizAttempt: [],
     quizResults: [],
   });
-  console.log(quizID); //should be only quizID
 
   useEffect(() => {
     quizAttemptService.getAttempt(attemptID).then((attemptData) => {
       console.log(attemptData);
       setTitle(attemptData._quiz.title);
-      // setDesc(quizData.description);
+
       setQnsAttempt({
         quizQns: attemptData._quiz.questions,
         quizAttempt: attemptData.attempt,
@@ -52,27 +43,7 @@ export default function ReviewQuizPage(props) {
         <Divider variant="middle" />
 
         <h3>Quizzes</h3>
-        <div className="quizzes">
-          {/* <QuizButton
-            quizTitle="Quiz 1"
-            completed={true}
-            completionDate="11/9/2020"
-            grade="10/10"
-          />
-          <QuizButton
-            quizTitle="Quiz 2"
-            completed={true}
-            completionDate="25/9/2020"
-            grade="6/10"
-          />
-          <Link to="/takequizpage">
-            <QuizButton
-              quizTitle="Quiz 3"
-              completed={false}
-              dueDate="25/12/2020"
-            />
-          </Link> */}
-        </div>
+        <div className="quizzes"></div>
       </div>
 
       <div className="rightsection">
@@ -95,12 +66,7 @@ export default function ReviewQuizPage(props) {
               results={qnsAttempt.quizResults[index]}
             />
           ))}
-        {/* <QuizQns qnNum="" qnWeightage="10" value="option 2" disabled={false} />
-         <QuizQns qnNum="2" qnWeightage="10" disabled={true} />
-         <QuizQns qnNum="3" qnWeightage="10" disabled={true} />
-         <QuizQns qnNum="4" qnWeightage="10" disabled={true} />
-         <QuizQns qnNum="5" qnWeightage="10" disabled={true} />
-         <QuizQns qnNum="6" qnWeightage="10" disabled={true} /> */}
+
         <Link
           to={{
             pathname: `../takequizpage/${quizID}`,
@@ -119,5 +85,3 @@ export default function ReviewQuizPage(props) {
     </div>
   );
 }
-
-// export default ReviewQuizPage;

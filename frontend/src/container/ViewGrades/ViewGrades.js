@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import QuizButton from "../../components/ForumButtons/QuizButton";
 import QuestionStats from "../../components/QuestionStats/QuestionStats";
-import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import { withStyles } from "@material-ui/core/styles";
 import {
-  Divider,
   Table,
   TableBody,
   TableCell,
@@ -13,7 +10,6 @@ import {
   TableRow,
   Paper,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import "./ViewGrades.css";
 
 import quizService from "./../../services/quiz";
@@ -49,7 +45,6 @@ class ViewGrades extends Component {
   componentDidMount() {
     quizService.getQuiz(this.state.quizID).then((quizData) => {
       console.log(quizData);
-      // setID(quizData._id);
       this.setState({
         ...this.state,
         ...{

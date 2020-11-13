@@ -9,9 +9,4 @@ export const MenuItems = [
     url: "/profilepage",
     cName: "nav-links",
   },
-  //     {
-  //         title: 'Log Out',
-  //         url: '#',
-  //         cName: 'nav-links-mobile'
-  //     }
 ];

@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-
-import "./QuestionStats.css";
+import React from "react";
 
 import CanvasJSReact from "./../../canvasjs.react";
 var CanvasJS = CanvasJSReact.CanvasJS;
@@ -18,7 +16,7 @@ export default function QuestionStats(props) {
 
   for (var i = 0; i < options.length; i++) {
     pieData.push({
-      y: (stats.choices[i] / totalResponses) * 100,
+      y: Math.round((stats.choices[i] / totalResponses) * 100 * 100) / 100,
       label: options[i].answerBody,
     });
   }
@@ -31,8 +29,6 @@ export default function QuestionStats(props) {
         options={{
           theme: "light2",
           animationEnabled: true,
-          // exportFileName: "New Year Resolutions",
-          // exportEnabled: true,
           title: {
             text: question,
           },

@@ -2,19 +2,12 @@ import React, { Component } from "react";
 import Post from "../../components/Post/Post";
 import "./PostDetailPage.css";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
-import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import SubforumButton from "../../components/ForumButtons/SubforumButton";
-import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
-import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
+import { FormGroup, FormControl } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AltComments from "./../../components/AltComments/AltComments";
 import postService from "./../../services/post";
 import commentService from "./../../services/comment";
-import { useHistory } from "react-router-dom";
-import forumService from "./../../services/forum";
 
 const useStyles = (theme) => ({
   textField: {
@@ -32,7 +25,6 @@ class PostDetailPage extends Component {
   constructor(props) {
     super(props);
     // const id = this.props.match.params.id;
-    // console.log(props.location.state);
 
     this.state = {
       id: this.props.match.params.id,
@@ -50,9 +42,7 @@ class PostDetailPage extends Component {
       forumID: null,
       forumName: null,
       forumDesc: null,
-      linkforums: null, //this.props.location.state.isSub
-      //   ? `/subforumpage/${this.props.location.state.forumID}`
-      //   : `/forumpage/${this.props.location.state.forumID}`,
+      linkforums: null,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -86,13 +76,7 @@ class PostDetailPage extends Component {
   }
 
   componentDidMount() {
-    // console.log(
-    //   "Did it pass data: " +
-    //     this.props.location.state.isSub +
-    //     this.props.location.state.forumID
-    // );
     postService.getIndivPost(`${this.state.id}`).then((post) => {
-      // console.log(forumData);
       console.log(post);
       this.setState({
         ...this.state,
@@ -114,24 +98,10 @@ class PostDetailPage extends Component {
             : `/forumpage/${post._forum._id}`,
         },
       });
-      // return forumService.getForum(post._forum);
     });
-    // .then(() => {
-    //   console.log("Is post from subforum? " + forum.is_sub);
-    //   this.setState({
-    //     linkforums: forum.is_sub
-    //       ? `/subforumpage/${this.state.forumID}`
-    //       : `/forumpage/${this.state.forumID}`,
-    //   });
-    // });
   }
 
   render() {
-    console.log(this.state);
-    // console.log(
-    //   this.props.location.state.isSub + this.props.location.state.forumID
-    // );
-    console.log(this.state.newreply);
     const { classes } = this.props;
     return (
       <div className="postdetailpage">
@@ -142,18 +112,7 @@ class PostDetailPage extends Component {
           >
             <h2>{this.state.forumName}</h2>
           </Link>
-
-          {/* <Button variant="contained" color="secondary" size="small">
-            Join Forum
-          </Button> */}
           <p>{this.state.forumDesc}</p>
-
-          {/* <h3>Subforums</h3>
-          <div className="subforums">
-            <SubforumButton subforumTitle="CZ3002 ASE" />
-            <SubforumButton subforumTitle="CZ3001 ACOA" />
-            <SubforumButton subforumTitle="CZ1007 Data Structures" />
-          </div> */}
         </div>
 
         <div className="rightsection">
@@ -184,16 +143,6 @@ class PostDetailPage extends Component {
               Submit
             </Button>
           </form>
-          {/* <Grid container justify="flex-end"> */}
-          {/* <Button
-            type="submit"
-            value="Submit"
-            variant="contained"
-            className={classes.submitBtn}
-          >
-            Submit
-          </Button> */}
-          {/* </Grid> */}
 
           <div className="topbar">
             <h2>Comments</h2>

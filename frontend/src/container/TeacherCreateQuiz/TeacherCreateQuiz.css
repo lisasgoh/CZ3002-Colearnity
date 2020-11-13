@@ -26,11 +26,6 @@
   font-weight: 500;
 }
 
-/* .teachercreatequiz .leftsection .createquizbtn {
-    margin-top: 30px;
-    transform: scale(2.5);
-} */
-
 .teachercreatequiz .quizzes {
   display: flex;
   flex-wrap: wrap;
@@ -49,13 +44,6 @@
   justify-content: center;
   align-items: center;
 }
-
-/* .teachercreatequiz .rightsection .createquiz {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-weight: bold;
-} */
 
 .teachercreatequiz .rightsection h2 {
   display: inline-block;

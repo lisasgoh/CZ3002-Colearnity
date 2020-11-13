@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import {
   Button,
   Chip,
@@ -24,8 +24,6 @@ import Update from "./../../services/post";
 import { useHistory } from "react-router-dom";
 import DeletePostPopup from "./../../components/Popup/Popup";
 
-// import Typography from "@material-ui/core/Typography";
-
 import voteService from "./../../services/vote";
 import postService from "./../../services/post";
 
@@ -34,7 +32,6 @@ export default function Post(props) {
     id,
     title,
     username,
-    editingaccess,
     content,
     numLikes,
     tags,
@@ -44,18 +41,11 @@ export default function Post(props) {
     numComments,
   } = props;
 
-  // console.log(props);
-
   //FOR LIKES
   const [liked, setLiked] = useState(userVote > 0); //props.liked
   const [disliked, setDisliked] = useState(userVote < 0);
   const [likesDisplay, setLikesDisplay] = useState(numLikes);
 
-  // useEffect(() => {
-  //   setLiked(userVote > 0);
-  //   setDisliked(userVote < 0);
-  //   setLikesDisplay(numLikes);
-  // }, []);
   useEffect(() => {
     setLiked(userVote > 0);
     setDisliked(userVote < 0);
@@ -142,31 +132,20 @@ export default function Post(props) {
   };
 
   const modalHandlerEditTrue = () => {
-    console.log(content + "PROPS" + content);
     setModalEdit(true);
   };
 
   const setContent = (content) => {
     setPostDescription(content.target.value);
-    console.log(content.target.value);
   };
 
   const editContent = (desc) => {
-    console.log("TEST!" + desc + id);
     Update.update(id, { description: desc }).then((newPostDesc) => {
-      console.log(newPostDesc);
       history.go(0);
     });
     history.go(0);
   };
 
-  // const [modalShow, setModal] = useState(false);
-  // const modalHandlerFalse = () => {
-  //   setModal(false);
-  // };
-  // const modalHandlerTrue = () => {
-  //   setModal(true);
-  // };
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -207,15 +186,6 @@ export default function Post(props) {
             <FaceRoundedIcon />
             <h6>{username}</h6>
           </div>
-
-          {/* {editingaccess ? (
-            <div className="posteractivity">
-              <EditRoundedIcon />
-              <DeleteRoundedIcon />
-            </div>
-          ) : (
-            ""
-          )} */}
         </div>
 
         <div className="posttitle">{title}</div>
@@ -232,10 +202,8 @@ export default function Post(props) {
             }}
           >
             <Button
-              // variant="contained"
               color="primary"
               size="small"
-              // className={classes.button}
               startIcon={<QuestionAnswerRoundedIcon />}
             >
               Comment
@@ -306,7 +274,6 @@ export default function Post(props) {
             prevContent={content}
           />
 
-          {/* <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} /> */}
           <Dialog
             open={open}
             onClose={handleClose}
@@ -330,26 +297,9 @@ export default function Post(props) {
       </div>
 
       <div className="tags">
-        {/* <StyledChip
-          size="small"
-          label="CZ3002 ASE"
-          //   onClick={handleClick}
-          clickable
-          component="a"
-          href="https://www.google.com"
-        />
-        <StyledChip
-          size="small"
-          label="CZ3002 ASE"
-          //   onClick={handleClick}
-          clickable
-          component="a"
-          href="https://www.google.com"
-        /> */}
         <StyledChip
           size="small"
           label={tags.name}
-          //   onClick={handleClick}
           clickable
           component="a"
           href={

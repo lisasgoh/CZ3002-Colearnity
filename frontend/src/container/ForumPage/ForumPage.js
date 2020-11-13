@@ -27,10 +27,6 @@ class ForumPage extends Component {
   }
 
   componentDidMount() {
-    // forumService
-    //   .getForum(`${this.state.id}`)
-    //   .then((response) => console.log(response));
-
     forumService.getForum(`${this.state.id}`).then((forum) => {
       console.log(forum);
       this.setState({
@@ -55,10 +51,6 @@ class ForumPage extends Component {
     this.setState({ forumMembership: !this.state.forumMembership });
     console.log(this.state.id);
     forumService.toggleSubscribe(this.state.id);
-
-    // const forum = {
-    //   isSubscribed: this.state.forumMembership,
-    // };
   };
 
   render() {
@@ -95,9 +87,6 @@ class ForumPage extends Component {
           <p className="desc">{forumDesc}</p>
           <h3>Subforums</h3>
           <div className="subforums">
-            {/* <SubforumButton subforumTitle="CZ3002 ASE" />
-            <SubforumButton subforumTitle="CZ3001 ACOA" />
-            <SubforumButton subforumTitle="CZ1007 Data Structures" /> */}
             {subforums &&
               subforums.map((subforum) => (
                 <Link to={{ pathname: `/subforumpage/${subforum._id}` }}>

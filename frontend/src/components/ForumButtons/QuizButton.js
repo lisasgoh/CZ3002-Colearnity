@@ -26,7 +26,6 @@ export default function SimpleCard(props) {
 
   const useStyles = makeStyles({
     root: {
-      // minWidth: 200,
       width: 160,
       borderRadius: "6px",
       padding: "6px",
