@@ -142,7 +142,7 @@ export default function Post(props) {
   };
 
   const modalHandlerEditTrue = () => {
-    console.log(content + "PROPS" + props.content);
+    console.log(content + "PROPS" + content);
     setModalEdit(true);
   };
 
@@ -152,8 +152,8 @@ export default function Post(props) {
   };
 
   const editContent = (desc) => {
-    console.log("TEST!" + desc + props.postID);
-    Update.update(props.postID, { description: desc }).then((newPostDesc) => {
+    console.log("TEST!" + desc + id);
+    Update.update(id, { description: desc }).then((newPostDesc) => {
       console.log(newPostDesc);
       history.go(0);
     });
@@ -303,7 +303,7 @@ export default function Post(props) {
             isDelete={false}
             setContent={setContent}
             editPost={editContent}
-            prevContent={props.content}
+            prevContent={content}
           />
 
           {/* <DeletePostPopup show={modalShow} onHide={modalHandlerFalse} /> */}
