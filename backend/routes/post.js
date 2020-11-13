@@ -10,12 +10,13 @@ const Vote = require('../models/Vote');
 
 const postRouter = express.Router();
 
-// get individual post info
+/** Get a post given a particular ID */
 postRouter.get('/:id', (req, res) => {
   console.log('HERE');
   if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send({ error: 'invalid post id' });
   }
+  // This populates the child references (comments) with its data such as the comment text
   Post.findById(req.params.id)
     .populate({
       path: '_comments',
@@ -37,6 +38,7 @@ postRouter.get('/:id', (req, res) => {
       if (post == null) {
         return res.status(404).send({ error: 'post does not exist' });
       }
+      // If user is authenticated, identify if the user has voted on the post or any of the comments
       if (req.user) {
         const postObj = post.toObject();
         Vote.findOne({ _post: post._id, _voter: req.user.id })
@@ -72,7 +74,7 @@ postRouter.get('/:id', (req, res) => {
     .catch((error) => res.json(error));
 });
 
-// create post
+/** Creates a post */
 postRouter.post('/', (req, res) => {
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
@@ -130,8 +132,7 @@ postRouter.post('/', (req, res) => {
   });
 });
 
-// update post title/description
-// need to be the poster
+/** Edit a post given a particular ID */
 postRouter.put('/:id', (req, res) => {
   Post.findById(req.params.id).then((post) => {
     if (post._poster.toString().localeCompare(req.user.id.toString()) === 0) {
@@ -144,6 +145,7 @@ postRouter.put('/:id', (req, res) => {
   });
 });
 
+/** Delete a post given a particular ID */
 postRouter.delete('/:id', (req, res) => {
   console.log('Delete post!');
   Post.findById(req.params.id).then((post) => {
