@@ -12,7 +12,6 @@ const postRouter = express.Router();
 
 /** Get a post given a particular ID */
 postRouter.get('/:id', (req, res) => {
-  console.log('HERE');
   if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send({ error: 'invalid post id' });
   }
@@ -48,7 +47,6 @@ postRouter.get('/:id', (req, res) => {
             } else {
               postObj.userVote = votePost.dir;
             }
-            // console.log(JSON.stringify(postObj, null, 1));
             const comments = postObj._comments;
             const promises = comments
               .map((comment) => Vote.findOne({ _comment: comment._id, _voter: req.user.id })
@@ -61,14 +59,12 @@ postRouter.get('/:id', (req, res) => {
                   return comment;
                 }));
             Promise.all(promises).then((commentsWithVote) => {
-              // console.log(`votesss${JSON.stringify(commentsWithVote)}`);
               postObj._comments = commentsWithVote;
-              // console.log(`Final post${JSON.stringify(postObj, null, 1)}`);
-              res.json(postObj);
+              return res.json(postObj);
             }).catch((error) => res.json(error));
           });
       } else {
-        res.json(post);
+        return res.json(post);
       }
     })
     .catch((error) => res.json(error));
@@ -96,12 +92,6 @@ postRouter.post('/', (req, res) => {
     _comments: [],
     _forum: req.query.forum_id,
   });
-  // This is wrong i think because the promise is unhandled???
-  // Forum.findById(req.query.forum_id).then((forum) => {
-  //   if (forum == null) {
-  //     return res.status(400).send({ error: 'Forum does not exist' });
-  //   }
-  // });
   post.save((err, savedPost) => {
     if (err) {
       console.log(err);
@@ -111,8 +101,6 @@ postRouter.post('/', (req, res) => {
       return res.status(500);
       // return res.send(err);
     }
-    console.log(req.body);
-    console.log(savedPost);
     Forum.findByIdAndUpdate(req.query.forum_id,
       { $push: { _posts: { $each: [savedPost._id], $position: 0 } } },
       { new: true })
@@ -124,7 +112,6 @@ postRouter.post('/', (req, res) => {
           { $push: { _posts: { $each: [savedPost._id], $position: 0 } } },
           { new: true })
           .then(() => {
-            // console.log(user);
             console.log(savedPost);
             res.json(savedPost);
           });
@@ -167,8 +154,6 @@ postRouter.delete('/:id', (req, res) => {
     if (post == null) {
       return res.status(400).send({ error: 'post does not exist' });
     }
-    console.log(post._poster);
-    console.log(req.user.id);
     if (post._poster.toString().localeCompare(req.user.id.toString()) === 0) {
       Post.findByIdAndDelete(req.params.id)
         .then((removedPost) => res.json(removedPost))

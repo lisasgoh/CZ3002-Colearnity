@@ -319,6 +319,20 @@ describe('subscribe/unsubscribe', () => {
     expect(response.body).toEqual({ error: 'Cannot subscribe to sub forum' });
     done();
   });
+  it('subscribe successful', async (done) => {
+    const response = await request
+      .post(`/api/forum/${newForum._id}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ success: 'Success: User has successfully subscribed / unsubscribed' });
+    done();
+  });
+  it('unsubscribe successful', async (done) => {
+    const response = await request
+      .post(`/api/forum/${newForum._id}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ success: 'Success: User has successfully subscribed / unsubscribed' });
+    done();
+  });
   it('subscribe unsuccessful - forum does not exist', async (done) => {
     await Forum.remove({});
     const response = await request

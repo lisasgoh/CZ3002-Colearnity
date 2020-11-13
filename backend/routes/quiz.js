@@ -1,6 +1,8 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
+
 const express = require('express');
 const Quiz = require('../models/Quiz');
 const Forum = require('../models/Forum');
@@ -9,8 +11,7 @@ const QuizAttempt = require('../models/QuizAttempt');
 
 const quizRouter = express.Router();
 
-// create new quiz
-// Update user
+/** Creates new quiz */
 quizRouter.post('/', (req, res) => {
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
@@ -89,7 +90,7 @@ quizRouter.post('/', (req, res) => {
   });
 });
 
-// get quiz by id
+/** Gets quiz given an ID */
 quizRouter.get('/:id', (req, res) => {
   Quiz.findById(req.params.id)
     .populate({
@@ -190,7 +191,7 @@ quizRouter.get('/filter', (req, res) => {
   });
 });
 
-// Only for teachers
+/** Delete quiz -> Only for teachers */
 quizRouter.delete('/:id', (req, res) => {
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });

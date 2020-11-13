@@ -6,7 +6,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Forum = require('../models/Forum');
-const Quiz = require('../models/Quiz');
 const Users = require('../models/Users');
 const QuizAttempt = require('../models/QuizAttempt');
 const Util = require('../util/util');
@@ -15,8 +14,6 @@ const forumRouter = express.Router();
 
 /** Create new forum */
 forumRouter.post('/', (req, res) => {
-  console.log(req.isAuthenticated());
-  console.log(req.body);
   // Test if user is authorized
   if (!req.user || (req.user && req.user.is_student)) {
     return res.status(401).send({ error: 'unauthorized user' });
@@ -42,12 +39,10 @@ forumRouter.post('/', (req, res) => {
   });
   console.log(forum);
   if (req.body.is_sub === true) { // add parent forum id and subforums list
-    console.log('IS SUBFORUM');
     Forum.findById(req.query.forum_id).then((parentForum) => {
       if (parentForum == null) {
         return res.status(400).send({ error: 'parent forum does not exist' });
       } if (parentForum.is_sub === true) {
-        // console.log('HEREERERE parent forumi s sub');
         return res.status(400).send({ error: 'parent forum is not a main forum' });
       }
       forum.save((err, savedForum) => {
@@ -83,7 +78,6 @@ forumRouter.post('/', (req, res) => {
 
 /** Subscribe to forum */
 forumRouter.post('/:id', (req, res) => {
-  console.log('HI');
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
   }
@@ -105,16 +99,12 @@ forumRouter.post('/:id', (req, res) => {
         }
         return user.save();
       })
-      .then((user) => {
-        res.json(user);
-      })
-      .catch((err) => {
-        res.send(err);
-      });
+      .then(() => res.send({ success: 'Success: User has successfully subscribed / unsubscribed' }))
+      .catch((err) => res.send(err));
   });
 });
 
-// get forum details todo -> populate fields --> consider sorting
+/** Get forum details */
 forumRouter.get('/:id', (req, res) => {
   if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send({ error: 'invalid forum id' });
@@ -149,7 +139,6 @@ forumRouter.get('/:id', (req, res) => {
               res.json(forumObj);
             }).catch((err) => res.send(err));
           } else {
-            console.log(forum._quizzes);
             QuizAttempt.aggregate(
               [
                 {
@@ -182,18 +171,9 @@ forumRouter.get('/:id', (req, res) => {
           }
         });
       } else {
-        res.json(forum);
+        return res.json(forum);
       }
     });
-});
-
-// change forum details todo
-forumRouter.put('/:id', (req, res) => {
-  Forum.findByIdAndUpdate(req.params.id, req.body)
-    .then((updatedForum) => {
-      res.json(updatedForum);
-    })
-    .catch((error) => res.send(error));
 });
 
 // delete forum
