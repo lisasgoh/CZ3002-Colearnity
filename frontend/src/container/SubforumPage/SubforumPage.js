@@ -76,22 +76,11 @@ class SubforumPage extends Component {
             /> */}
             {quizzes &&
               quizzes.map((quiz) => (
-                <Link
-                  to={{
-                    pathname: isAdmin
-                      ? "/"
-                      : quiz.taken
-                      ? `/forum/reviewquizpage/${quiz._id}`
-                      : `/forum/takequizpage/${quiz._id}`,
-                    quizID: quiz._id,
-                  }}
-                >
-                  <QuizButton
-                    quizTitle={quiz.title}
-                    id={quiz._id}
-                    isAdmin={isAdmin}
-                  />
-                </Link>
+                <QuizButton
+                  quizTitle={quiz.title}
+                  id={quiz._id}
+                  isAdmin={isAdmin}
+                />
               ))}
             <Link
               to={{
