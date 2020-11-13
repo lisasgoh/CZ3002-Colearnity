@@ -38,6 +38,14 @@ class ViewGrades extends Component {
     };
   }
 
+  getMedian(array) {
+    const arrSort = array.sort();
+    const mid = Math.ceil(array.length / 2);
+
+    return array.length % 2 == 0
+      ? (arrSort[mid] + arrSort[mid - 1]) / 2
+      : arrSort[mid - 1];
+  }
   componentDidMount() {
     quizService.getQuiz(this.state.quizID).then((quizData) => {
       console.log(quizData);
@@ -48,6 +56,9 @@ class ViewGrades extends Component {
           avgResults:
             quizData.results.reduce((a, b) => a + b, 0) /
             quizData.results.length,
+          maxResults: Math.max(...quizData.results),
+          minResults: Math.min(...quizData.results),
+          medianResults: this.getMedian(quizData.results),
           quizQns: quizData.questions,
           quizTitle: quizData.title,
           totalPossibleMarks: quizData.total_points,
@@ -57,7 +68,15 @@ class ViewGrades extends Component {
   }
 
   render() {
-    const { avgResults, quizQns, quizTitle, totalPossibleMarks } = this.state;
+    const {
+      avgResults,
+      maxResults,
+      minResults,
+      medianResults,
+      quizQns,
+      quizTitle,
+      totalPossibleMarks,
+    } = this.state;
 
     const { classes } = this.props;
 
@@ -73,6 +92,15 @@ class ViewGrades extends Component {
           </div>
           <p>
             Average Grade: {avgResults} / {totalPossibleMarks}
+          </p>
+          <p>
+            Median Grade: {medianResults} / {totalPossibleMarks}
+          </p>
+          <p>
+            Maximum Grade: {maxResults} / {totalPossibleMarks}
+          </p>
+          <p>
+            Minimum Grade: {minResults} / {totalPossibleMarks}
           </p>
           <br />
           <TableContainer component={Paper}>

@@ -88,13 +88,13 @@ router.post('/login', auth.optional, (req, res, next) => {
   })(req, res, next);
 });
 
-// GET current route (required, only authenticated users have access)
+/** Gets the user's profile page */
 router.get('/current', auth.required, (req, res) => {
   console.log(req.isAuthenticated());
   QuizAttempt.aggregate(
     [
       { $match: { _user: new mongoose.Types.ObjectId(req.user.id) } },
-      { $sort: { _user: 1, createdAt: -1 } },
+      { $sort: { _user: 1, createdAt: 1 } },
       {
         $group: {
           _id: '$_quiz',

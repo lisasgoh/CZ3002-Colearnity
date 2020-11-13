@@ -13,7 +13,16 @@
   margin: 15px 0;
 }
 
-.forumpage .leftsection p {
+.forumpage .leftsection .teacher {
+  text-align: center;
+  padding: 20px;
+  background-color: plum;
+  border-radius: 6px;
+  margin: 15px 0 15px 0;
+  font-weight: 500;
+}
+
+.forumpage .leftsection .desc {
   text-align: left;
   padding: 20px;
   background-color: skyblue;
@@ -49,4 +58,3 @@
 .forumpage .rightsection .addpost {
   display: flex;
 }
-

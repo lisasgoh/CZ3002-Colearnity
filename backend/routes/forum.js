@@ -4,22 +4,20 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
+const mongoose = require('mongoose');
 const Forum = require('../models/Forum');
+const Quiz = require('../models/Quiz');
 const Users = require('../models/Users');
-const Vote = require('../models/Vote');
+const QuizAttempt = require('../models/QuizAttempt');
+const Util = require('../util/util');
 
 const forumRouter = express.Router();
 
-// create new forum
-// add to users
-// TODO: add to users if teacher
-// if req.query.forum is valid id
+/** Create new forum */
 forumRouter.post('/', (req, res) => {
-  // console.log("HI");
-  // console.log(req.user);
   console.log(req.isAuthenticated());
   console.log(req.body);
-  // Test if user is authorised
+  // Test if user is authorized
   if (!req.user || (req.user && req.user.is_student)) {
     return res.status(401).send({ error: 'unauthorized user' });
   }
@@ -49,7 +47,7 @@ forumRouter.post('/', (req, res) => {
       if (parentForum == null) {
         return res.status(400).send({ error: 'parent forum does not exist' });
       } if (parentForum.is_sub === true) {
-        console.log('HEREERERE parent forumi s sub');
+        // console.log('HEREERERE parent forumi s sub');
         return res.status(400).send({ error: 'parent forum is not a main forum' });
       }
       forum.save((err, savedForum) => {
@@ -64,20 +62,6 @@ forumRouter.post('/', (req, res) => {
         }
       });
     });
-    /*
-    forum.save().then((savedForum) => {
-      console.log(savedForum);
-      Forum.findByIdAndUpdate(req.query.forum_id,
-        { $push: { _subforums: savedForum._id } })
-        .then((parentForum) => {
-          console.log(parentForum);
-          res.json(savedForum);
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(400).send(err);
-        });
-    }); */
   } else {
     console.log(forum);
     forum.save((err, savedForum) => {
@@ -97,17 +81,21 @@ forumRouter.post('/', (req, res) => {
   }
 });
 
-// TODO : un/Subscribe to forum
-// Only can sub to main forum, not sub forum
+/** Subscribe to forum */
 forumRouter.post('/:id', (req, res) => {
+  console.log('HI');
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
   }
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid forum id' });
+  }
   Forum.findById(req.params.id).then((forum) => {
-    if (forum.is_sub === true) {
-      res.status(400).send({ error: 'Only main forum can be subscribed to. ' });
+    if (forum == null) {
+      return res.status(400).send({ error: 'forum does not exist' });
+    } if (forum.is_sub === true) {
+      return res.status(400).send({ error: 'Cannot subscribe to sub forum' });
     }
-  }).then(() => {
     Users.findById(req.user.id)
       .then((user) => {
         if (user._forums.includes(req.params.id)) {
@@ -128,7 +116,7 @@ forumRouter.post('/:id', (req, res) => {
 
 // get forum details todo -> populate fields --> consider sorting
 forumRouter.get('/:id', (req, res) => {
-  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send({ error: 'invalid forum id' });
   }
   Forum.findById(req.params.id)
@@ -148,47 +136,55 @@ forumRouter.get('/:id', (req, res) => {
         return res.status(404).send({ error: 'forum does not exist' });
       }
       if (req.user) {
-        forum = forum.toObject();
-        forum.isSubscribed = false;
-        Users.findById(req.user.id).then((user) => {
-          console.log(user._forums);
-          console.log(req.params.id);
-          if (user._forums.includes(req.params.id)) {
-            console.log('is subscribed');
-            forum.isSubscribed = true;
-            return forum;
+        const forumPosts = forum._posts;
+        Util.getPostsVoteInfo(forumPosts, req.user.id, (postsWithVotes) => {
+          const forumObj = forum.toObject();
+          forumObj._posts = postsWithVotes;
+          if (forum.is_sub === false) {
+            forumObj.isSubscribed = false;
+            Users.findById(req.user.id).then((user) => {
+              if (user._forums.includes(req.params.id)) {
+                forumObj.isSubscribed = true;
+              }
+              res.json(forumObj);
+            }).catch((err) => res.send(err));
+          } else {
+            console.log(forum._quizzes);
+            QuizAttempt.aggregate(
+              [
+                {
+                  $match: {
+                    $and:
+                    [
+                      { _user: new mongoose.Types.ObjectId(req.user.id) },
+                      { _quiz: { $in: forum._quizzes } }],
+                  },
+                },
+                { $sort: { _user: 1, createdAt: 1 } },
+                {
+                  $group: {
+                    _id: '$_quiz',
+                    quizAttemptId: { $first: '$_id' },
+                    createdAt: { $first: '$createdAt' },
+                  },
+                },
+              ],
+            ).then((quizAttemptIds) => {
+              const quizAttemptIdArray = quizAttemptIds
+                .map((obj) => new mongoose.Types.ObjectId(obj.quizAttemptId));
+              QuizAttempt.find({ _id: { $in: quizAttemptIdArray } })
+                .populate({ path: '_quiz', model: 'Quiz', select: { _id: 1, title: 1 } })
+                .then((quizAttempts) => {
+                  forumObj.quizAttempts = quizAttempts;
+                  res.json(forumObj);
+                }).catch((err) => res.send(err));
+            });
           }
-          return forum;
-        }).then((savedForum) => {
-          console.log(savedForum);
-          const forumPosts = savedForum._posts;
-          const promises = forumPosts.map((post) => {
-            console.log(post._id);
-            console.log(req.user.id);
-            return Vote.findOne({ _post: post._id, _voter: req.user.id })
-              .then((vote) => {
-                console.log(vote);
-                if (vote == null) {
-                  post.userVote = 0;
-                } else {
-                  post.userVote = vote.dir;
-                }
-                console.log(post);
-                return post;
-              });
-          });
-          Promise.all(promises).then((forumPostsWithVote) => {
-            console.log(`votesss${JSON.stringify(forumPostsWithVote)}`);
-            savedForum._posts = forumPostsWithVote;
-            console.log(`Final forum${JSON.stringify(savedForum, null, 1)}`);
-            res.json(savedForum);
-          });
-        }).catch((err) => res.send(err));
+        });
       } else {
         res.json(forum);
       }
-    })
-    .catch((err) => res.send(err));
+    });
 });
 
 // change forum details todo
