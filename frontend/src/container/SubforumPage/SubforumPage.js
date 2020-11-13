@@ -28,6 +28,20 @@ class SubforumPage extends Component {
     };
   }
 
+  getIncompleteQuizzes(attemptedQuizzes, allQuizzes) {
+    if (attemptedQuizzes === null) return allQuizzes;
+    var incompleteQuizzes = [];
+    incompleteQuizzes = incompleteQuizzes.concat(allQuizzes);
+    for (var i = 0; i < attemptedQuizzes.length; i++) {
+      for (var j = 0; j < incompleteQuizzes.length; j++) {
+        if (attemptedQuizzes[i]._quiz._id === incompleteQuizzes[j]._id) {
+          incompleteQuizzes.splice(j, 1); //uniqueQuizzes[j] = attemptedQuizzes[i];
+        }
+      }
+    }
+    return incompleteQuizzes;
+  }
+
   componentDidMount() {
     forumService.getForum(`${this.state.id}`).then((forumData) => {
       console.log("subforum data:");
@@ -37,7 +51,11 @@ class SubforumPage extends Component {
         ...{
           subforumTitle: forumData.name,
           subforumDesc: forumData.description,
-          quizzes: forumData._quizzes,
+          incompleteQuizzes: this.getIncompleteQuizzes(
+            forumData.quizAttempts,
+            forumData._quizzes
+          ),
+          completedQuizzes: forumData.quizAttempts,
           posts: forumData._posts,
           isAdmin: forumData._teacher._id == localStorage.getItem("userID"), //forumData.isAdmin,
           isSub: forumData.is_sub,
@@ -52,13 +70,13 @@ class SubforumPage extends Component {
       id,
       subforumTitle,
       subforumDesc,
-      quizzes,
+      incompleteQuizzes,
+      completedQuizzes,
       posts,
       isAdmin,
     } = this.state;
     // let combined = ["icon", "fa fa-plus-circle"].join(" ");
 
-    console.log(posts);
     return (
       <div className="subforumpage">
         <div className="leftsection">
@@ -74,14 +92,28 @@ class SubforumPage extends Component {
               completionDate="11/9/2020"
               grade="10/10"
             /> */}
-            {quizzes &&
-              quizzes.map((quiz) => (
+            {incompleteQuizzes &&
+              incompleteQuizzes.map((quiz) => (
                 <QuizButton
                   quizTitle={quiz.title}
                   id={quiz._id}
                   isAdmin={isAdmin}
+                  completed={false}
                 />
               ))}
+            {completedQuizzes &&
+              completedQuizzes.map((attempt) => (
+                <QuizButton
+                  quizTitle={attempt._quiz.title}
+                  id={attempt._quiz._id}
+                  scoredMarks={attempt.marks}
+                  totalMarks={attempt.total}
+                  quizAttempt={attempt._id}
+                  isAdmin={isAdmin}
+                  completed={true}
+                />
+              ))}
+
             <Link
               to={{
                 pathname: "/teachercreatequiz",
