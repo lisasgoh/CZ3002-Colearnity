@@ -40,7 +40,7 @@ commentRouter.post('/', (req, res) => {
         if (post == null) {
           return res.status(400).send({ error: 'Post does not exist' });
         }
-        res.json(post);
+        res.json(savedComment);
       })
       .catch((err) => res.send(err));
   });
@@ -54,12 +54,15 @@ commentRouter.put('/:id', (req, res) => {
   if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send({ error: 'invalid post id' });
   }
+  if (!req.body.text) {
+    return res.status(422).send({ error: 'New text required' });
+  }
   Comment.findById(req.params.id).then((comment) => {
     if (comment == null) {
       return res.status(400).send({ error: 'comment does not exist' });
     }
     if (comment._commenter.toString().localeCompare(req.user.id.toString()) === 0) {
-      Comment.findByIdAndUpdate(req.params.id, { text: req.body.text })
+      Comment.findByIdAndUpdate(req.params.id, { text: req.body.text }, { new: true })
         .then((updatedComment) => res.json(updatedComment))
         .catch((err) => res.send(err));
     } else {
