@@ -32,8 +32,6 @@ mongoose.promise = global.Promise;
 
 const app = express();
 
-// connect to mongodb
-// const url = 'mongodb+srv://colearnity:zHiVt0wXsWUQ3MKB@cluster0.4j8bx.mongodb.net/<dbname>?retryWrites=true&w=majority';
 let url = process.env.MONGODB_URI;
 
 if (process.env.NODE_ENV === 'test') {
@@ -47,7 +45,7 @@ mongoose
     useFindAndModify: false,
     useCreateIndex: true,
   })
-  .then((result) => {
+  .then(() => {
     console.log('connected to MongoDB');
   })
   .catch((error) => {
@@ -124,9 +122,5 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
-/*
-const PORT = 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-}); */
+
 module.exports = app;
