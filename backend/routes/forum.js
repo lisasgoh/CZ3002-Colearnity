@@ -165,14 +165,19 @@ forumRouter.get('/:id', (req, res) => {
                   $group: {
                     _id: '$_quiz',
                     quizAttemptId: { $first: '$_id' },
-                    doc: { $first: '$$ROOT' },
+                    createdAt: { $first: '$createdAt' },
                   },
                 },
               ],
-            ).then((quizAttempts) => {
-              forumObj.quizAttempts = quizAttempts;
-              console.log(forumObj);
-              res.json(forumObj);
+            ).then((quizAttemptIds) => {
+              const quizAttemptIdArray = quizAttemptIds
+                .map((obj) => new mongoose.Types.ObjectId(obj.quizAttemptId));
+              QuizAttempt.find({ _id: { $in: quizAttemptIdArray } })
+                .populate({ path: '_quiz', model: 'Quiz', select: { _id: 1, title: 1 } })
+                .then((quizAttempts) => {
+                  forumObj.quizAttempts = quizAttempts;
+                  res.json(forumObj);
+                }).catch((err) => res.send(err));
             });
           }
         });
