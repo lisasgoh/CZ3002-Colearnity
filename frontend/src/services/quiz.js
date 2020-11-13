@@ -1,11 +1,20 @@
 import axios from "axios";
 const baseUrl = "http://localhost:3000/api/quiz";
 
+/**
+ * @param {string} id quiz id of quiz to be retrieved
+ * @return {object} quiz object
+ */
 const getQuiz = (id) => {
   const request = axios.get(`${baseUrl}/${id}`);
   return request.then((response) => response.data);
 };
 
+/**
+ * @param {array} answerArray llist of answers by the user
+ * @param {string} id quiz id 
+ * @return {object} quiz attempt object
+ */
 const doQuiz = (answerArray, id) => {
   const newObject = {
     attempt: answerArray,
@@ -25,6 +34,12 @@ const doQuiz = (answerArray, id) => {
   return request.then((response) => response.data);
 };
 
+/**
+ * @param {string} quizTitle title of the quiz
+ * @param {array} questions list of questions in the quiz
+ * @param {string} forum_id id of the parent forum
+ * @return {object} newly created quiz object
+ */
 const postQuiz = (quizTitle, questions, forum_id) => {
   console.log("DID IT ENTER?");
   const postQuizData = {
@@ -46,6 +61,9 @@ const postQuiz = (quizTitle, questions, forum_id) => {
   return request.then((response) => response.data);
 };
 
+/**
+ * @param {string} id quiz id to be deleted 
+ */
 const deleteObj = (id) => {
   const request = axios({
     method: "delete",
