@@ -49,6 +49,7 @@ class SubforumPage extends Component {
       this.setState({
         ...this.state,
         ...{
+          subforum: forumData,
           subforumTitle: forumData.name,
           subforumDesc: forumData.description,
           incompleteQuizzes: this.getIncompleteQuizzes(
@@ -67,6 +68,7 @@ class SubforumPage extends Component {
 
   render() {
     const {
+      subforum,
       id,
       subforumTitle,
       subforumDesc,
@@ -128,18 +130,6 @@ class SubforumPage extends Component {
                 ""
               )}
             </Link>
-
-            {/* <QuizButton
-              quizTitle="Quiz 2"
-              completed={true}
-              completionDate="25/9/2020"
-              grade="6/10"
-            />
-            <QuizButton
-              quizTitle="Quiz 3"
-              completed={false}
-              dueDate="25/12/2020"
-            /> */}
           </div>
         </div>
 
@@ -159,7 +149,7 @@ class SubforumPage extends Component {
                 content={post.description}
                 numLikes={post.votes}
                 userVote={post.userVote}
-                tags={post.tags}
+                tags={subforum} //{post.tags}
                 title={post.title}
                 isAdmin={isAdmin}
                 isPoster={post._poster._id == localStorage.getItem("userID")}

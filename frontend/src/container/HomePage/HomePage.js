@@ -124,7 +124,7 @@ class HomePage extends Component {
                   username={post._poster.username}
                   content={post.description}
                   numLikes={post.votes}
-                  tags={post.tags}
+                  tags={post._forum} //{post.tags}
                   title={post.title}
                   userVote={post.userVote}
                   isPoster={post._poster._id == localStorage.getItem("userID")}
@@ -138,7 +138,7 @@ class HomePage extends Component {
                   username={post._poster.username}
                   content={post.description}
                   numLikes={post.votes}
-                  tags={post.tags}
+                  tags={post._forum} //{post.tags}
                   title={post.title}
                   userVote={post.userVote}
                   isPoster={post._poster._id == localStorage.getItem("userID")}

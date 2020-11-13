@@ -346,7 +346,17 @@ export default function Post(props) {
           component="a"
           href="https://www.google.com"
         /> */}
-        {tags &&
+        <StyledChip
+          size="small"
+          label={tags.name}
+          //   onClick={handleClick}
+          clickable
+          component="a"
+          href={
+            tags.is_sub ? `/subforumpage/${tags._id}` : `/forumpage/${tags._id}`
+          }
+        />
+        {/* {tags &&
           tags.map((tag) => (
             <StyledChip
               size="small"
@@ -356,7 +366,7 @@ export default function Post(props) {
               component="a"
               href="https://www.google.com"
             />
-          ))}
+          ))} */}
       </div>
     </div>
   );

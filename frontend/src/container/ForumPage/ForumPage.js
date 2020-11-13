@@ -36,6 +36,7 @@ class ForumPage extends Component {
       this.setState({
         ...this.state,
         ...{
+          forum: forum,
           forumID: forum._id,
           forumTitle: forum.name,
           forumDesc: forum.description,
@@ -62,6 +63,7 @@ class ForumPage extends Component {
 
   render() {
     const {
+      forum,
       forumID,
       forumTitle,
       forumDesc,
@@ -136,7 +138,7 @@ class ForumPage extends Component {
                 content={post.description}
                 numLikes={post.votes}
                 userVote={post.userVote}
-                tags={post.tags}
+                tags={forum} //{post.tags}
                 title={post.title}
                 isAdmin={isAdmin}
                 isPoster={post._poster._id == localStorage.getItem("userID")}
