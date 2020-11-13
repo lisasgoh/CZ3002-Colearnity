@@ -158,6 +158,7 @@ describe('create main forum', () => {
         .post('/api/forum')
         .send(FORUM_A);
       expect(response.statusCode).toBe(401);
+      expect(response.body).toEqual({ error: 'unauthorized user' });
       done();
     });
     it('creates main forum unsuccessfully - not student', async (done) => {
@@ -280,6 +281,59 @@ describe('get forum', () => {
       .get(`/api/forum/${forum._id}`);
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({ error: 'forum does not exist' });
+    done();
+  });
+});
+
+let newForum = null;
+let newSubForum = null;
+
+describe('subscribe/unsubscribe', () => {
+  beforeAll(async (done) => {
+    await request
+      .post('/api/users/login')
+      .send(USER_A_LOGIN);
+    const responsePost = await request
+      .post('/api/forum')
+      .send(FORUM_A);
+    expect(responsePost.statusCode).toBe(200);
+    newForum = responsePost.body;
+    const response = await request
+      .post(`/api/forum?forum_id=${newForum._id}`)
+      .send(SUBFORUM_A);
+    newSubForum = response.body;
+    expect(response.statusCode).toBe(200);
+    done();
+  });
+  it('subscribe unsuccessful - invalid ID', async (done) => {
+    const response = await request
+      .post(`/api/forum/${INVALID_ID}`);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({ error: 'invalid forum id' });
+    done();
+  });
+  it('subscribe unsuccessful - forum is subforum', async (done) => {
+    const response = await request
+      .post(`/api/forum/${newSubForum._id}`);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({ error: 'Cannot subscribe to sub forum' });
+    done();
+  });
+  it('subscribe unsuccessful - forum does not exist', async (done) => {
+    await Forum.remove({});
+    const response = await request
+      .post(`/api/forum/${newForum._id}`);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({ error: 'forum does not exist' });
+    done();
+  });
+  it('subscribe unsuccessful - not authenticated', async (done) => {
+    const responseLogout = await request.post('/api/users/logout');
+    expect(responseLogout.statusCode).toBe(302);
+    const response = await request
+      .post(`/api/forum/${newForum._id}`);
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({ error: 'unauthorized user' });
     done();
   });
 });
