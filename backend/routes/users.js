@@ -75,7 +75,7 @@ router.post('/login', auth.optional, (req, res, next) => {
     authenticatedUser.token = passportUser.generateJWT();
     req.login(authenticatedUser, (error) => {
       if (error) {
-        return res.status(401).json(error);
+        return res.status(401).send({ error: 'authentication failed' });
       }
       return res.json({ user: authenticatedUser.toAuthJSON() });
     });

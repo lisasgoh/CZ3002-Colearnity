@@ -78,7 +78,6 @@ forumRouter.post('/', (req, res) => {
 
 /** Subscribe to forum */
 forumRouter.post('/:id', (req, res) => {
-  console.log('HI');
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
   }
@@ -100,12 +99,8 @@ forumRouter.post('/:id', (req, res) => {
         }
         return user.save();
       })
-      .then((user) => {
-        res.json(user);
-      })
-      .catch((err) => {
-        res.send(err);
-      });
+      .then(() => res.send({ success: 'Success: User has successfully subscribed / unsubscribed' }))
+      .catch((err) => res.send(err));
   });
 });
 

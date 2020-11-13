@@ -153,6 +153,7 @@ describe('login', () => {
       .post('/api/users/login')
       .send(USER_B_WRONG_EMAIL);
     expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({ error: 'authentication failed' });
     done();
   });
   it('login - wrong password', async (done) => {
@@ -160,6 +161,7 @@ describe('login', () => {
       .post('/api/users/login')
       .send(USER_B_WRONG_PASSWORD);
     expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({ error: 'authentication failed' });
     done();
   });
   it('login - wrong data', async (done) => {

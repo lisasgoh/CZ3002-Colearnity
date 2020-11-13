@@ -56,7 +56,7 @@ const createMainForum = (newMainforum) => {
 
 /**
  * @param {string} forumID - The forum to subscribe/unsubscribe to
- * @return {object} The updated user object
+ * @return {object} Success/failure message
  */
 const toggleSubscribe = (forumID) => {
   const request = axios({
