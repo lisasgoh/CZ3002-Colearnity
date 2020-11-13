@@ -1,11 +1,4 @@
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -23,6 +16,7 @@ import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import ThumbDownAltRoundedIcon from "@material-ui/icons/ThumbDownAltRounded";
 import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
+import "./AltComments.css";
 
 import voteService from "./../../services/vote";
 import commentService from "./../../services/comment";
@@ -163,7 +157,7 @@ export default function AltComments(props) {
   };
 
   function handleDeleteComment() {
-        try {
+    try {
       commentService.deleteObj(id).then((deleteComment) => {
         console.log(deleteComment);
         history.go(0);
@@ -208,67 +202,71 @@ export default function AltComments(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <div className="actionbar">
-          <IconButton
-            aria-label="upvote"
-            color="primary"
-            size="small"
-            onClick={setLikeHandler}
-          >
-            {liked ? <ThumbUpAltRoundedIcon /> : <ThumbUpAltOutlinedIcon />}
-          </IconButton>
-          <IconButton
-            aria-label="downvote"
-            color="primary"
-            size="small"
-            onClick={setDislikeHandler}
-          >
-            {disliked ? (
-              <ThumbDownAltRoundedIcon />
+        <div className="altcommentactionbar">
+          <div className="actionbarrow">
+            <IconButton
+              aria-label="upvote"
+              color="primary"
+              size="small"
+              onClick={setLikeHandler}
+            >
+              {liked ? <ThumbUpAltRoundedIcon /> : <ThumbUpAltOutlinedIcon />}
+            </IconButton>
+            <IconButton
+              aria-label="downvote"
+              color="primary"
+              size="small"
+              onClick={setDislikeHandler}
+            >
+              {disliked ? (
+                <ThumbDownAltRoundedIcon />
+              ) : (
+                <ThumbDownAltOutlinedIcon />
+              )}
+            </IconButton>
+            <span class="numText"> {likesDisplay} Votes</span>
+          </div>
+          <div className="actionbarrow">
+            {isAdmin || isPoster ? (
+              <Button
+                color="primary"
+                size="small"
+                startIcon={<DeleteRoundedIcon />}
+                onClick={modalHandlerDeleteTrue}
+              >
+                Delete
+              </Button>
             ) : (
-              <ThumbDownAltOutlinedIcon />
+              ""
             )}
-          </IconButton>
-          <span> {likesDisplay} Votes</span>
-          {isAdmin || isPoster ? (
-            <Button
-              color="primary"
-              size="small"
-              startIcon={<DeleteRoundedIcon />}
-              onClick={modalHandlerDeleteTrue}
-            >
-              Delete
-            </Button>
-          ) : (
-            ""
-          )}
-          <DeletePostPopup
-            show={modalShowDelete}
-            onHide={modalHandlerDeleteFalse}
-            isDelete={true}
-            deleteComment={handleDeleteComment}
-          />
-          
-          {isPoster ? (
-            <Button
-              color="primary"
-              size="small"
-              startIcon={<EditIcon />}
-              onClick={modalHandlerEditTrue}
-            >
-              Edit
-            </Button>
-          ) : (
-            ""
-          )}
-          <DeletePostPopup
-            show={modalShowEdit}
-            onHide={modalHandlerEditFalse}
-            isDelete={false}
-            setContent={setContent}
-            editPost={editContent}
-            prevContent={props.text}
-          />
+            <DeletePostPopup
+              show={modalShowDelete}
+              onHide={modalHandlerDeleteFalse}
+              isDelete={true}
+              deleteComment={handleDeleteComment}
+            />
+
+            {isPoster ? (
+              <Button
+                color="primary"
+                size="small"
+                startIcon={<EditIcon />}
+                onClick={modalHandlerEditTrue}
+              >
+                Edit
+              </Button>
+            ) : (
+              ""
+            )}
+            <DeletePostPopup
+              show={modalShowEdit}
+              onHide={modalHandlerEditFalse}
+              isDelete={false}
+              setContent={setContent}
+              editPost={editContent}
+              prevContent={props.text}
+            />
+          </div>
         </div>
       </CardActions>
     </Card>

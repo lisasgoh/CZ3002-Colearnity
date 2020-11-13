@@ -5,72 +5,72 @@
   text-align: left;
 }
 
-.postheader {
+.post .postheader {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 0.6em;
 }
 
-.postheader h6 {
+.post .postheader h6 {
   margin-left: 0.5em;
   font-size: 1.1em;
 }
 
-.posttitle {
+.post .posttitle {
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 10px;
 }
 
-.postheader .posterdetails {
+.post .postheader .posterdetails {
   display: flex;
   justify-self: flex-start;
 }
 
-.postheader .posteractivity {
+.post .postheader .posteractivity {
   display: flex;
   justify-self: flex-end;
 }
 
-.actionbar {
+.post .actionbar {
   display: flex;
   flex-direction: column;
   align-items: left;
   justify-content: flex-start;
 }
 
-.actionbar .actionbarrow {
+.post .actionbar .actionbarrow {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
 }
 
-.actionbar button,
-.actionbar .numText {
+.post .actionbar button,
+.post .actionbar .numText {
   margin-left: 1.5em;
 }
 
-.actionbar .numText {
+.post .actionbar .numText {
   text-align: center;
   font-size: 0.9em;
 }
 
-.actionbar button:first-child {
+.post .actionbar button:first-child {
   margin-left: 0;
 }
 
-.tags {
+.post .tags {
   display: flex;
   flex-direction: row;
   margin-top: 1em;
 }
 
-.tags a {
+.post .tags a {
   color: white;
 }
 
-.tags a:hover {
+.post .tags a:hover {
   text-decoration: none;
 }
