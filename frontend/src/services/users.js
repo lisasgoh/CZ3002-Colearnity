@@ -60,18 +60,14 @@ const login = (email, password) => {
   });
 };
 
-const logout = () => {
-  const request = axios.post(`${baseUrl}/logout`);
-  // return request.then((response) => response.data);
-};
-
-/*const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
-  return request.then(response => response.data)
+const logout = async () => {
+  const response = await axios({
+    method: "post",
+    url: `${baseUrl}/logout`
+  });
+  if (response.OK){ 
+    return;
+  }
 }
-
-const deleteObj = id => {
-    return axios.delete(`${baseUrl}/${id}`);
-}*/
 
 export default { getUser, getUserById, getUserHomePage, create, login, logout };
