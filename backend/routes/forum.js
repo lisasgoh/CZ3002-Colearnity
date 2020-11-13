@@ -100,12 +100,12 @@ forumRouter.post('/', (req, res) => {
 // TODO : un/Subscribe to forum
 // Only can sub to main forum, not sub forum
 forumRouter.post('/:id', (req, res) => {
-  console.log('HI');
-  // console.log(req.user);
-  console.log(req.isAuthenticated());
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
   Forum.findById(req.params.id).then((forum) => {
     if (forum.is_sub === true) {
-      res.status(401);
+      res.status(400).send({ error: 'Only main forum can be subscribed to. ' });
     }
   }).then(() => {
     Users.findById(req.user.id)
