@@ -1,0 +1,27 @@
+.altcommentactionbar {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: flex-start;
+}
+
+.altcommentactionbar .actionbarrow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.altcommentactionbar button,
+.altcommentactionbar .numText {
+  margin-left: 1.5em;
+}
+
+.altcommentactionbar .numText {
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.altcommentactionbar button:first-child {
+  margin-left: 0;
+}
