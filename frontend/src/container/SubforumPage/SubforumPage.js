@@ -3,7 +3,9 @@ import Post from "../../components/Post/Post";
 import QuizButton from "../../components/ForumButtons/QuizButton";
 import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
 import FilterListRoundedIcon from "@material-ui/icons/FilterListRounded";
+import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import Divider from "@material-ui/core/Divider";
+import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
 import { Link } from "react-router-dom";
 import "./SubforumPage.css";
@@ -25,6 +27,7 @@ class SubforumPage extends Component {
       isAdmin: null,
       isSub: null,
       subForumID: null,
+      parentForumID: null,
     };
   }
 
@@ -61,6 +64,7 @@ class SubforumPage extends Component {
           isAdmin: forumData._teacher._id == localStorage.getItem("userID"), //forumData.isAdmin,
           isSub: forumData.is_sub,
           subForumID: forumData._id,
+          parentForumID: forumData._parentforum,
         },
       });
     });
@@ -76,12 +80,24 @@ class SubforumPage extends Component {
       completedQuizzes,
       posts,
       isAdmin,
+      parentForumID,
     } = this.state;
     // let combined = ["icon", "fa fa-plus-circle"].join(" ");
 
     return (
       <div className="subforumpage">
         <div className="leftsection">
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            startIcon={<ArrowBackIosRoundedIcon />}
+            clickable
+            component="a"
+            href={`/forumpage/${parentForumID}`}
+          >
+            Back to Forum Page
+          </Button>
           <h2>{subforumTitle}</h2>
           <p>{subforumDesc}</p>
           <Divider variant="middle" />
