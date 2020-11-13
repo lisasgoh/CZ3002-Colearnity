@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 const express = require('express');
 const Comment = require('../models/Comment');
@@ -7,16 +8,13 @@ const Vote = require('../models/Vote');
 
 const votesRouter = express.Router();
 
-// get info of vote
 votesRouter.get('/:id', (req, res) => {
   Vote.findById(req.params.id).then((vote) => {
     res.json(vote);
   }).catch((err) => res.json(err));
 });
 
-// create new vote
-// check if vote already exists
-// increase vote increment for post/comment
+/** Vote for post or comment */
 votesRouter.post('/', (req, res) => {
   // Check if user voted for post/comment before
   if (req.query.post_id != null) {

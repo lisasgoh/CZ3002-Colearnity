@@ -1,6 +1,5 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 const passport = require('passport');
 const mongoose = require('mongoose');
@@ -10,12 +9,9 @@ const Users = require('../models/Users');
 const QuizAttempt = require('../models/QuizAttempt');
 const Util = require('../util/util');
 
-// POST new user route (optional, everyone has access)
+/** Create new user, auth.optional route -> Anyone can access */
 router.post('/', auth.optional, (req, res) => {
   const user = req.body;
-  console.log(user);
-  console.log(user.email);
-  console.log(user.password);
   if (!user.email) {
     return res.status(400).json({
       errors: {
@@ -44,10 +40,8 @@ router.post('/', auth.optional, (req, res) => {
     });
 });
 
-// POST login route (optional, everyone has access)
+/** Login route */
 router.post('/login', auth.optional, (req, res, next) => {
-  console.log('HERE');
-  console.log(req.body);
   if (!req.body.hasOwnProperty('user')) {
     return res.status(403).send({ error: 'Invalid format' });
   }
@@ -90,7 +84,6 @@ router.post('/login', auth.optional, (req, res, next) => {
 
 /** Gets the user's profile page */
 router.get('/current', auth.required, (req, res) => {
-  console.log(req.isAuthenticated());
   QuizAttempt.aggregate(
     [
       { $match: { _user: new mongoose.Types.ObjectId(req.user.id) } },
@@ -106,7 +99,6 @@ router.get('/current', auth.required, (req, res) => {
   ).then((quizAttemptIds) => {
     const quizAttemptIdArray = quizAttemptIds
       .map((obj) => new mongoose.Types.ObjectId(obj.quizAttemptId));
-    console.log(quizAttemptIdArray);
     const populateQuery = [{
       path: '_posts',
       model: 'Post',
@@ -146,27 +138,17 @@ router.get('/current', auth.required, (req, res) => {
       .populate(populateQuery)
       .then((user) => {
         Util.getPostsVoteInfo(user._posts, req.user.id, (postsWithVotes) => {
-          console.log(`userPosts With Vote${postsWithVotes}`);
           const userObj = user.toObject();
           userObj._posts = postsWithVotes;
-          console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
           res.json(userObj);
         });
-        // .then((userPostsWithVote) => {
-        //   console.log(`userPosts With Vote${userPostsWithVote}`);
-        //   const userObj = user.toObject();
-        //   userObj._posts = userPostsWithVote;
-        //   console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
-        //   res.json(userObj);
-        // });
       })
       .catch((err) => res.send(err));
   });
 });
+
+/** Gets user's home page */
 router.get('/home', auth.required, (req, res) => {
-  console.log('HERERERER');
-  // console.log(req.headers);
-  // console.log(req.user);
   const populateQuery = [{
     path: '_forums',
     model: 'Forum',
@@ -224,52 +206,17 @@ router.get('/home', auth.required, (req, res) => {
   return Users.findById(req.user.id).select(['-_grades', '-_posts', '-_attempts', '-_quizzes', '-salt', '-hash'])
     .populate(populateQuery)
     .then((user) => {
-      // console.log(`HERERE${user}`);
       let subforums = [];
       user._forums.forEach((forum) => {
         subforums = subforums.concat(forum._subforums);
       });
-      // console.log(subforums);
       const allForums = user._forums.concat(subforums);
-      // console.log(allForums);
       const homePagePosts = allForums.reduce((result, item) => result.concat(item._posts), []);
       Util.getPostsVoteInfo(homePagePosts, req.user.id, (postsWithVotes) => {
-        // console.log(`userPosts With Vote${postsWithVotes}`);
         const userObj = user.toObject();
         userObj.homePagePosts = postsWithVotes;
-        // console.log(`Final user${JSON.stringify(userObj, null, 1)}`);
         res.json(userObj);
       });
-    })
-    .catch((err) => res.send(err));
-});
-
-router.get('/:id', (req, res) => {
-  const populateQuery = {
-    path: '_forums',
-    model: 'Forum',
-    select: { _id: 1, name: 1 },
-    populate: {
-      path: '_posts',
-      model: 'Post',
-      select: {
-        _id: 1, title: 1, description: 1, votes: 1,
-      },
-      populate: {
-        path: '_poster',
-        model: 'Users',
-        select: {
-          _id: 1, username: 1,
-        },
-      },
-    },
-  };
-
-  return Users.findById(req.params.id)
-    .populate(populateQuery)
-    .then((user) => {
-      console.log(user);
-      res.json(user);
     })
     .catch((err) => res.send(err));
 });

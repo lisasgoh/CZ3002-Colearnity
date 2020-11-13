@@ -3,6 +3,7 @@ const QuizAttempt = require('../models/QuizAttempt');
 
 const quizAttemptRouter = express.Router();
 
+/** Gets quiz attempt info */
 quizAttemptRouter.get('/:id', (req, res) => {
   QuizAttempt.findById(req.params.id)
     .populate({

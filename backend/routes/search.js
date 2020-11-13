@@ -5,9 +5,8 @@ const Util = require('../util/util');
 
 const searchRouter = express.Router();
 
-// get post(s) based on search keywords post info - /api/search?postKeyWord=(words)
+/**  get post(s) based on search keywords post info */
 searchRouter.get('/post', (req, res) => {
-  // console.log("search for keyword(s) received: " +req.query.postKeyword);
   const str = new RegExp(`.*${req.query.postKeyword}.*`, 'i');
   Post.find({
     $or: [
@@ -27,7 +26,7 @@ searchRouter.get('/post', (req, res) => {
     }).catch((err) => res.send(err));
 });
 
-// get forum(s) based on search keywords forum info - /api/search?forumKeyword=(words)
+/** get forum(s) based on search keywords forum info */
 searchRouter.get('/forum', (req, res) => {
   const str = new RegExp(`.*${req.query.forumKeyword}.*`, 'i');
   Forum.find({

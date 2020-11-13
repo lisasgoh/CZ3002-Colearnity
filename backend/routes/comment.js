@@ -1,16 +1,14 @@
-/* eslint-disable no-console */
+/* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-shadow */
+
 const express = require('express');
 const Comment = require('../models/Comment');
 const Post = require('../models/Post');
 
 const commentRouter = express.Router();
 
-// TODO: test whether text is null?
+/** Posts a new comment */
 commentRouter.post('/', (req, res) => {
-  console.log(req.isAuthenticated());
-  console.log(req.query.post_id);
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
   }
@@ -28,7 +26,6 @@ commentRouter.post('/', (req, res) => {
     _commenter: req.user.id,
     _post: req.query.post_id,
   });
-  console.log(comment);
   comment.save((err, savedComment) => {
     if (err) {
       return res.status(422).send({ error: 'Error while saving comment' });
@@ -42,11 +39,11 @@ commentRouter.post('/', (req, res) => {
         }
         res.json(savedComment);
       })
-      .catch((err) => res.send(err));
+      .catch((error) => res.send(error));
   });
 });
 
-// Edit a comment given a particular ID
+/** Edit a comment given a particular ID */
 commentRouter.put('/:id', (req, res) => {
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
@@ -71,7 +68,7 @@ commentRouter.put('/:id', (req, res) => {
   });
 });
 
-// Delete a comment given a particular ID
+/** Delete a comment given a particular ID */
 commentRouter.delete('/:id', (req, res) => {
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
