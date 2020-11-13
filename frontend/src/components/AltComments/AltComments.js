@@ -229,7 +229,7 @@ export default function AltComments(props) {
           <div className="actionbarrow">
             {isAdmin || isPoster ? (
               <Button
-                color="primary"
+                color="secondary"
                 size="small"
                 startIcon={<DeleteRoundedIcon />}
                 onClick={modalHandlerDeleteTrue}
@@ -248,7 +248,7 @@ export default function AltComments(props) {
 
             {isPoster ? (
               <Button
-                color="primary"
+                color="secondary"
                 size="small"
                 startIcon={<EditIcon />}
                 onClick={modalHandlerEditTrue}
