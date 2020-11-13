@@ -40,7 +40,7 @@ commentRouter.post('/', (req, res) => {
         if (post == null) {
           return res.status(400).send({ error: 'Post does not exist' });
         }
-        res.json(post);
+        res.json(savedComment);
       })
       .catch((err) => res.send(err));
   });
@@ -48,9 +48,21 @@ commentRouter.post('/', (req, res) => {
 
 // Edit a comment given a particular ID
 commentRouter.put('/:id', (req, res) => {
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid post id' });
+  }
+  if (!req.body.text) {
+    return res.status(422).send({ error: 'New text required' });
+  }
   Comment.findById(req.params.id).then((comment) => {
+    if (comment == null) {
+      return res.status(400).send({ error: 'comment does not exist' });
+    }
     if (comment._commenter.toString().localeCompare(req.user.id.toString()) === 0) {
-      Comment.findByIdAndUpdate(req.params.id, { text: req.body.text })
+      Comment.findByIdAndUpdate(req.params.id, { text: req.body.text }, { new: true })
         .then((updatedComment) => res.json(updatedComment))
         .catch((err) => res.send(err));
     } else {
@@ -61,7 +73,16 @@ commentRouter.put('/:id', (req, res) => {
 
 // Delete a comment given a particular ID
 commentRouter.delete('/:id', (req, res) => {
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid post id' });
+  }
   Comment.findById(req.params.id).then((comment) => {
+    if (comment == null) {
+      return res.status(400).send({ error: 'comment does not exist' });
+    }
     if (comment._commenter.toString().localeCompare(req.user.id.toString()) === 0) {
       Comment.findByIdAndDelete(req.params.id)
         .then((deletedComment) => res.json(deletedComment))

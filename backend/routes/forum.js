@@ -84,11 +84,11 @@ forumRouter.post('/', (req, res) => {
 /** Subscribe to forum */
 forumRouter.post('/:id', (req, res) => {
   console.log('HI');
-  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-    return res.status(400).send({ error: 'invalid forum id' });
-  }
   if (!req.user) {
     return res.status(401).send({ error: 'unauthorized user' });
+  }
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid forum id' });
   }
   Forum.findById(req.params.id).then((forum) => {
     if (forum == null) {
@@ -116,7 +116,7 @@ forumRouter.post('/:id', (req, res) => {
 
 // get forum details todo -> populate fields --> consider sorting
 forumRouter.get('/:id', (req, res) => {
-  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send({ error: 'invalid forum id' });
   }
   Forum.findById(req.params.id)

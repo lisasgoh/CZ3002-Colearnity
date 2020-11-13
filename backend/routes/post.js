@@ -13,7 +13,7 @@ const postRouter = express.Router();
 /** Get a post given a particular ID */
 postRouter.get('/:id', (req, res) => {
   console.log('HERE');
-  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     return res.status(400).send({ error: 'invalid post id' });
   }
   // This populates the child references (comments) with its data such as the comment text
@@ -134,9 +134,18 @@ postRouter.post('/', (req, res) => {
 
 /** Edit a post given a particular ID */
 postRouter.put('/:id', (req, res) => {
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid post id' });
+  }
   Post.findById(req.params.id).then((post) => {
+    if (post == null) {
+      return res.status(400).send({ error: 'post does not exist' });
+    }
     if (post._poster.toString().localeCompare(req.user.id.toString()) === 0) {
-      Post.findByIdAndUpdate(req.params.id, { $set: req.body })
+      Post.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
         .then((updatedPost) => res.json(updatedPost))
         .catch((err) => res.send(err));
     } else {
@@ -147,8 +156,17 @@ postRouter.put('/:id', (req, res) => {
 
 /** Delete a post given a particular ID */
 postRouter.delete('/:id', (req, res) => {
+  if (!req.user) {
+    return res.status(401).send({ error: 'unauthorized user' });
+  }
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).send({ error: 'invalid post id' });
+  }
   console.log('Delete post!');
   Post.findById(req.params.id).then((post) => {
+    if (post == null) {
+      return res.status(400).send({ error: 'post does not exist' });
+    }
     console.log(post._poster);
     console.log(req.user.id);
     if (post._poster.toString().localeCompare(req.user.id.toString()) === 0) {
