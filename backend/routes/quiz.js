@@ -79,9 +79,7 @@ quizRouter.post('/', (req, res) => {
       if (currentuser.is_student === false) {
         quiz.save((err, doc) => {
           if (err) {
-            if (err.name === 'ValidationError') {
-              return res.status(422).send({ error: 'Title required for quiz and questions' });
-            }
+            return res.status(422).send({ error: 'Title required for quiz and questions' });
           }
           Forum.findByIdAndUpdate(
             req.query.forum_id,
